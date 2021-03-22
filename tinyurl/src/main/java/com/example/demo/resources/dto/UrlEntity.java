@@ -1,4 +1,4 @@
-package com.example.demo.resources;
+package com.example.demo.resources.dto;
 
 public class UrlEntity {
     public String originalUrl;

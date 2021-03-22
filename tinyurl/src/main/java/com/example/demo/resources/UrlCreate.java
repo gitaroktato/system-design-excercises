@@ -1,8 +1,9 @@
 package com.example.demo.resources;
 
+import com.example.demo.resources.dto.UrlEntity;
+import com.example.demo.resources.dto.UrlShortened;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -10,9 +11,10 @@ import reactor.core.publisher.Mono;
 public class UrlCreate {
 
     @PostMapping
-    Mono<ResponseEntity<Void>> create(@RequestParam String apiKey, @RequestBody UrlEntity url) {
-        return Mono.just(ResponseEntity.ok().header("apiKey", apiKey)
-                .build());
+    Mono<ResponseEntity<UrlShortened>> create(@RequestParam String apiKey, @RequestBody UrlEntity url) {
+        return Mono.just(ResponseEntity
+                .ok().header("apiKey", apiKey)
+                .body(new UrlShortened(url.originalUrl, "https://localhost/xaBcdf")));
     }
 
 }
