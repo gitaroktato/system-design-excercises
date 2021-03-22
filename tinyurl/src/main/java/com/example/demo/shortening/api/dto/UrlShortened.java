@@ -1,4 +1,4 @@
-package com.example.demo.resources.dto;
+package com.example.demo.shortening.api.dto;
 
 public class UrlShortened {
     private final String originalUrl;
