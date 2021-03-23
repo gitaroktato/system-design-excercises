@@ -1,8 +1,13 @@
 package com.example.tinyurl;
 
+import java.time.Duration;
+import java.time.temporal.TemporalUnit;
+import java.util.stream.IntStream;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 public class ReactiveTest {
@@ -46,5 +51,16 @@ public class ReactiveTest {
                 .verifyComplete();
     }
 
+    @Test
+    public void testFluxJustSlow() {
+        var step = StepVerifier
+                .withVirtualTime(() -> Flux.interval(Duration.ofSeconds(1)).take(3600))
+                .expectSubscription();
+        IntStream.range(0, 3600).forEach(i -> {
+            step.expectNoEvent(Duration.ofSeconds(1));
+            step.expectNext(Long.valueOf(i));
+        });
+        step.expectComplete().verify();
+    }
 
 }
