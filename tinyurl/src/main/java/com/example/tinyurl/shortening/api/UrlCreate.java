@@ -5,7 +5,7 @@ import java.net.URL;
 
 import com.example.tinyurl.shortening.api.dto.UrlEntity;
 import com.example.tinyurl.shortening.api.dto.UrlShortened;
-import com.example.tinyurl.shortening.domain.UrlShortener;
+import com.example.tinyurl.shortening.service.UrlShortener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
