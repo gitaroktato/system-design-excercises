@@ -63,4 +63,9 @@ public class ReactiveTest {
         step.expectComplete().verify();
     }
 
+    // TODO
+    // https://stackoverflow.com/questions/59029446/java-reactor-stepverifier-withvirtualtime-loop-repeatedly-check-with-expectnoe
+    // https://www.codota.com/code/java/methods/reactor.test.StepVerifier$Step/expectErrorSatisfies
+    // https://stackoverflow.com/questions/45866364/reactor-stepverifier-withvirtualtime-blocks-indefinitely
+
 }

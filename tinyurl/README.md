@@ -15,6 +15,21 @@ Assuming 500 million new URLs per month and 100:1 read:write ratio.
 |Memory for cache|	170GB|
 
 
+## Hash Operations Benchmark
+The benchmark can be executed with
+```shell
+./gradlew clean build
+java -jar build/libs/tinyurl-0.0.1-SNAPSHOT-jmh.jar UrlShortenerBenchmark -f 1
+```
+
+Results
+```
+Result "com.example.tinyurl.shortening.domain.UrlShortenerBenchmark.benchmarkShorten":
+  383966.770 ±(99.9%) 128121.616 ops/s [Average]
+  (min, avg, max) = (352546.670, 383966.770, 433866.230), stdev = 33272.777
+  CI (99.9%): [255845.154, 512088.387] (assumes normal distribution)
+```
+
 ## References and Docs
 
 ### Riak
