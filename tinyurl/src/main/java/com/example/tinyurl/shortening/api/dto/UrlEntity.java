@@ -1,4 +1,4 @@
-package com.example.demo.shortening.api.dto;
+package com.example.tinyurl.shortening.api.dto;
 
 public class UrlEntity {
     public String originalUrl;

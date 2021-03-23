@@ -1,4 +1,4 @@
-package com.example.demo.cache;
+package com.example.tinyurl.cache;
 
 import java.lang.ref.SoftReference;
 import java.util.LinkedHashMap;

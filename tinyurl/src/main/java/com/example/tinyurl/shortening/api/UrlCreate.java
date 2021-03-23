@@ -1,11 +1,11 @@
-package com.example.demo.shortening.api;
+package com.example.tinyurl.shortening.api;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import com.example.demo.shortening.api.dto.UrlEntity;
-import com.example.demo.shortening.api.dto.UrlShortened;
-import com.example.demo.shortening.domain.UrlShortener;
+import com.example.tinyurl.shortening.api.dto.UrlEntity;
+import com.example.tinyurl.shortening.api.dto.UrlShortened;
+import com.example.tinyurl.shortening.domain.UrlShortener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,8 @@ public class UrlCreate {
     private UrlShortener shortener;
 
     @PostMapping
-    Mono<ResponseEntity<UrlShortened>> create(@RequestParam String apiKey, @RequestBody UrlEntity url) throws MalformedURLException {
+    Mono<ResponseEntity<UrlShortened>> create(@RequestParam String apiKey,
+                                              @RequestBody UrlEntity url) throws MalformedURLException {
         var shortened = shortener.shorten(new URL(url.originalUrl));
         return Mono.just(ResponseEntity
                 .ok().header("apiKey", apiKey)
