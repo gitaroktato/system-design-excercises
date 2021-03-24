@@ -19,7 +19,7 @@ _Scalability_
 * Every component should be individually horizontally scalable
 * Reading and creating shortened URLs (read/write) should be independently scalable
 
-_Monitoring_
+_Observability_
 The following data should be measured and collected:
 - New URLs / second
 - URL redirections / second
