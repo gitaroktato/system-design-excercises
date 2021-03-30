@@ -7,8 +7,12 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
+import io.reactivex.Single;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -16,6 +20,7 @@ import reactor.test.StepVerifier;
 public class ReactiveTest {
 
     static class User {
+        public static final User SAUL = new User("Saul");
         String username;
         String firstname;
         String lastname;
@@ -141,6 +146,72 @@ public class ReactiveTest {
         StepVerifier.create(fluxLogged)
                 .expectNextCount(2)
                 .verifyComplete();
+    }
+
+    @Test
+    public void testOnErrorReturn() {
+        var saul = new User("Saul");
+        Mono<User> bogus = Mono.error(IllegalStateException::new);
+        var resolved = Mono.from(bogus)
+                .onErrorReturn(IllegalStateException.class, new User("Saul"));
+        StepVerifier.create(resolved)
+                .assertNext(user -> Assertions.assertThat(user.getUsername()).isEqualTo("Saul"))
+                .verifyComplete();
+    }
+
+    @Test
+    public void testOnErrorWithFlux() {
+        Flux<User> errorneousFlux = Flux.error(IllegalStateException::new);
+        var resolved = Flux.from(errorneousFlux)
+                .onErrorResume(t -> Flux.just(new User("Bob")));
+        StepVerifier.create(resolved)
+                .assertNext(u -> Assertions.assertThat(u.getUsername()).isEqualTo("Bob"))
+                .verifyComplete();
+    }
+
+    @Test
+    public void testCapitalize() {
+        var flux = Flux.just(new User("Bob"));
+        StepVerifier.create(capitalizeMany(flux))
+                .assertNext(u -> Assertions.assertThat(u.getUsername()).isEqualTo("BOB"))
+                .verifyComplete();
+    }
+
+    Flux<User> capitalizeMany(Flux<User> flux) {
+        return flux.map(u -> {
+            try {
+                return capitalizeUser(u);
+            } catch (GetOutOfHereException e) {
+                throw Exceptions.propagate(e);
+            }
+        });
+    }
+
+    User capitalizeUser(User user) throws GetOutOfHereException {
+        if (user.equals(User.SAUL)) {
+            throw new GetOutOfHereException();
+        }
+        return new User(user.getUsername().toUpperCase(),
+                user.getFirstname(), user.getLastname());
+    }
+
+    protected final class GetOutOfHereException extends Exception {
+        private static final long serialVersionUID = 0L;
+    }
+
+    @Test
+    public void testAdapt() {
+        var flux = Flux.empty();
+        var flowable = Flowable.fromPublisher(flux);
+        var flux2 = Flux.from(flowable);
+        var observable = flowable.toObservable();
+        Flux.from(observable.toFlowable(BackpressureStrategy.BUFFER));
+
+        var single = Single.fromPublisher(Mono.empty());
+        Mono.from(single.toFlowable());
+
+        var future = Mono.empty().toFuture();
+        Mono.fromFuture(future);
     }
 
 

@@ -8,17 +8,16 @@ import com.example.tinyurl.shortening.api.dto.UrlShortened;
 import com.example.tinyurl.shortening.service.UrlShortener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
-@RestController
-@RequestMapping("/url")
-public class UrlCreate {
+@Component
+public class UrlCreationHandler {
 
     @Autowired
     private UrlShortener shortener;
 
-    @PostMapping
     Mono<ResponseEntity<UrlShortened>> create(@RequestParam String apiKey,
                                               @RequestBody UrlEntity url) throws MalformedURLException {
         var shortened = shortener.shorten(new URL(url.originalUrl));
