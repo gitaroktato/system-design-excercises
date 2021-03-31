@@ -1,7 +1,12 @@
 package com.example.tinyurl;
 
 import java.time.Duration;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.Flow;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
@@ -95,6 +100,20 @@ public class ReactiveTest {
             step.expectNext(Long.valueOf(i));
         });
         step.expectComplete().verify();
+    }
+
+    @Test
+    public void testFluxJustSlowAlternative() {
+        var longRange = LongStream.range(0, 3600)
+                .boxed()
+                .collect(Collectors.toList());
+        StepVerifier
+                .withVirtualTime(() -> Flux.interval(Duration.ofSeconds(1)).take(3600))
+                .expectSubscription()
+                .thenAwait(Duration.ofSeconds(3600))
+                .expectNextSequence(longRange)
+                .expectComplete().verify();
+
     }
 
     @Test
@@ -272,10 +291,12 @@ public class ReactiveTest {
                 .verifyComplete();
     }
 
-
-    // TODO
-    // https://stackoverflow.com/questions/59029446/java-reactor-stepverifier-withvirtualtime-loop-repeatedly-check-with-expectnoe
-    // https://www.codota.com/code/java/methods/reactor.test.StepVerifier$Step/expectErrorSatisfies
-    // https://stackoverflow.com/questions/45866364/reactor-stepverifier-withvirtualtime-blocks-indefinitely
+    @Test
+    public void synchronousToReactive() {
+        var result = Flux.defer(() -> Flux.fromIterable(List.of(1,2,3,4)));
+        StepVerifier.create(result)
+                .expectNext(1,2,3,4)
+                .verifyComplete();
+    }
 
 }

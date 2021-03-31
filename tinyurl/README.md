@@ -76,6 +76,8 @@ https://rsocket.io/
 https://docs.spring.io/spring-boot/docs/2.4.4/reference/html/spring-boot-features.html#boot-features-webflux
 https://docs.spring.io/spring-framework/docs/5.3.5/reference/html/web-reactive.html#spring-webflux
 https://projectreactor.io/docs/core/release/reference
+https://www.codota.com/code/java/methods/reactor.test.StepVerifier$Step/expectErrorSatisfies
+
 
 
 ### Java Microbenchmark Harness
@@ -84,3 +86,6 @@ https://github.com/melix/jmh-gradle-plugin
 
 ### API specification
 https://springdoc.org/
+
+### AssertJ and testing
+https://joel-costigliola.github.io/assertj/assertj-core-features-highlight.html
