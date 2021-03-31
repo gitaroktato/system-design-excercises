@@ -3,5 +3,7 @@
 - Functional DSL for controllers
 - JMH tutorial
 - Contract
+  What to do, when URL is malformed?
 - Resilience
+- Modules
 - Caching and warm cache

@@ -1,10 +1,10 @@
 package com.example.tinyurl.shortening.api.dto;
 
-public class UrlShortened {
+public class UrlShortenedDto {
     private final String originalUrl;
     private final String shortenedUrl;
 
-    public UrlShortened(String originalUrl, String shortenedUrl) {
+    public UrlShortenedDto(String originalUrl, String shortenedUrl) {
         this.originalUrl = originalUrl;
         this.shortenedUrl = shortenedUrl;
     }

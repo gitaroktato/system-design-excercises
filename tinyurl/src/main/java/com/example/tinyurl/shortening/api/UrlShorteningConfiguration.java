@@ -11,7 +11,7 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 @Configuration(proxyBeanMethods = false)
-public class ShorteningConfiguration {
+public class UrlShorteningConfiguration {
 
     @Bean
     public RouterFunction<ServerResponse> urlShorten(UrlShorteningHandler handler) {

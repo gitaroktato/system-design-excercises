@@ -1,4 +1,4 @@
-package com.example.tinyurl.resolve.api;
+package com.example.tinyurl.resolving.api;
 
 import java.net.URI;
 import java.net.URISyntaxException;

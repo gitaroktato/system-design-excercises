@@ -1,5 +1,8 @@
 package com.example.tinyurl;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.time.Duration;
 import java.time.temporal.TemporalUnit;
 import java.util.Locale;
@@ -11,6 +14,7 @@ import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.Test;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -21,6 +25,7 @@ public class ReactiveTest {
 
     static class User {
         public static final User SAUL = new User("Saul");
+        public static final User SKYLER = new User("skyler");
         String username;
         String firstname;
         String lastname;
@@ -212,6 +217,67 @@ public class ReactiveTest {
 
         var future = Mono.empty().toFuture();
         Mono.fromFuture(future);
+    }
+
+    @Test
+    public void testFluxZip() {
+        Flux<String> usernameFlux = Flux.just("bob");
+        Flux<String> firstnameFlux = Flux.just("Bob");
+        Flux<String> lastnameFlux = Flux.just("Smith");
+        var fluxUser = Flux.zip(usernameFlux, firstnameFlux, lastnameFlux)
+                .map(tuple -> new User(tuple.getT1(), tuple.getT2(), tuple.getT3()));
+        StepVerifier.create(fluxUser)
+                .assertNext(u -> Assertions.assertThat(u)
+                        .isEqualToComparingFieldByField(new User("bob", "Bob", "Smith")))
+                .verifyComplete();
+
+    }
+
+    @Test
+    public void testMonoFastest() {
+        var mono1 = Mono.just(new User("sam"))
+                .delayElement(Duration.ofSeconds(5));
+        var mono2 = Mono.just(new User("davie"));
+        var fastest = Mono.firstWithSignal(mono1, mono2);
+        StepVerifier.create(fastest)
+                .assertNext(u -> Assertions.assertThat(u)
+                        .isEqualToComparingFieldByField(new User("davie")))
+                .verifyComplete();
+    }
+
+    @Test
+    public void testFluxToCompletion() {
+        var flux = Flux.just("a");
+        var monoEmpty =  flux.then(Mono.<Void>empty());
+        StepVerifier.create(monoEmpty)
+                .verifyComplete();
+    }
+
+    @Test
+    public void testMonoWithNull() {
+        User nullUser = null;
+        var monoNull = Mono.justOrEmpty(nullUser);
+        StepVerifier.create(monoNull)
+                .expectNextCount(0)
+                .verifyComplete();
+    }
+
+    @Test
+    public void testMonoWithEmptyToDefault() {
+        Mono<User> empty = Mono.empty();
+        var defaultUser = empty.switchIfEmpty(Mono.just(User.SKYLER));
+        StepVerifier.create(defaultUser)
+                .expectNext(User.SKYLER)
+                .verifyComplete();
+    }
+
+    @Test
+    public void collectList() {
+        var flux = Flux.just("a", "b", "c");
+        var monoList = flux.collectList();
+        StepVerifier.create(monoList)
+                .assertNext( l -> Assertions.assertThat(l).containsOnly("a", "b", "c"))
+                .verifyComplete();
     }
 
 

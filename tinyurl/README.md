@@ -43,6 +43,11 @@ Assuming 500 million new URLs per month and 100:1 read:write ratio.
 ## API
 
 
+OpenAPI documentation is available at http://localhost:8080/v3/api-docs.yaml
+
+
+## Data Model
+
 ## Hash Operations Benchmark
 The benchmark can be executed with
 ```shell
@@ -67,9 +72,11 @@ Result "com.example.tinyurl.shortening.service.UrlShortenerBenchmark.benchmarkSh
 https://docs.riak.com/riak/kv/2.2.3/developing/getting-started/java/index.html
 
 ### Reactive Spring and RSocket
-https://projectreactor.io/
 https://rsocket.io/
 https://docs.spring.io/spring-boot/docs/2.4.4/reference/html/spring-boot-features.html#boot-features-webflux
+https://docs.spring.io/spring-framework/docs/5.3.5/reference/html/web-reactive.html#spring-webflux
+https://projectreactor.io/docs/core/release/reference
+
 
 ### Java Microbenchmark Harness
 https://github.com/openjdk/jmh
