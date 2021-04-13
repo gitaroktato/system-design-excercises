@@ -43,7 +43,7 @@ Assuming 500 million new URLs per month and 100:1 read:write ratio.
 ## API
 
 
-OpenAPI documentation is available at http://localhost:8080/v3/api-docs.yaml
+OpenAPI documentation is available at http://localhost:8080/v1/api-docs.yaml
 
 
 ## Data Model
@@ -77,8 +77,6 @@ https://docs.spring.io/spring-boot/docs/2.4.4/reference/html/spring-boot-feature
 https://docs.spring.io/spring-framework/docs/5.3.5/reference/html/web-reactive.html#spring-webflux
 https://projectreactor.io/docs/core/release/reference
 https://www.codota.com/code/java/methods/reactor.test.StepVerifier$Step/expectErrorSatisfies
-
-
 
 ### Java Microbenchmark Harness
 https://github.com/openjdk/jmh
