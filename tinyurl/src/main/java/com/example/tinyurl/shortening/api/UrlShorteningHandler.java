@@ -33,7 +33,7 @@ public class UrlShorteningHandler {
                         .header("apiKey", apiKey.orElse("NULL"))
                         .contentType(MediaType.APPLICATION_JSON)
                         .bodyValue(shortened))
-                .onErrorResume(ex -> ServerResponse.badRequest()
+                .onErrorResume(MalformedURLException.class, ex -> ServerResponse.badRequest()
                         .header("apiKey", apiKey.orElse("NULL")).build());
     }
 
