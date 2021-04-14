@@ -1,1 +1,3 @@
 rootProject.name = 'tinyurl'
+include 'resolver'
+include 'shortener'
