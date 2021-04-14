@@ -13,5 +13,7 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+      - name: chmod
+        run: chmod +x ./tinyurl/gradlew
       - name: Build with Gradle
         run: ./tinyurl/gradlew build
