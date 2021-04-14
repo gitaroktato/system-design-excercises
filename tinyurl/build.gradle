@@ -15,8 +15,11 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.5.6'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
+	compile 'io.reactivex.rxjava2:rxjava:2.2.21'
 }
 
 test {
