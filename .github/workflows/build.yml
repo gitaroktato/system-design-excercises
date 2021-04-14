@@ -14,4 +14,4 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
       - name: Build with Gradle
-        run: ./tiniurl/gradlew build
+        run: ./tinyurl/gradlew build
