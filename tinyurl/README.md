@@ -42,12 +42,10 @@ Assuming 500 million new URLs per month and 100:1 read:write ratio.
 
 ## API
 
-OpenAPI documentation is available at 
-
-- http://localhost:8080/v1/api-docs.yaml
-- http://localhost:8081/v1/api-docs.yaml
+OpenAPI documentation is available within the [open-api.yaml](open-api.yaml) file.
 
 ## Data Model
+
 
 ## Hash Operations Benchmark
 The benchmark can be executed with
