@@ -1,0 +1,64 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v1
+servers:
+- url: http://localhost:8081
+  description: URL resolution and redirection service
+- url: http://localhost:8080
+  description: URL generation service
+- url: http://localhost:80
+  description: Load-balancer entrypoint
+paths:
+  /v1/url:
+    post:
+      summary: Create a new shortened URL
+      operationId: shorten
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UrlDto'
+      responses:
+        "200":
+          description: New shortened URL
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrlShortenedDto'
+        "400":
+          description: Malformed URL
+  /v1/url/{hash}:
+    get:
+      summary: Resolve URL by the given shortened hash
+      operationId: resolve
+      parameters:
+      - name: hash
+        in: path
+        description: Shortened URL hash
+        required: true
+        schema:
+          type: string
+      responses:
+        "308":
+          description: Redirection to the resolved URL
+        "400":
+          description: Malformed URL during resolution
+components:
+  schemas:
+    UrlDto:
+      type: object
+      properties:
+        originalUrl:
+          type: string
+        alias:
+          type: string
+        userName:
+          type: string
+    UrlShortenedDto:
+      type: object
+      properties:
+        originalUrl:
+          type: string
+        shortenedUrl:
+          type: string

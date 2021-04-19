@@ -6,5 +6,6 @@
 - JMH tutorial
 - Contract
 - Resilience
-- Modular Gradle with multiple applications
+- ✔ Modular Gradle with multiple applications
+- Load-balancing with Traefik
 - Caching and warm cache
