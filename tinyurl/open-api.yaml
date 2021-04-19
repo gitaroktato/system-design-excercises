@@ -3,9 +3,9 @@ info:
   title: OpenAPI definition
   version: v1
 servers:
-- url: http://localhost:8080
-  description: URL resolution and redirection service
 - url: http://localhost:8081
+  description: URL resolution and redirection service
+- url: http://localhost:8080
   description: URL generation service
 - url: http://localhost:80
   description: Load-balancer entrypoint
