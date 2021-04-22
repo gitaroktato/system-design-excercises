@@ -56,13 +56,21 @@ the entities and no need for complicated queries based on the API.
 
 We have to avoid assigning the same shortened URL to multiple requests, so the application needs
 to check if the key for the URL is already present.
-**TBD: CP key-value stores**
-https://www.reddit.com/r/Database/comments/4wwyq8/keyvalue_stores_that_are_cp_not_ap_cap_theorem/
+
+A key-value store with CP characteristics from CAP would be the best choice.
+Because consistency [can be provided various ways](http://jepsen.io/consistency), we can try to reduce the possibility of key collisions
+instead of aiming for strong consistency.
+
+Riak allows us to store every version of a key individually by providing [siblings](https://docs.riak.com/riak/kv/latest/developing/usage/conflict-resolution/index.html#siblings),
+so we can actively monitor the number of key collisions during tests. 
 
 ### Probability of key collisions
-**TBD**
-https://en.wikipedia.org/wiki/Base64#Base64_table
-https://preshing.com/20110504/hash-collision-probabilities/
+[Base64](https://en.wikipedia.org/wiki/Base64#Base64_table) table provides 64 characters
+stored in 6 bits, so a 6 character long key will result as a hashing with 36 bits.
+
+We can calculate the [collision probabilities](https://preshing.com/20110504/hash-collision-probabilities/) with
+the formula ![formula](documentation/key-collision-formula.png)
+
 
 <iframe src="https://www.desmos.com/calculator/v254ajn3bf?embed" width="500px" height="500px" style="border: 1px solid #ccc" frameborder=0></iframe>n
 
