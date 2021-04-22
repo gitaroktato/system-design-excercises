@@ -49,7 +49,7 @@ Assuming 500 million new URLs per month and 100:1 read:write ratio.
 OpenAPI documentation is available in the [open-api.yaml](open-api.yaml) file.
 
 ## Data Model
-![data-model](documentation/tinyURL-Data model.png)
+![data-model](documentation/tinyURL-Data-model.png)
 
 A key-value store would be a good choice for storing the data, because there's not much relation between
 the entities and no need for complicated queries based on the API.
