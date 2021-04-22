@@ -69,11 +69,21 @@ so we can actively monitor the number of key collisions during tests.
 stored in 6 bits, so a 6 character long key will result as a hashing with 36 bits.
 
 We can calculate the [collision probabilities](https://preshing.com/20110504/hash-collision-probabilities/) with
-the formula ![formula](documentation/key-collision-formula.png)
+the formula below. N represents the length of the hash in bits.
 
+![formula](documentation/key-collision-formula.png)
 
-<iframe src="https://www.desmos.com/calculator/v254ajn3bf?embed" width="500px" height="500px" style="border: 1px solid #ccc" frameborder=0></iframe>n
+With the lenght of 6 characters bits we will face a 50% chance of key collision after storing 300,000 URLs.
+![formula](documentation/key-collision-36-bits.png)
 
+The chances will be better with 8 character long keys, we will face the same issue after 20,000,000 URLs stored.
+Seeing that we plan to have 500,000,000 new keys per month, we will have problems after 2 days in production.
+![formula](documentation/key-collision-48-bits.png)
+
+With 10 character long keys we will still have around 10% chance of collision after one month:
+![formula](documentation/key-collision-60-bits.png)
+
+The calculator can be viewed at:
 https://www.desmos.com/calculator/v254ajn3bf
 
 ## Hash Operations Benchmark
@@ -105,6 +115,7 @@ https://docs.riak.com/riak/kv/2.2.3/developing/getting-started/java/index.html
 https://hub.docker.com/r/basho/riak-kv
 https://github.com/spring-projects/spring-data-keyvalue
 https://docs.spring.io/spring-data/data-keyvalue/riak/docs/current/reference/html/#reference
+https://expedia.zoom.us/j/95708175425?pwd=QU0vcmpXV0tpSDVObm9aUUdKN2JXZz09
 
 ### Reactive Spring and RSocket
 https://rsocket.io/
