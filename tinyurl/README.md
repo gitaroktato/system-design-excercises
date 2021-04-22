@@ -27,6 +27,10 @@ The following data should be measured and collected:
 - Memory usage / application
 - Memory usage / distributed cache
 
+_Consistency_
+There should be a one-to-one mapping between a shortened URL and its longer version.
+Hash collisions should be resolved before the final value of the data is persisted.
+
 ## High-level estimates
 
 Assuming 500 million new URLs per month and 100:1 read:write ratio.
@@ -42,10 +46,27 @@ Assuming 500 million new URLs per month and 100:1 read:write ratio.
 
 ## API
 
-OpenAPI documentation is available within the [open-api.yaml](open-api.yaml) file.
+OpenAPI documentation is available in the [open-api.yaml](open-api.yaml) file.
 
 ## Data Model
+![data-model](documentation/tinyURL-Data model.png)
 
+A key-value store would be a good choice for storing the data, because there's not much relation between
+the entities and no need for complicated queries based on the API.
+
+We have to avoid assigning the same shortened URL to multiple requests, so the application needs
+to check if the key for the URL is already present.
+**TBD: CP key-value stores**
+https://www.reddit.com/r/Database/comments/4wwyq8/keyvalue_stores_that_are_cp_not_ap_cap_theorem/
+
+### Probability of key collisions
+**TBD**
+https://en.wikipedia.org/wiki/Base64#Base64_table
+https://preshing.com/20110504/hash-collision-probabilities/
+
+<iframe src="https://www.desmos.com/calculator/v254ajn3bf?embed" width="500px" height="500px" style="border: 1px solid #ccc" frameborder=0></iframe>n
+
+https://www.desmos.com/calculator/v254ajn3bf
 
 ## Hash Operations Benchmark
 The benchmark can be executed with
@@ -65,10 +86,17 @@ Result "com.example.tinyurl.shortening.service.UrlShortenerBenchmark.benchmarkSh
 ## Caching
 
 
+
+## Starting the application 
+Riak admin UI is available at: http://DOCKER_HOST_IP:8098/admin
+
 ## References and Docs
 
 ### Riak
 https://docs.riak.com/riak/kv/2.2.3/developing/getting-started/java/index.html
+https://hub.docker.com/r/basho/riak-kv
+https://github.com/spring-projects/spring-data-keyvalue
+https://docs.spring.io/spring-data/data-keyvalue/riak/docs/current/reference/html/#reference
 
 ### Reactive Spring and RSocket
 https://rsocket.io/
