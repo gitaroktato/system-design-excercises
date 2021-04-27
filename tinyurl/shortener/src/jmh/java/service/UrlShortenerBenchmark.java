@@ -5,7 +5,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
-import com.example.tinyurl.shortening.service.UrlShortener;
+import com.example.tinyurl.shortening.domain.UrlShortener;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;

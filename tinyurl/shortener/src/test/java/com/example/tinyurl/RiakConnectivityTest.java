@@ -2,7 +2,6 @@ package com.example.tinyurl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.net.UnknownHostException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -17,20 +16,47 @@ import com.basho.riak.client.core.RiakCluster;
 import com.basho.riak.client.core.RiakNode;
 import com.basho.riak.client.core.query.Location;
 import com.basho.riak.client.core.query.Namespace;
-import com.basho.riak.client.core.query.RiakObject;
-import com.basho.riak.client.core.util.BinaryValue;
 import com.example.tinyurl.shortening.api.dto.UrlDto;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 @Tag("learning")
+@Testcontainers
+@Disabled
 public class RiakConnectivityTest {
 
+    public static final DockerImageName RIAK_DOCKER_IMAGE = DockerImageName.parse("basho/riak-kv");
+    public static final int RIAK_PORT = 8087;
+    public static final String BUCKET_TYPE = "default";
+    private static final Integer RIAK_API_PORT = 8098;
+
+    @Container
+    private final GenericContainer<?> riakContainer = new GenericContainer<>(RIAK_DOCKER_IMAGE)
+                .withExposedPorts(RIAK_PORT, RIAK_API_PORT)
+                .waitingFor(Wait.forHttp("/buckets?buckets=true").forPort(RIAK_API_PORT));
+
+    private Integer riakPort;
+    private String riakHost;
+
+    @BeforeEach
+    public void startRiakCluster() {
+        this.riakPort = riakContainer.getMappedPort(RIAK_PORT);
+        this.riakHost = riakContainer.getHost();
+        System.out.println(" ===== " + this.riakHost + ":" + this.riakPort + " ===== ");
+    }
+
     // This will create a client object that we can use to interact with Riak
-    private static RiakCluster setUpCluster() {
+    private RiakCluster setUpCluster() {
         var node = new RiakNode.Builder()
-                .withRemoteAddress("192.168.99.100")
-                .withRemotePort(8087)
+                .withRemoteAddress(riakHost)
+                .withRemotePort(riakPort)
                 .build();
 
         // This cluster object takes our one node as an argument
@@ -45,7 +71,7 @@ public class RiakConnectivityTest {
     @Test
     public void testCreate() throws ExecutionException, InterruptedException {
         var client = new RiakClient(setUpCluster());
-        Namespace bucket = new Namespace("tinyurl", "url");
+        Namespace bucket = new Namespace(BUCKET_TYPE, "url");
         var url = new UrlDto();
         url.originalUrl = "https://google.com/12345";
         url.alias = "http://localhost:8081/12345";
@@ -62,7 +88,7 @@ public class RiakConnectivityTest {
     @Test
     public void testCreateWithAutomaticKey() throws ExecutionException, InterruptedException {
         var client = new RiakClient(setUpCluster());
-        Namespace bucket = new Namespace("tinyurl", "url");
+        Namespace bucket = new Namespace(BUCKET_TYPE, "url");
         var url = new UrlDto();
         url.originalUrl = "https://google.com/12345";
         url.alias = "http://localhost:8081/12345";
@@ -80,7 +106,7 @@ public class RiakConnectivityTest {
     @Test
     public void testFetch() throws ExecutionException, InterruptedException {
         var client = new RiakClient(setUpCluster());
-        Location myKey = new Location(new Namespace("tinyurl", "url"), "new2");
+        Location myKey = new Location(new Namespace(BUCKET_TYPE, "url"), "new2");
         FetchValue fetch = new FetchValue.Builder(myKey)
                 .build();
         FetchValue.Response response = client.execute(fetch);
@@ -93,7 +119,7 @@ public class RiakConnectivityTest {
         var client = new RiakClient(setUpCluster());
         ConflictResolverFactory factory = ConflictResolverFactory.getInstance();
         factory.registerConflictResolver(UrlDto.class, new UrlDtoConflictResolver());
-        Location myKey = new Location(new Namespace("tinyurl", "url"), "conflict_new");
+        Location myKey = new Location(new Namespace(BUCKET_TYPE, "url"), "conflict_new");
         FetchValue fetch = new FetchValue.Builder(myKey)
                 .build();
         FetchValue.Response response = client.execute(fetch);
@@ -106,7 +132,7 @@ public class RiakConnectivityTest {
         var client = new RiakClient(setUpCluster());
         ConflictResolverFactory factory = ConflictResolverFactory.getInstance();
         factory.registerConflictResolver(UrlDto.class, new UrlDtoPreventingConflictResolver());
-        Namespace bucket = new Namespace("tinyurl", "url");
+        Namespace bucket = new Namespace(BUCKET_TYPE, "url");
         var url = new UrlDto();
         url.originalUrl = "https://google.com/conflict2";
         url.alias = "http://localhost:8081/conflict2";

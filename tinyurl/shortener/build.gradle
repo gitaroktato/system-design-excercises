@@ -8,6 +8,7 @@ plugins {
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
+def testcontainersVersion = '1.15.3'
 
 repositories {
 	mavenCentral()
@@ -19,6 +20,8 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
+	testCompile "org.testcontainers:testcontainers:$testcontainersVersion"
+	testImplementation "org.testcontainers:junit-jupiter:$testcontainersVersion"
 	compile 'io.reactivex.rxjava2:rxjava:2.2.21'
 	implementation 'com.basho.riak:riak-client:2.1.1'
 }

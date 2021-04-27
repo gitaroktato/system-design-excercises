@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 @Tag("learning")
@@ -295,7 +296,8 @@ public class ReactiveTest {
 
     @Test
     public void synchronousToReactive() {
-        var result = Flux.defer(() -> Flux.fromIterable(List.of(1,2,3,4)));
+        var result = Flux.defer(() -> Flux.fromIterable(List.of(1,2,3,4)))
+                .subscribeOn(Schedulers.boundedElastic());
         StepVerifier.create(result)
                 .expectNext(1,2,3,4)
                 .verifyComplete();

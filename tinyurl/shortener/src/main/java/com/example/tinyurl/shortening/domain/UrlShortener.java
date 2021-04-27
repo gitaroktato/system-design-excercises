@@ -1,4 +1,4 @@
-package com.example.tinyurl.shortening.service;
+package com.example.tinyurl.shortening.domain;
 
 import java.net.MalformedURLException;
 import java.net.URL;

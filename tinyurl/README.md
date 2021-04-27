@@ -86,6 +86,17 @@ With 10 character long keys we will still have around 10% chance of collision af
 The calculator can be viewed at:
 https://www.desmos.com/calculator/v254ajn3bf
 
+### Relying on Database mechanism
+Riak is able to [assign random keys](https://docs.riak.com/riak/kv/latest/developing/usage/creating-objects/index.html#store-a-new-object-and-assign-a-random-key) automatically
+but this will bind our key generation algorithm to a specific data store.
+Also note, that the random key is 28 characters long, and we can't truncate it. So this solution is not advisable.
+
+### Capacity Planning
+
+## Caching
+
+## Telemetry
+
 ## Hash Operations Benchmark
 The benchmark can be executed with
 ```shell
@@ -95,14 +106,11 @@ java -jar build/libs/tinyurl-0.0.1-SNAPSHOT-jmh.jar UrlShortenerBenchmark -f 1
 
 Results
 ```
-Result "com.example.tinyurl.shortening.service.UrlShortenerBenchmark.benchmarkShorten":
+Result "com.example.tinyurl.shortening.domain.UrlShortenerBenchmark.benchmarkShorten":
   383966.770 ±(99.9%) 128121.616 ops/s [Average]
   (min, avg, max) = (352546.670, 383966.770, 433866.230), stdev = 33272.777
   CI (99.9%): [255845.154, 512088.387] (assumes normal distribution)
 ```
-
-## Caching
-
 
 
 ## Starting the application 
