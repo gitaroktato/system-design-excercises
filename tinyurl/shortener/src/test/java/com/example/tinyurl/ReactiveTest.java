@@ -296,11 +296,15 @@ public class ReactiveTest {
 
     @Test
     public void synchronousToReactive() {
-        var result = Flux.defer(() -> Flux.fromIterable(List.of(1,2,3,4)))
+        var result = Flux.defer(() -> Flux.fromIterable(getListOfElements()))
                 .subscribeOn(Schedulers.boundedElastic());
         StepVerifier.create(result)
                 .expectNext(1,2,3,4)
                 .verifyComplete();
+    }
+
+    private List<Integer> getListOfElements() {
+        return List.of(1, 2, 3, 4);
     }
 
 }

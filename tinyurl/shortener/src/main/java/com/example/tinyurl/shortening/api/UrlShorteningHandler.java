@@ -2,8 +2,8 @@ package com.example.tinyurl.shortening.api;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
-import java.util.function.Consumer;
 
 import com.example.tinyurl.shortening.api.dto.UrlDto;
 import com.example.tinyurl.shortening.api.dto.UrlShortenedDto;
@@ -29,13 +29,25 @@ public class UrlShorteningHandler {
     Mono<ServerResponse> shorten(ServerRequest request) {
         var apiKey = request.queryParam("apiKey");
         var url = request.bodyToMono(UrlDto.class);
-        return url.map(this::doShorten)
-                .flatMap(shortened -> ServerResponse.ok()
-                        .header("apiKey", apiKey.orElse("NULL"))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .bodyValue(shortened))
-                .onErrorResume(MalformedURLException.class, ex -> ServerResponse.badRequest()
-                        .header("apiKey", apiKey.orElse("NULL")).build())
+        return url.flatMap(this::shortenAsync)
+                .flatMap(shortened -> toResponse(apiKey, shortened))
+                .onErrorResume(MalformedURLException.class, ex -> toErrorResponse(apiKey));
+    }
+
+    private Mono<ServerResponse> toErrorResponse(Optional<String> apiKey) {
+        return ServerResponse.badRequest()
+                .header("apiKey", apiKey.orElse("NULL")).build();
+    }
+
+    private Mono<ServerResponse> toResponse(Optional<String> apiKey, UrlShortenedDto shortened) {
+        return ServerResponse.ok()
+                .header("apiKey", apiKey.orElse("NULL"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(shortened);
+    }
+
+    private Mono<UrlShortenedDto> shortenAsync(UrlDto dto) {
+        return Mono.fromCallable(() -> this.doShorten(dto))
                 .subscribeOn(Schedulers.boundedElastic());
     }
 
