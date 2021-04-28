@@ -1,9 +1,10 @@
-package com.example.tinyurl.shortening.infrastructure.riak;
+package com.example.tinyurl.resolving.infrastructure.riak;
 
 import java.util.concurrent.ExecutionException;
 import javax.annotation.PostConstruct;
 
 import com.basho.riak.client.api.RiakClient;
+import com.basho.riak.client.api.commands.kv.FetchValue;
 import com.basho.riak.client.api.commands.kv.StoreValue;
 import com.basho.riak.client.core.query.Location;
 import com.basho.riak.client.core.query.Namespace;
@@ -27,12 +28,10 @@ public class UrlRepository {
         bucket = new Namespace(bucketType, bucketName);
     }
 
-    public void save(String key, String url) throws ExecutionException, InterruptedException {
+    public String resolve(String key) throws ExecutionException, InterruptedException {
         var location = new Location(bucket, key);
-        var storeOp = new StoreValue.Builder(url)
-                .withLocation(location)
-                .withOption(StoreValue.Option.RETURN_BODY, true)
-                .build();
-        client.execute(storeOp);
+        var fetch = new FetchValue.Builder(location).build();
+        var response = client.execute(fetch);
+        return response.getValue(String.class);
     }
 }

@@ -15,7 +15,7 @@ public class UrlResolvingRouter {
 
     @Bean
     public RouterFunction<ServerResponse> urlResolve(UrlResolvingHandler handler) {
-        return route().GET("/{hash}", handler::resolve, ops -> ops
+        return route().GET("/v1/url/{hash}", handler::resolve, ops -> ops
                 .operationId("resolve")
                 .summary("Resolve URL by the given shortened hash")
                 .parameter(parameterBuilder().in(ParameterIn.PATH).name("hash").description("Shortened URL hash"))

@@ -5,6 +5,7 @@
   -- ✔ Better syntax: https://docs.spring.io/spring-framework/docs/5.3.5/reference/html/web-reactive.html#webflux-fn-handler-classes
 - Data model and consistency
   -- Testcontainers?
+  -- Capacity Planning
 - ✔ Contract
 - Resilience
 - ✔ Modular Gradle with multiple applications
