@@ -25,7 +25,8 @@ public class UrlResolvingHandler {
         return Mono.fromCallable(() -> doResolve(hashed))
                 .subscribeOn(Schedulers.boundedElastic())
                 .flatMap(location -> ServerResponse.permanentRedirect(location).build())
-                .onErrorResume(URISyntaxException.class, ex -> ServerResponse.badRequest().build());
+                .onErrorResume(URISyntaxException.class, ex -> ServerResponse.badRequest().build())
+                .onErrorResume(NullPointerException.class, ex -> ServerResponse.notFound().build());
     }
 
     private URI doResolve(String hashed) {

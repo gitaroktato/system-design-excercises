@@ -4,6 +4,7 @@ import java.util.concurrent.ExecutionException;
 import javax.annotation.PostConstruct;
 
 import com.basho.riak.client.api.RiakClient;
+import com.basho.riak.client.api.cap.Quorum;
 import com.basho.riak.client.api.commands.kv.FetchValue;
 import com.basho.riak.client.api.commands.kv.StoreValue;
 import com.basho.riak.client.core.query.Location;
@@ -30,7 +31,10 @@ public class UrlRepository {
 
     public String resolve(String key) throws ExecutionException, InterruptedException {
         var location = new Location(bucket, key);
-        var fetch = new FetchValue.Builder(location).build();
+        var fetch = new FetchValue.Builder(location)
+                .withOption(FetchValue.Option.NOTFOUND_OK, false)
+                .withOption(FetchValue.Option.R, Quorum.oneQuorum())
+                .build();
         var response = client.execute(fetch);
         return response.getValue(String.class);
     }
