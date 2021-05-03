@@ -23,12 +23,9 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
 @Tag("learning")
-@Testcontainers
 @Disabled
 public class RiakConnectivityTest {
 
@@ -37,10 +34,14 @@ public class RiakConnectivityTest {
     public static final String BUCKET_TYPE = "default";
     private static final Integer RIAK_API_PORT = 8098;
 
-    @Container
-    private final GenericContainer<?> riakContainer = new GenericContainer<>(RIAK_DOCKER_IMAGE)
+    private static final GenericContainer<?> riakContainer;
+
+    static {
+        riakContainer = new GenericContainer<>(RIAK_DOCKER_IMAGE)
                 .withExposedPorts(RIAK_PORT, RIAK_API_PORT)
                 .waitingFor(Wait.forHttp("/buckets?buckets=true").forPort(RIAK_API_PORT));
+        riakContainer.start();
+    }
 
     private Integer riakPort;
     private String riakHost;
@@ -49,7 +50,7 @@ public class RiakConnectivityTest {
     public void startRiakCluster() {
         this.riakPort = riakContainer.getMappedPort(RIAK_PORT);
         this.riakHost = riakContainer.getHost();
-        System.out.println(" ===== " + this.riakHost + ":" + this.riakPort + " ===== ");
+        System.out.println(" ===== Riak access point ===== " + this.riakHost + ":" + this.riakPort + " ===== ");
     }
 
     // This will create a client object that we can use to interact with Riak

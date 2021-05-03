@@ -97,6 +97,9 @@ Also note, that the random key is 28 characters long, and we can't truncate it. 
 
 ## Telemetry
 
+
+## Load Balancing
+
 ## Hash Operations Benchmark
 The benchmark can be executed with
 ```shell

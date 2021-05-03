@@ -1,5 +1,34 @@
 version: "3"
 services:
+  prometheus:
+    image: prom/prometheus:v2.11.1
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - 9090:9090
+    # On MacOS, remove next line and replace localhost by host.docker.internal in prometheus/prometheus.yml and
+    # grafana/provisioning/datasources/datasource.yml
+    network_mode: 'host' # to test locally running service
+  grafana:
+    image: grafana/grafana:6.2.5
+    volumes:
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel
+    ports:
+      - 3000:3000
+    # On MacOS, remove next line and replace localhost by host.docker.internal in prometheus/prometheus.yml and
+    # grafana/provisioning/datasources/datasource.yml
+    network_mode: 'host' # to test locally running service
+  riak-exporter:
+    command: --address=0.0.0.0 --port=8097 --riak=http://coordinator:8098/stats --endpoint=/metrics
+    image: infinityworks/prometheus-riak-exporter:latest
+    ports:
+      - "9091:8097"
   coordinator:
     image: basho/riak-kv
     ports:
