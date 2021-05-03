@@ -16,4 +16,4 @@ jobs:
       - name: chmod
         run: chmod +x ./tinyurl/gradlew
       - name: Build with Gradle
-        run: ./tinyurl/gradlew build
+        run: ./tinyurl/gradlew build -b ./tinyurl/build.gradle
