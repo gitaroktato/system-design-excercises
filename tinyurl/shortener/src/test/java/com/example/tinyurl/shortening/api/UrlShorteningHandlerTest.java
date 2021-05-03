@@ -8,7 +8,7 @@ import java.net.URL;
 
 import com.example.tinyurl.shortening.api.dto.UrlDto;
 import com.example.tinyurl.shortening.api.dto.UrlShortenedDto;
-import com.example.tinyurl.shortening.service.UrlShortener;
+import com.example.tinyurl.shortening.domain.UrlShortener;
 import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;

@@ -1,11 +1,14 @@
 - ✔ Finish up reactive tutorials 
   [here](https://tech.io/playgrounds/929/reactive-programming-with-reactor-3/transform)
-- Functional DSL for controllers
+- ✔ Functional DSL for controllers
   -- ✔ What to do, when URL is malformed?
   -- ✔ Better syntax: https://docs.spring.io/spring-framework/docs/5.3.5/reference/html/web-reactive.html#webflux-fn-handler-classes
-- JMH tutorial
-- Contract
+- Data model and consistency
+  -- Testcontainers?
+  -- Capacity Planning
+- ✔ Contract
 - Resilience
 - ✔ Modular Gradle with multiple applications
 - Load-balancing with Traefik
 - Caching and warm cache
+- JMH tutorial
