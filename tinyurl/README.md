@@ -119,6 +119,11 @@ Result "com.example.tinyurl.shortening.domain.UrlShortenerBenchmark.benchmarkSho
 ## Starting the application 
 Riak admin UI is available at: http://DOCKER_HOST_IP:8098/admin
 
+### Scaling out specific services
+```bash
+
+```
+
 ## References and Docs
 
 ### Riak
@@ -144,3 +149,7 @@ https://springdoc.org/
 
 ### AssertJ and testing
 https://joel-costigliola.github.io/assertj/assertj-core-features-highlight.html
+
+### Micrometer
+https://micrometer.io/docs/registry/prometheus
+https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready-metrics-export-prometheus

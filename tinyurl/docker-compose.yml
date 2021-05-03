@@ -10,7 +10,6 @@ services:
       - 9090:9090
     # On MacOS, remove next line and replace localhost by host.docker.internal in prometheus/prometheus.yml and
     # grafana/provisioning/datasources/datasource.yml
-    network_mode: 'host' # to test locally running service
   grafana:
     image: grafana/grafana:6.2.5
     volumes:
@@ -23,7 +22,6 @@ services:
       - 3000:3000
     # On MacOS, remove next line and replace localhost by host.docker.internal in prometheus/prometheus.yml and
     # grafana/provisioning/datasources/datasource.yml
-    network_mode: 'host' # to test locally running service
   riak-exporter:
     command: --address=0.0.0.0 --port=8097 --riak=http://coordinator:8098/stats --endpoint=/metrics
     build: ./src/main/docker/riak-exporter
