@@ -1,0 +1,30 @@
+#Defining active profile
+spring:
+  profiles:
+    active: "dev"
+server:
+  port: 8081
+# OpenAPI specification
+springdoc:
+  api-docs.path: '/v1/api-docs'
+  swagger-ui.path: '/v1/swagger-ui.html'
+# Riak settings
+application:
+  riak:
+    bucket_type: tinyurl
+    bucket_name: url
+    port: 8087
+# Actuator settings
+management.endpoints.web.exposure.include: info, health, prometheus
+---
+spring:
+  profiles: dev
+application:
+  riak:
+    host: '192.168.99.100'
+---
+spring:
+  profiles: docker
+application:
+  riak:
+    host: 'coordinator'

@@ -1,6 +1,9 @@
 plugins {
 	id "me.champeau.gradle.jmh" version "0.5.3"
+	id 'com.google.cloud.tools.jib'
 }
+
+jib.to.image = 'gitaroktato/tinyurl/shortener'
 
 def testcontainersVersion = '1.15.3'
 

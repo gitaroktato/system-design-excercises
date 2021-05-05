@@ -117,7 +117,14 @@ Result "com.example.tinyurl.shortening.domain.UrlShortenerBenchmark.benchmarkSho
 
 
 ## Starting the application 
+Use the following command
+```bash
+make
+```
+
 Riak admin UI is available at: http://DOCKER_HOST_IP:8098/admin
+Swagger UI for shortener is available at: http://DOCKER_HOST_IP:8080/v1/swagger-ui.html
+Swagger UI for resolver is available at: http://DOCKER_HOST_IP:8081/v1/swagger-ui.html
 
 ### Scaling out specific services
 ```bash
@@ -153,3 +160,7 @@ https://joel-costigliola.github.io/assertj/assertj-core-features-highlight.html
 ### Micrometer
 https://micrometer.io/docs/registry/prometheus
 https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready-metrics-export-prometheus
+https://github.com/vegasbrianc/docker-traefik-prometheus/blob/master/prometheus/prometheus.yml
+
+### Google Jib
+https://github.com/GoogleContainerTools/jib/tree/master/examples/multi-module

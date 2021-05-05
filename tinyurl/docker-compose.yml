@@ -1,5 +1,17 @@
 version: "3"
 services:
+  resolver:
+    image: gitaroktato/tinyurl/resolver
+    ports:
+      - 8081:8081
+    environment:
+      - 'spring.profiles.active=docker'
+  shortener:
+    image: gitaroktato/tinyurl/shortener
+    ports:
+      - 8080:8080
+    environment:
+      - 'spring.profiles.active=docker'
   prometheus:
     image: prom/prometheus:v2.11.1
     volumes:

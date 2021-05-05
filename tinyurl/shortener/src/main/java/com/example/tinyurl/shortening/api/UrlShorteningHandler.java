@@ -55,11 +55,17 @@ public class UrlShorteningHandler {
         try {
             var url = new URL(dto.originalUrl);
             var result = shortener.shorten(url);
-            var key = result.getPath().substring(1);
+            String key = getKeyFromUrl(result);
             repo.save(key, dto.originalUrl);
             return new UrlShortenedDto(dto.originalUrl, result.toString());
         } catch (MalformedURLException | ExecutionException | InterruptedException e) {
             throw Exceptions.propagate(e);
         }
+    }
+
+    private String getKeyFromUrl(URL result) {
+        var pathAsString = result.getPath();
+        int hashIndex = pathAsString.lastIndexOf('/') + 1;
+        return pathAsString.substring(hashIndex);
     }
 }

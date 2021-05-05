@@ -38,3 +38,28 @@ scrape_configs:
         - 'riak-exporter'
         type: 'A'
         port: 8097
+  - job_name: 'resolver'
+
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+
+    # scheme defaults to 'http'.
+    metrics_path: /actuator/prometheus
+    dns_sd_configs:
+      - names:
+          - 'resolver'
+        type: 'A'
+        port: 8081
+
+  - job_name: 'shortener'
+
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+
+    # scheme defaults to 'http'.
+    metrics_path: /actuator/prometheus
+    dns_sd_configs:
+      - names:
+          - 'shortener'
+        type: 'A'
+        port: 8080
