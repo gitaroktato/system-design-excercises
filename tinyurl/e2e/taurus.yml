@@ -1,0 +1,20 @@
+---
+settings:
+  env:
+    BASE_URL: 192.168.99.100
+
+execution:
+  - concurrency: 5
+    hold-for: 5m
+    # ramp-up: 40s
+    scenario: resolve-test
+scenarios:
+  resolve-test:
+    requests:
+      - label: resolve
+        method: GET
+        url: http://${BASE_URL}/v1/url/mZmevP
+
+modules:
+  jmeter:
+    gui: false

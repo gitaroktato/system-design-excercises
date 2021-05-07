@@ -1,5 +1,15 @@
+# Values are: resolve-test
+SCENARIO = resolve-test
+# Envoy endpoint is 192.168.99.100:10000
+# Traefik endpoint is 192.168.99.100
+BASE_URL = 192.168.99.100:8081
 
-.PHONY: gradle
+TAURUS_COMMAND = bzt \
+	-o settings.artifacts-dir=e2e/logs \
+	-o settings.env.BASE_URL=$(BASE_URL) \
+	-o execution.0.scenario=$(SCENARIO) e2e/taurus.yml
+
+.PHONY: gradle e2e
 
 build: docker compose
 
@@ -11,3 +21,6 @@ docker: gradle
 
 compose:
 	docker-compose up -d --force
+
+e2e:
+	$(TAURUS_COMMAND)

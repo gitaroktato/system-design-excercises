@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Taurus log files
+**/e2e/logs
+**/jmeter.log
