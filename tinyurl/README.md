@@ -138,7 +138,7 @@ https://docs.riak.com/riak/kv/2.2.3/developing/getting-started/java/index.html
 https://hub.docker.com/r/basho/riak-kv
 https://github.com/spring-projects/spring-data-keyvalue
 https://docs.spring.io/spring-data/data-keyvalue/riak/docs/current/reference/html/#reference
-https://expedia.zoom.us/j/95708175425?pwd=QU0vcmpXV0tpSDVObm9aUUdKN2JXZz09
+https://github.com/basho-labs/riak-key-list-util
 
 ### Reactive Spring and RSocket
 https://rsocket.io/
