@@ -13,8 +13,31 @@ scenarios:
     requests:
       - label: resolve
         method: GET
-        url: http://${BASE_URL}/v1/url/mZmevP
+        url: http://${BASE_URL}/v1/url/${hash}
+    data-sources:
+      - path: e2e/hashes.csv   # this is a full form
+        delimiter: ';'
+        quoted: false
+        encoding: "utf-8"
+        loop: true
+        variable-names: hash
+        random-order: true
+  shorten-once:
+    requests:
+      - url: http://${BASE_URL}/v1/url
+        headers:
+          Content-Type: application/json
+        method: POST
+        body:
+          originalUrl: http://my-url/${__jm__Loop Controller__idx}
+  shorten-test:
+    requests:
+      - label: shorten
+        loop: forever
+        do:
+          - include-scenario: shorten-once
+
 
 modules:
   jmeter:
-    gui: false
+    gui: true

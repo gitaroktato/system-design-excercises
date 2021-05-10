@@ -1,11 +1,12 @@
-# Values are: resolve-test
-SCENARIO = resolve-test
+# Values are: resolve-test, shorten-test
+SCENARIO = shorten-test
 # Envoy endpoint is 192.168.99.100:10000
 # Traefik endpoint is 192.168.99.100
-BASE_URL = 192.168.99.100:8081
+BASE_URL = 192.168.99.100:8080
 
 TAURUS_COMMAND = bzt \
 	-o settings.artifacts-dir=e2e/logs \
+	-o settings.env.BASE_URL=$(BASE_URL) \
 	-o settings.env.BASE_URL=$(BASE_URL) \
 	-o execution.0.scenario=$(SCENARIO) e2e/taurus.yml
 

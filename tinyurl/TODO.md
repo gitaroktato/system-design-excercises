@@ -8,6 +8,7 @@
   -- ✔ Speed it up with [singleton containers](https://www.testcontainers.org/test_framework_integration/manual_lifecycle_control/#singleton-containers)
   -- Capacity Planning
   -- Fix DB tests with Testcontainers?
+  -- Verify key collisions
 - ✔ Contract
 - ✔ Modular Gradle with multiple applications
 - Telemetry
