@@ -1,6 +1,5 @@
 # Values are: resolve-test, shorten-test
-SCENARIO = resolve-test
-# Envoy endpoint is 192.168.99.100:10000
+SCENARIO = shorten-test
 # Traefik endpoint is 192.168.99.100
 BASE_URL = 192.168.99.100:8080
 
