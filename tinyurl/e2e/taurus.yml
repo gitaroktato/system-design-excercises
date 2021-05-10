@@ -16,8 +16,8 @@ scenarios:
         url: http://${BASE_URL}/v1/url/${hash}
     data-sources:
       - path: e2e/hashes.csv   # this is a full form
-        delimiter: ';'
-        quoted: false
+        delimiter: ','
+        quoted: true
         encoding: "utf-8"
         loop: true
         variable-names: hash
