@@ -9,20 +9,24 @@ import org.junit.jupiter.api.Test;
 
 class UrlShortenerTest {
 
+    public static final String BASE_PATH = "/v1/url";
+    public static final int HASH_LENGTH = 7;
     private UrlShortener urlShortener;
 
     @BeforeEach
     public void setUp() {
         urlShortener = new UrlShortener();
         urlShortener.setServerAddress("localhost");
-        urlShortener.setServerPort("8080");
+        urlShortener.setServerPort("8081");
+        urlShortener.setServerPath(BASE_PATH);
     }
 
     @Test
     public void testResolve() throws MalformedURLException {
         String target = "https://google.com/xasd";
         var result = urlShortener.shorten(new URL(target));
-        Assertions.assertEquals(7, result.getPath().length());
+        Assertions.assertEquals(BASE_PATH.length() + HASH_LENGTH + 1,
+                result.getPath().length());
     }
 
     @Test

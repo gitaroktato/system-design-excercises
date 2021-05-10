@@ -4,11 +4,16 @@
   -- ✔ What to do, when URL is malformed?
   -- ✔ Better syntax: https://docs.spring.io/spring-framework/docs/5.3.5/reference/html/web-reactive.html#webflux-fn-handler-classes
 - Data model and consistency
-  -- Testcontainers?
+  -- ✔ Testcontainers?
+  -- ✔ Speed it up with [singleton containers](https://www.testcontainers.org/test_framework_integration/manual_lifecycle_control/#singleton-containers)
   -- Capacity Planning
+  -- Fix DB tests with Testcontainers?
+  -- Verify key collisions
 - ✔ Contract
-- Resilience
 - ✔ Modular Gradle with multiple applications
+- Telemetry
+  -- https://docs.riak.com/riak/kv/latest/using/reference/statistics-monitoring/index.html
 - Load-balancing with Traefik
 - Caching and warm cache
+- Resilience
 - JMH tutorial

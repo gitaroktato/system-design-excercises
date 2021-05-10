@@ -1,0 +1,5 @@
+plugins {
+    id 'com.google.cloud.tools.jib'
+}
+
+jib.to.image = 'gitaroktato/tinyurl/resolver'

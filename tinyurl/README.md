@@ -97,6 +97,9 @@ Also note, that the random key is 28 characters long, and we can't truncate it. 
 
 ## Telemetry
 
+
+## Load Balancing
+
 ## Hash Operations Benchmark
 The benchmark can be executed with
 ```shell
@@ -114,7 +117,19 @@ Result "com.example.tinyurl.shortening.domain.UrlShortenerBenchmark.benchmarkSho
 
 
 ## Starting the application 
+Use the following command
+```bash
+make
+```
+
 Riak admin UI is available at: http://DOCKER_HOST_IP:8098/admin
+Swagger UI for shortener is available at: http://DOCKER_HOST_IP:8080/v1/swagger-ui.html
+Swagger UI for resolver is available at: http://DOCKER_HOST_IP:8081/v1/swagger-ui.html
+
+### Scaling out specific services
+```bash
+
+```
 
 ## References and Docs
 
@@ -123,7 +138,7 @@ https://docs.riak.com/riak/kv/2.2.3/developing/getting-started/java/index.html
 https://hub.docker.com/r/basho/riak-kv
 https://github.com/spring-projects/spring-data-keyvalue
 https://docs.spring.io/spring-data/data-keyvalue/riak/docs/current/reference/html/#reference
-https://expedia.zoom.us/j/95708175425?pwd=QU0vcmpXV0tpSDVObm9aUUdKN2JXZz09
+https://github.com/basho-labs/riak-key-list-util
 
 ### Reactive Spring and RSocket
 https://rsocket.io/
@@ -141,3 +156,11 @@ https://springdoc.org/
 
 ### AssertJ and testing
 https://joel-costigliola.github.io/assertj/assertj-core-features-highlight.html
+
+### Micrometer
+https://micrometer.io/docs/registry/prometheus
+https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready-metrics-export-prometheus
+https://github.com/vegasbrianc/docker-traefik-prometheus/blob/master/prometheus/prometheus.yml
+
+### Google Jib
+https://github.com/GoogleContainerTools/jib/tree/master/examples/multi-module
