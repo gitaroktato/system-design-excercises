@@ -19,13 +19,16 @@ public class UrlShortener {
     private String serverPath;
 
     @Value("${application.resolver.port}")
-    private String serverPort;
+    private int serverPort;
+
+    @Value("${application.shortener.keyLength}")
+    private int hashKeyLength;
 
     public void setServerAddress(String serverAddress) {
         this.serverAddress = serverAddress;
     }
 
-    public void setServerPort(String serverPort) {
+    public void setServerPort(int serverPort) {
         this.serverPort = serverPort;
     }
 
@@ -33,15 +36,14 @@ public class UrlShortener {
         this.serverPath = serverPath;
     }
 
-    public static final int URL_SHORTENED_LENGTH = 6;
+    public void setHashKeyLength(int hashLength) {
+        this.hashKeyLength = hashLength;
+    }
 
-    public URL shorten(URL target) throws MalformedURLException {
-        String value = target.toString();
-        var hash = DigestUtils.md5Digest(value.getBytes(StandardCharsets.UTF_8));
-        var encoded = Base64.getEncoder().encodeToString(hash);
-        encoded = encoded.substring(0, URL_SHORTENED_LENGTH);
-        var resultUrl = String.format("http://%s:%s/%s/%s", serverAddress, serverPort,
-                serverPath, encoded);
-        return new URL(resultUrl);
+    public Url shorten(Url target) throws MalformedURLException {
+        var md5Sum = DigestUtils.md5Digest(target.toBytes());
+        var hashKey = Base64.getEncoder().encodeToString(md5Sum);
+        hashKey = hashKey.substring(0, hashKeyLength);
+        return Url.from(serverAddress, serverPort, serverPath, hashKey);
     }
 }

@@ -17,6 +17,7 @@ application:
   resolver:
     path: 'v1/url'
     port: 8081
+  shortener.keyLength: 6
 # Actuator settings
 management.endpoints.web.exposure.include: info, health, prometheus
 ---

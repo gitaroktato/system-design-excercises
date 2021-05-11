@@ -97,7 +97,6 @@ Also note, that the random key is 28 characters long, and we can't truncate it. 
 
 ## Telemetry
 
-
 ## Load Balancing
 
 ## Hash Operations Benchmark
@@ -117,18 +116,25 @@ Result "com.example.tinyurl.shortening.domain.UrlShortenerBenchmark.benchmarkSho
 
 
 ## Starting the application 
-Use the following command
+Use the following command:
 ```bash
 make
 ```
+Running end-to-end tests requires Taurus being installed. It can be done with the following:
+```bash
+make e2e
+```
+
+### Endpoint URLs
 
 Riak admin UI is available at: http://DOCKER_HOST_IP:8098/admin
 Swagger UI for shortener is available at: http://DOCKER_HOST_IP:8080/v1/swagger-ui.html
 Swagger UI for resolver is available at: http://DOCKER_HOST_IP:8081/v1/swagger-ui.html
 
 ### Scaling out specific services
+Scaling applications (needs lots of resources by the way)
 ```bash
-
+docker-compose scale member=2 resolver=2 shortener=2
 ```
 
 ## References and Docs

@@ -5,6 +5,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
+import com.example.tinyurl.shortening.domain.Url;
 import com.example.tinyurl.shortening.domain.UrlShortener;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.runner.Runner;
@@ -15,15 +16,15 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 public class UrlShortenerBenchmark {
 
     @Benchmark
-    public URL benchmarkShorten() throws MalformedURLException {
+    public Url benchmarkShorten() throws MalformedURLException {
         var shortener = new UrlShortener();
         shortener.setServerAddress("localhost");
-        shortener.setServerPort("8080");
+        shortener.setServerPort(8080);
         var target = "https://google.com/";
         byte[] array = new byte[7]; // length is bounded by 7
         new Random().nextBytes(array);
         var generatedString = new String(array, StandardCharsets.UTF_8);
-        return shortener.shorten(new URL(target + generatedString));
+        return shortener.shorten(Url.from(target + generatedString));
     }
 
     public static void main(String[] args) throws RunnerException {

@@ -1,4 +1,4 @@
-package com.example.tinyurl.resolving.api;
+package com.example.tinyurl.resolving.infrastructure.webflux;
 
 import static org.springdoc.core.fn.builders.apiresponse.Builder.responseBuilder;
 import static org.springdoc.core.fn.builders.parameter.Builder.parameterBuilder;
