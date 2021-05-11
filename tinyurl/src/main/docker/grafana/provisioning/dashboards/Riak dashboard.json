@@ -310,12 +310,14 @@
           "expr": "riak_node_gets / 60",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "gets",
           "refId": "A"
         },
         {
           "expr": "riak_node_puts / 60",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "puts",
           "refId": "B"
         }
       ],
