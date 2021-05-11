@@ -27,4 +27,4 @@ spring:
   profiles: docker
 application:
   riak:
-    host: 'coordinator'
+    host: 'member'

@@ -1,4 +1,4 @@
-package com.example.tinyurl.shortening.api;
+package com.example.tinyurl.shortening.infrastructure.webflux;
 
 import static org.springdoc.core.fn.builders.apiresponse.Builder.responseBuilder;
 import static org.springdoc.core.fn.builders.requestbody.Builder.requestBodyBuilder;
@@ -7,8 +7,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 import static org.springframework.web.reactive.function.server.RequestPredicates.contentType;
 
-import com.example.tinyurl.shortening.api.dto.UrlDto;
-import com.example.tinyurl.shortening.api.dto.UrlShortenedDto;
+import com.example.tinyurl.shortening.application.dto.UrlDto;
+import com.example.tinyurl.shortening.application.dto.UrlShortenedDto;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
