@@ -102,16 +102,16 @@ Also note, that the random key is 28 characters long, and we can't truncate it. 
 ## Hash Operations Benchmark
 The benchmark can be executed with
 ```shell
-./gradlew clean build
-java -jar build/libs/tinyurl-0.0.1-SNAPSHOT-jmh.jar UrlShortenerBenchmark -f 1
+./gradlew clean build jmhJar
+java -jar ./shortener/build/libs/shortener-0.0.1-SNAPSHOT-jmh.jar UrlShortenerBenchmark -f 1
 ```
 
 Results
 ```
-Result "com.example.tinyurl.shortening.domain.UrlShortenerBenchmark.benchmarkShorten":
-  383966.770 ±(99.9%) 128121.616 ops/s [Average]
-  (min, avg, max) = (352546.670, 383966.770, 433866.230), stdev = 33272.777
-  CI (99.9%): [255845.154, 512088.387] (assumes normal distribution)
+Result "service.UrlShortenerBenchmark.benchmarkShorten":
+  230973.733 ±(99.9%) 179097.875 ops/s [Average]
+  (min, avg, max) = (159833.216, 230973.733, 284733.104), stdev = 46511.149
+  CI (99.9%): [51875.858, 410071.608] (assumes normal distribution)
 ```
 
 
