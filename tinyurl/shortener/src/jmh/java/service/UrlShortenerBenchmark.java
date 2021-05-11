@@ -20,6 +20,8 @@ public class UrlShortenerBenchmark {
         var shortener = new UrlShortener();
         shortener.setServerAddress("localhost");
         shortener.setServerPort(8080);
+        shortener.setServerPath("/v1/url");
+        shortener.setHashKeyLength(6);
         var target = "https://google.com/";
         byte[] array = new byte[7]; // length is bounded by 7
         new Random().nextBytes(array);

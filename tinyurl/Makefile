@@ -1,7 +1,7 @@
 # Values are: resolve-test, shorten-test
-SCENARIO = shorten-test
+SCENARIO = resolve-test
 # Traefik endpoint is 192.168.99.100
-BASE_URL = 192.168.99.100:8080
+BASE_URL = 192.168.99.100:8081
 
 TAURUS_COMMAND = bzt \
 	-o settings.artifacts-dir=e2e/logs \
