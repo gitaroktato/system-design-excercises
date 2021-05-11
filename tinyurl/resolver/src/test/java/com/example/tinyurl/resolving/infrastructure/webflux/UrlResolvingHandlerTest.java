@@ -1,4 +1,4 @@
-package com.example.tinyurl.resolving.api;
+package com.example.tinyurl.resolving.infrastructure.webflux;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
