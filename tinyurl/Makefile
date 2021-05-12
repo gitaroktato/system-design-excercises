@@ -1,7 +1,8 @@
+DOCKER_IP = 192.168.99.100
 # Values are: resolve-test, shorten-test
-SCENARIO = shorten-test
+SCENARIO = resolve-test
 # Traefik endpoint is 192.168.99.100
-BASE_URL = 192.168.99.100:8080
+BASE_URL = ${DOCKER_HOST}:8081
 
 TAURUS_COMMAND = bzt \
 	-o settings.artifacts-dir=e2e/logs \
@@ -25,5 +26,8 @@ compose:
 clean:
 	bash -c "./gradlew clean" && docker-compose down
 
-e2e:
+get-hashes:
+	bash -c "curl http://${DOCKER_IP}:8098/types/tinyurl/buckets/url/keys?keys=true | sed 's/{\"keys\":\[//g' | sed 's/]}//g' | sed 's/,/,\n/g' > e2e/hashes.csv"
+
+e2e: get-hashes
 	$(TAURUS_COMMAND)
