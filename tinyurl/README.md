@@ -21,6 +21,8 @@ _Scalability_
 
 _Observability_
 The following data should be measured and collected:
+- New URLs created
+- Total redirections
 - New URLs / second
 - URL redirections / second
 - Storage capacity
