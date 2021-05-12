@@ -40,4 +40,4 @@ scenarios:
 
 modules:
   jmeter:
-    gui: true
+    gui: false
