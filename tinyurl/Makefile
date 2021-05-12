@@ -1,7 +1,7 @@
 # Values are: resolve-test, shorten-test
-SCENARIO = resolve-test
+SCENARIO = shorten-test
 # Traefik endpoint is 192.168.99.100
-BASE_URL = 192.168.99.100:8081
+BASE_URL = 192.168.99.100:8080
 
 TAURUS_COMMAND = bzt \
 	-o settings.artifacts-dir=e2e/logs \
@@ -21,6 +21,9 @@ docker: gradle
 
 compose:
 	docker-compose up -d --force
+
+clean:
+	bash -c "./gradlew clean" && docker-compose down
 
 e2e:
 	$(TAURUS_COMMAND)

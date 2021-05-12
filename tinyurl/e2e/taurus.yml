@@ -29,7 +29,7 @@ scenarios:
           Content-Type: application/json
         method: POST
         body:
-          originalUrl: http://my-url/${__jm__Loop Controller__idx}
+          originalUrl: http://my-url/${__threadNum}/${__jm__Loop Controller__idx}
   shorten-test:
     requests:
       - label: shorten

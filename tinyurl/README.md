@@ -147,6 +147,8 @@ https://hub.docker.com/r/basho/riak-kv
 https://github.com/spring-projects/spring-data-keyvalue
 https://docs.spring.io/spring-data/data-keyvalue/riak/docs/current/reference/html/#reference
 https://github.com/basho-labs/riak-key-list-util
+http://basho-labs.github.io/riak_explorer/docs/api.html
+https://riak.com/posts/technical/running-riak-in-docker/index.html
 
 ### Reactive Spring and RSocket
 https://rsocket.io/
