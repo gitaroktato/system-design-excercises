@@ -2,13 +2,13 @@ package com.example.tinyurl.shortening.application;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.example.tinyurl.shortening.application.dto.UrlDto;
 import com.example.tinyurl.shortening.domain.Url;
 import com.example.tinyurl.shortening.domain.UrlShortener;
 import com.example.tinyurl.shortening.infrastructure.riak.UrlRepository;
+import io.micrometer.core.instrument.Counter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,13 +22,13 @@ public class ShorteningActionTest {
     private UrlShortener shortener;
     @Mock
     private UrlRepository repository;
+    @Mock
+    private Counter counter;
     private ShorteningAction target;
 
     @BeforeEach
     public void setUp() {
-        target = new ShorteningAction();
-        target.setShortener(shortener);
-        target.setRepository(repository);
+        target = new ShorteningAction(shortener, repository, counter);
     }
 
     @Test
