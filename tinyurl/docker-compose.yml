@@ -17,7 +17,8 @@ services:
     labels:
       - "traefik.http.routers.resolver.rule=Method(`GET`)"
       - "traefik.http.routers.resolver.middlewares=resolver@docker"
-      - "traefik.http.middlewares.resolver.replacepath.path=/v1/url"
+      - "traefik.http.middlewares.resolver.replacepathregex.regex=^/(.*)"
+      - "traefik.http.middlewares.resolver.replacepathregex.replacement=/v1/url/$$1"
   shortener:
     image: gitaroktato/tinyurl/shortener
     ports:
