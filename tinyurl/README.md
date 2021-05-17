@@ -136,13 +136,13 @@ Swagger UI for shortener is available at: http://localhost:8080/v1/swagger-ui.ht
 Swagger UI for resolver is available at: http://localhost:8081/v1/swagger-ui.html
 
 Both resolver and shortener can be accessed via Traefik using port 80.
-```
+```bash
 curl -X POST -H "Content-Type: application/json" \
  -d '{"originalUrl":"https://google.com"}' \
  http://192.168.99.100
 ```
 
-```
+```bash
 curl  http://192.168.99.100/mZmevP
 ```
 

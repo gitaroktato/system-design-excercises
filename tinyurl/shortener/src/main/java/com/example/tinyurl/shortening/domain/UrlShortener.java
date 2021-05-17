@@ -14,10 +14,10 @@ public class UrlShortener {
     @Value("${application.resolver.host}")
     private String serverAddress;
 
-    @Value("${application.resolver.path:}")
+    @Value("${application.resolver.path:#{null}}")
     private Optional<String> serverPath;
 
-    @Value("${application.resolver.port:}")
+    @Value("${application.resolver.port:#{null}}")
     private Optional<Integer> serverPort;
 
     @Value("${application.shortener.keyLength}")
