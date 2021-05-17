@@ -93,11 +93,10 @@ Riak is able to [assign random keys](https://docs.riak.com/riak/kv/latest/develo
 but this will bind our key generation algorithm to a specific data store.
 Also note, that the random key is 28 characters long, and we can't truncate it. So this solution is not advisable.
 
-### Capacity Planning
+## Telemetry
 
 ## Caching
-
-## Telemetry
+- Ignite, Hazelcast, Infinispan
 
 ## Load Balancing
 
@@ -130,8 +129,22 @@ make e2e
 ### Endpoint URLs
 
 Riak admin UI is available at: http://DOCKER_HOST_IP:8098/admin
-Swagger UI for shortener is available at: http://DOCKER_HOST_IP:8080/v1/swagger-ui.html
-Swagger UI for resolver is available at: http://DOCKER_HOST_IP:8081/v1/swagger-ui.html
+Traefik admin UI is available at: http://DOCKER_HOST_IP:8080
+Grafana UI is available at: http://DOCKER_HOST_IP:3000
+
+Swagger UI for shortener is available at: http://DOCKER_HOST_IP:18080/v1/swagger-ui.html
+Swagger UI for resolver is available at: http://DOCKER_HOST_IP:18081/v1/swagger-ui.html
+
+Both resolver and shortener can be accessed via Traefik using port 80.
+```
+curl -X POST -H "Content-Type: application/json" \
+ -d '{"originalUrl":"https://google.com"}' \
+ http://192.168.99.100
+```
+
+```
+curl  http://192.168.99.100/mZmevP
+```
 
 ### Scaling out specific services
 Scaling applications (needs lots of resources by the way)
@@ -174,3 +187,7 @@ https://github.com/vegasbrianc/docker-traefik-prometheus/blob/master/prometheus/
 
 ### Google Jib
 https://github.com/GoogleContainerTools/jib/tree/master/examples/multi-module
+
+### Traefik
+https://doc.traefik.io/traefik/routing/routers/#rule
+https://doc.traefik.io/traefik/middlewares/replacepath/

@@ -1,17 +1,33 @@
 version: "3"
 services:
+  reverse-proxy:
+    image: traefik:v2.4
+    command: --api.insecure=true --providers.docker
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
   resolver:
     image: gitaroktato/tinyurl/resolver
     ports:
-      - 8081:8081
+      - 18081:8081
     environment:
       - 'spring.profiles.active=docker'
+    labels:
+      - "traefik.http.routers.resolver.rule=Method(`GET`)"
+      - "traefik.http.routers.resolver.middlewares=resolver@docker"
+      - "traefik.http.middlewares.resolver.replacepath.path=/v1/url"
   shortener:
     image: gitaroktato/tinyurl/shortener
     ports:
-      - 8080:8080
+      - 18080:8080
     environment:
       - 'spring.profiles.active=docker'
+    labels:
+      - "traefik.http.routers.shortener.rule=Method(`POST`)"
+      - "traefik.http.routers.shortener.middlewares=shortener@docker"
+      - "traefik.http.middlewares.shortener.replacepath.path=/v1/url"
   prometheus:
     image: prom/prometheus:v2.11.1
     volumes:
