@@ -14,8 +14,8 @@ public class UrlShortener {
     @Value("${application.resolver.host}")
     private String serverAddress;
 
-    @Value("${application.resolver.path}")
-    private String serverPath;
+    @Value("${application.resolver.path:}")
+    private Optional<String> serverPath;
 
     @Value("${application.resolver.port:}")
     private Optional<Integer> serverPort;
@@ -32,7 +32,7 @@ public class UrlShortener {
     }
 
     public void setServerPath(String serverPath) {
-        this.serverPath = serverPath;
+        this.serverPath = Optional.of(serverPath);
     }
 
     public void setHashKeyLength(int hashLength) {
@@ -43,10 +43,6 @@ public class UrlShortener {
         var md5Sum = DigestUtils.md5Digest(target.toBytes());
         var hashKey = Base64.getEncoder().encodeToString(md5Sum);
         var hashKeyStripped = hashKey.substring(0, hashKeyLength);
-        if (serverPort.isPresent()) {
-            return Url.from(serverAddress, serverPort.get(), serverPath, hashKeyStripped);
-        } else {
-            return Url.from(serverAddress, serverPath, hashKeyStripped);
-        }
+        return Url.from(serverAddress, hashKeyStripped, serverPort, serverPath);
     }
 }

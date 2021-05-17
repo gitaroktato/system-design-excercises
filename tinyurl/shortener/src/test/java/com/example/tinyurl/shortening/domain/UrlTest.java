@@ -38,19 +38,25 @@ public class UrlTest {
 
     @Test
     public void testCreate_withProperties() throws MalformedURLException {
-        var url = Url.from("127.0.0.1", 9090, "/v1/url", "xAKf4FDbuXd");
+        var url = Url.from("127.0.0.1", "xAKf4FDbuXd", 9090, "/v1/url");
         assertEquals("http://127.0.0.1:9090/v1/url/xAKf4FDbuXd", url.toString());
     }
 
     @Test
     public void testCreate_withoutAnyPort() throws MalformedURLException {
-        var url = Url.from("127.0.0.1", "/v1/url", "xAKf4FDbuXd");
+        var url = Url.from("127.0.0.1", "xAKf4FDbuXd", "/v1/url");
         assertEquals("http://127.0.0.1/v1/url/xAKf4FDbuXd", url.toString());
     }
 
     @Test
+    public void testCreate_withoutAnyPath() throws MalformedURLException {
+        var url = Url.from("127.0.0.1", "xAKf4FDbuXd");
+        assertEquals("http://127.0.0.1/xAKf4FDbuXd", url.toString());
+    }
+
+    @Test
     public void testCreate_withInvalidCharactersReplaced() throws Exception {
-        var url = Url.from("localhost", 80, "/v1/url", "xAQu/Dfw");
+        var url = Url.from("localhost", "xAQu/Dfw", 80, "/v1/url");
         Assertions.assertEquals("xAQu_Dfw", url.getHashKey());
     }
 }
