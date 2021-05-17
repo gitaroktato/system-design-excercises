@@ -20,12 +20,32 @@ public final class Url {
         return new Url(url.toString());
     }
 
-    public static Url from(String host, int port, String path, String hashKey) throws MalformedURLException {
+    public static Url from(String host, String path, String hashKey) throws MalformedURLException {
         var pathStripped = stripPathFromForwardSlashes(path);
-        var hashKeyReplaced = hashKey.replaceAll("/", "_");
-        var urlString = String.format("http://%s:%s/%s/%s", host, port,
+        var hashKeyReplaced = replaceUnwantedCharactersInHashKey(hashKey);
+        var urlString = formatUrlWithoutPort(host, pathStripped, hashKeyReplaced);
+        var url = new URL(urlString);
+        return from(url);
+    }
+
+    public static Url from(String host, Integer port, String path, String hashKey) throws MalformedURLException {
+        var pathStripped = stripPathFromForwardSlashes(path);
+        var hashKeyReplaced = replaceUnwantedCharactersInHashKey(hashKey);
+        var urlString = formatUrlWithPort(host, port, pathStripped, hashKeyReplaced);
+        var url = new URL(urlString);
+        return from(url);
+    }
+    private static String replaceUnwantedCharactersInHashKey(String hashKey) {
+        return hashKey.replaceAll("/", "_");
+    }
+
+    private static String formatUrlWithoutPort(String host, String pathStripped, String hashKeyReplaced) {
+        return String.format("http://%s/%s/%s", host, pathStripped, hashKeyReplaced);
+    }
+
+    private static String formatUrlWithPort(String host, Integer port, String pathStripped, String hashKeyReplaced) {
+        return String.format("http://%s:%s/%s/%s", host, port,
                 pathStripped, hashKeyReplaced);
-        return from(urlString);
     }
 
     private static String stripPathFromForwardSlashes(String path) {

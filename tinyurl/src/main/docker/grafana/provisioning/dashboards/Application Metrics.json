@@ -345,7 +345,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "application_shortening_total",
+          "expr": "sum(application_shortening_total)",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -502,7 +502,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(rate(http_server_requests_seconds_count{job = \"resolver\"}[10s])) by (outcome)",
+          "expr": "sum(rate(http_server_requests_seconds_count{job = \"resolver\"}[10s])) by (outcome)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -587,7 +587,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(application_resolving_total[10s])",
+          "expr": "sum(rate(application_resolving_total[10s]))",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -597,7 +597,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Resolution Rate",
+      "title": "Total Resolution Rate",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -695,7 +695,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "application_resolving_total",
+          "expr": "sum(application_resolving_total)",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"

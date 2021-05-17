@@ -132,8 +132,8 @@ Riak admin UI is available at: http://DOCKER_HOST_IP:8098/admin
 Traefik admin UI is available at: http://DOCKER_HOST_IP:8080
 Grafana UI is available at: http://DOCKER_HOST_IP:3000
 
-Swagger UI for shortener is available at: http://DOCKER_HOST_IP:18080/v1/swagger-ui.html
-Swagger UI for resolver is available at: http://DOCKER_HOST_IP:18081/v1/swagger-ui.html
+Swagger UI for shortener is available at: http://localhost:8080/v1/swagger-ui.html
+Swagger UI for resolver is available at: http://localhost:8081/v1/swagger-ui.html
 
 Both resolver and shortener can be accessed via Traefik using port 80.
 ```
@@ -149,7 +149,7 @@ curl  http://192.168.99.100/mZmevP
 ### Scaling out specific services
 Scaling applications (needs lots of resources by the way)
 ```bash
-docker-compose scale member=2 resolver=2 shortener=2
+docker-compose scale member=2 resolver=2
 ```
 
 ## References and Docs

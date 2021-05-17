@@ -43,6 +43,12 @@ public class UrlTest {
     }
 
     @Test
+    public void testCreate_withoutAnyPort() throws MalformedURLException {
+        var url = Url.from("127.0.0.1", "/v1/url", "xAKf4FDbuXd");
+        assertEquals("http://127.0.0.1/v1/url/xAKf4FDbuXd", url.toString());
+    }
+
+    @Test
     public void testCreate_withInvalidCharactersReplaced() throws Exception {
         var url = Url.from("localhost", 80, "/v1/url", "xAQu/Dfw");
         Assertions.assertEquals("xAQu_Dfw", url.getHashKey());

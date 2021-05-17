@@ -11,7 +11,7 @@ services:
   resolver:
     image: gitaroktato/tinyurl/resolver
     ports:
-      - 18081:8081
+      - "8081"
     environment:
       - 'spring.profiles.active=docker'
     labels:
@@ -22,7 +22,7 @@ services:
   shortener:
     image: gitaroktato/tinyurl/shortener
     ports:
-      - 18080:8080
+      - "8080"
     environment:
       - 'spring.profiles.active=docker'
     labels:

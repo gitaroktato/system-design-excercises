@@ -1,13 +1,12 @@
+# Traefik endpoint is 192.168.99.100
 DOCKER_IP = 192.168.99.100
 # Values are: resolve-test, shorten-test
 SCENARIO = resolve-test
-# Traefik endpoint is 192.168.99.100
-BASE_URL = ${DOCKER_IP}:8081
 
 TAURUS_COMMAND = bzt \
 	-o settings.artifacts-dir=e2e/logs \
-	-o settings.env.BASE_URL=$(BASE_URL) \
-	-o settings.env.BASE_URL=$(BASE_URL) \
+	-o settings.env.BASE_URL=$(DOCKER_IP) \
+	-o settings.env.BASE_URL=$(DOCKER_IP) \
 	-o execution.0.scenario=$(SCENARIO) e2e/taurus.yml
 
 .PHONY: gradle e2e
