@@ -9,7 +9,6 @@ import com.example.tinyurl.shortening.domain.Url;
 import com.example.tinyurl.shortening.domain.UrlShortener;
 import com.example.tinyurl.shortening.infrastructure.riak.UrlRepository;
 import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

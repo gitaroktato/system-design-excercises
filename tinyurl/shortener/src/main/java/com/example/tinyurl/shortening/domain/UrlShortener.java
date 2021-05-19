@@ -1,9 +1,8 @@
 package com.example.tinyurl.shortening.domain;
 
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,11 +14,11 @@ public class UrlShortener {
     @Value("${application.resolver.host}")
     private String serverAddress;
 
-    @Value("${application.resolver.path}")
-    private String serverPath;
+    @Value("${application.resolver.path:#{null}}")
+    private Optional<String> serverPath;
 
-    @Value("${application.resolver.port}")
-    private int serverPort;
+    @Value("${application.resolver.port:#{null}}")
+    private Optional<Integer> serverPort;
 
     @Value("${application.shortener.keyLength}")
     private int hashKeyLength;
@@ -29,11 +28,11 @@ public class UrlShortener {
     }
 
     public void setServerPort(int serverPort) {
-        this.serverPort = serverPort;
+        this.serverPort = Optional.of(serverPort);
     }
 
     public void setServerPath(String serverPath) {
-        this.serverPath = serverPath;
+        this.serverPath = Optional.of(serverPath);
     }
 
     public void setHashKeyLength(int hashLength) {
@@ -43,7 +42,7 @@ public class UrlShortener {
     public Url shorten(Url target) throws MalformedURLException {
         var md5Sum = DigestUtils.md5Digest(target.toBytes());
         var hashKey = Base64.getEncoder().encodeToString(md5Sum);
-        hashKey = hashKey.substring(0, hashKeyLength);
-        return Url.from(serverAddress, serverPort, serverPath, hashKey);
+        var hashKeyStripped = hashKey.substring(0, hashKeyLength);
+        return Url.from(serverAddress, hashKeyStripped, serverPort, serverPath);
     }
 }
