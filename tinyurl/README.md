@@ -110,9 +110,9 @@ java -jar ./shortener/build/libs/shortener-0.0.1-SNAPSHOT-jmh.jar UrlShortenerBe
 Results
 ```
 Result "service.UrlShortenerBenchmark.benchmarkShorten":
-  230973.733 ±(99.9%) 179097.875 ops/s [Average]
-  (min, avg, max) = (159833.216, 230973.733, 284733.104), stdev = 46511.149
-  CI (99.9%): [51875.858, 410071.608] (assumes normal distribution)
+  418224.978 ±(99.9%) 102076.997 ops/s [Average]
+  (min, avg, max) = (378526.417, 418224.978, 443561.668), stdev = 26509.072
+  CI (99.9%): [316147.981, 520301.976] (assumes normal distribution)
 ```
 
 
