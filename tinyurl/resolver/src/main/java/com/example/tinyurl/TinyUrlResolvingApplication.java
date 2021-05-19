@@ -2,8 +2,10 @@ package com.example.tinyurl;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 
 @SpringBootApplication
+@EnableCaching
 public class TinyUrlResolvingApplication {
 
 	public static void main(String[] args) {

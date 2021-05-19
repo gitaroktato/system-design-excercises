@@ -11,6 +11,7 @@ import com.basho.riak.client.core.query.Location;
 import com.basho.riak.client.core.query.Namespace;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -29,6 +30,7 @@ public class UrlRepository {
         bucket = new Namespace(bucketType, bucketName);
     }
 
+    @Cacheable("URLs")
     public String resolve(String key) throws ExecutionException, InterruptedException {
         var location = new Location(bucket, key);
         var fetch = new FetchValue.Builder(location)

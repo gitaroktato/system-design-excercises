@@ -96,9 +96,11 @@ Also note, that the random key is 28 characters long, and we can't truncate it. 
 ## Telemetry
 
 ## Caching
-- Ignite, Hazelcast, Infinispan
+https://gist.github.com/jboner/2841832
+- Ignite, Hazelcast, Infinispan, EhCache
 
 ## Load Balancing
+
 
 ## Hash Operations Benchmark
 The benchmark can be executed with
@@ -191,3 +193,7 @@ https://github.com/GoogleContainerTools/jib/tree/master/examples/multi-module
 ### Traefik
 https://doc.traefik.io/traefik/routing/routers/#rule
 https://doc.traefik.io/traefik/middlewares/replacepath/
+
+### Caching
+http://highscalability.com/ehcache-java-distributed-cache
+https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-caching
