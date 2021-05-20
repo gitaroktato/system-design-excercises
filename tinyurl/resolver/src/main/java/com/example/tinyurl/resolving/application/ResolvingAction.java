@@ -7,9 +7,7 @@ import java.util.concurrent.ExecutionException;
 import com.example.tinyurl.resolving.infrastructure.riak.UrlRepository;
 import io.micrometer.core.instrument.Counter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
-import reactor.core.Exceptions;
 
 @Component
 public class ResolvingAction {

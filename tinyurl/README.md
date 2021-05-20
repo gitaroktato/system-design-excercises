@@ -197,3 +197,6 @@ https://doc.traefik.io/traefik/middlewares/replacepath/
 ### Caching
 http://highscalability.com/ehcache-java-distributed-cache
 https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-caching
+https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-hazelcast
+https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html#production-ready-metrics-cache
+https://guides.hazelcast.org/caching-springboot/
