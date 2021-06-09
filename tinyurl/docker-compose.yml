@@ -2,9 +2,14 @@ version: "3"
 services:
   reverse-proxy:
     image: traefik:v2.4
-    command: --api.insecure=true --providers.docker
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker"
+      - "--entrypoints.tcp.address=:10000"
+      - "--entrypoints.http.address=:80"
     ports:
       - "80:80"
+      - "10000:10000"
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -15,10 +20,10 @@ services:
     environment:
       - 'spring.profiles.active=docker'
     labels:
-      - "traefik.http.routers.resolver.rule=Method(`GET`)"
-      - "traefik.http.routers.resolver.middlewares=resolver@docker"
-      - "traefik.http.middlewares.resolver.replacepathregex.regex=^/(.*)"
-      - "traefik.http.middlewares.resolver.replacepathregex.replacement=/v1/url/$$1"
+      - "traefik.tcp.routers.resolver.entrypoints=tcp"
+      - "traefik.tcp.routers.resolver.rule=HostSNI(`*`)"
+      - "traefik.tcp.routers.resolver.service=resolver"
+      - "traefik.tcp.services.resolver.loadbalancer.server.port=8081"
   shortener:
     image: gitaroktato/tinyurl/shortener
     ports:

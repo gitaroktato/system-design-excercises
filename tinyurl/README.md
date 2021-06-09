@@ -193,6 +193,7 @@ https://github.com/GoogleContainerTools/jib/tree/master/examples/multi-module
 ### Traefik
 https://doc.traefik.io/traefik/routing/routers/#rule
 https://doc.traefik.io/traefik/middlewares/replacepath/
+https://doc.traefik.io/traefik/routing/providers/docker/#tcp
 
 ### Caching
 http://highscalability.com/ehcache-java-distributed-cache

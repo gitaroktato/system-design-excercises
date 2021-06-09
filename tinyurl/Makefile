@@ -1,5 +1,5 @@
 # Traefik endpoint is 192.168.99.100
-DOCKER_IP = 192.168.99.100
+DOCKER_IP = 192.168.99.100:10000/v1/url
 # Values are: resolve-test, shorten-test
 SCENARIO = resolve-test
 
