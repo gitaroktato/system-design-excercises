@@ -13,7 +13,11 @@
 - ✔ Modular Gradle with multiple applications
 - Telemetry
   -- https://docs.riak.com/riak/kv/latest/using/reference/statistics-monitoring/index.html
-- Load-balancing with Traefik
-- Caching and warm cache
-- Resilience
+- ✔ Load-balancing with Envoy
+- ✔ Caching and warm cache
+- Resilience (backpressure by header ID)
 - JMH tutorial
+
+- Remove v1/url from path ??
+- Nice dashboards
+- Fix docker config for shortener

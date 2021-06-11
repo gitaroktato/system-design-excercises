@@ -1,0 +1,149 @@
+{
+	"info": {
+		"_postman_id": "53491d75-94e4-468c-80c9-36a0498c29bd",
+		"name": "tinyUrl",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"originalUrl\": \"http://google.com/gegegeeasda\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/url?apiKey=beDx",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"url"
+					],
+					"query": [
+						{
+							"key": "apiKey",
+							"value": "beDx"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "resolve",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/v1/url/o3U2kh",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"v1",
+						"url",
+						"o3U2kh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get OpenAPI Docs",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-yaml",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/v3/api-docs.yaml",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v3",
+						"api-docs.yaml"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RiakListKeys",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.99.100:8098/types/tinyurl/buckets/url/keys?keys=true",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"99",
+						"100"
+					],
+					"port": "8098",
+					"path": [
+						"types",
+						"tinyurl",
+						"buckets",
+						"url",
+						"keys"
+					],
+					"query": [
+						{
+							"key": "keys",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RiakGetKey",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.99.100:8098/types/tinyurl/buckets/url/keys/o3U2kh",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"99",
+						"100"
+					],
+					"port": "8098",
+					"path": [
+						"types",
+						"tinyurl",
+						"buckets",
+						"url",
+						"keys",
+						"o3U2kh"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

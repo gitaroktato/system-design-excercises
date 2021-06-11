@@ -3,3 +3,7 @@ plugins {
 }
 
 jib.to.image = 'gitaroktato/tinyurl/resolver'
+
+dependencies {
+    implementation "com.hazelcast:hazelcast-all:$hazelcastVersion"
+}

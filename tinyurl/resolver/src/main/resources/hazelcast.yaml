@@ -1,0 +1,9 @@
+hazelcast:
+  network:
+    join:
+      multicast:
+        enabled: true
+  cache:
+    URLs:
+      statistics-enabled: true
+      management-enabled: true

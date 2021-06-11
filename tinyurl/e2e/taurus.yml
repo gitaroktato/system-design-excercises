@@ -13,7 +13,7 @@ scenarios:
     requests:
       - label: resolve
         method: GET
-        url: http://${BASE_URL}/${hash}
+        url: http://${BASE_URL}:10000/v1/url/${hash}
     data-sources:
       - path: e2e/hashes.csv   # this is a full form
         delimiter: ','
@@ -24,7 +24,7 @@ scenarios:
         random-order: true
   shorten-once:
     requests:
-      - url: http://${BASE_URL}/
+      - url: http://${BASE_URL}:10000/v1/url
         headers:
           Content-Type: application/json
         method: POST
