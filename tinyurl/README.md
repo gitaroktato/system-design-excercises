@@ -109,8 +109,6 @@ out-of-the hood in this format.
 Unfortunately Riak is an exceptions, so I had to use another external service, called [riak-exporter](https://github.com/anti1869/riak_exporter).
 
 All the metrics dashboards are accessible after starting the containers with Docker compose.
-- http://DOCKER_HOST_IP:9090 is the Prometheus entrypoint URL.
-- http://DOCKER_HOST_IP:3000 is the Grafana entrypoint URL.
 
 <img src="documentation/screenshot_prometheus.png" width="450" />
 <img src="documentation/screenshot_grafana_cache.png" width="450" />
@@ -149,22 +147,23 @@ make e2e
 
 ### Endpoint URLs
 
-Riak admin UI is available at: http://DOCKER_HOST_IP:8098/admin
-Traefik admin UI is available at: http://DOCKER_HOST_IP:8080
-Grafana UI is available at: http://DOCKER_HOST_IP:3000
+Riak admin UI is available at: `http://DOCKER_HOST_IP:8098/admin`
+Envoy admin UI is available at: `http://DOCKER_HOST_IP:8080`
+Grafana UI is available at: `http://DOCKER_HOST_IP:3000`
+Prometheus UI is available at: `http://DOCKER_HOST_IP:9090`
 
-Swagger UI for shortener is available at: http://localhost:8080/v1/swagger-ui.html
-Swagger UI for resolver is available at: http://localhost:8081/v1/swagger-ui.html
+Swagger UI for shortener is available at: `http://localhost:8080/v1/swagger-ui.html`
+Swagger UI for resolver is available at: `http://localhost:8081/v1/swagger-ui.html`
 
-Both resolver and shortener can be accessed via Traefik using port 80.
+Both resolver and shortener can be accessed via Envoy using port 80.
 ```bash
 curl -X POST -H "Content-Type: application/json" \
  -d '{"originalUrl":"https://google.com"}' \
- http://192.168.99.100
+ http://192.168.99.100/v1/url
 ```
 
 ```bash
-curl  http://192.168.99.100/mZmevP
+curl  http://192.168.99.100/v1/url/mZmevP
 ```
 
 ### Scaling out specific services
