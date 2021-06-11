@@ -35,3 +35,4 @@ application:
     host: 'coordinator'
   resolver:
     host: '192.168.99.100'
+    path: 'v1/url'

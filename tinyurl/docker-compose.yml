@@ -4,7 +4,7 @@ services:
     image: envoyproxy/envoy:v1.13.1
     ports:
       # The HTTP port
-      - "10000:10000"
+      - "80:80"
       # The Admin UI
       - "9901:9901"
     volumes:

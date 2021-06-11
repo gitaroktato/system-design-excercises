@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1623343201682,
+  "iteration": 1623390884252,
   "links": [],
   "panels": [
     {
@@ -57,8 +57,18 @@
         {
           "expr": "histogram_quantile(0.99, rate(envoy_cluster_upstream_rq_time_bucket[$interval]))",
           "format": "time_series",
+          "instant": false,
           "intervalFactor": 1,
+          "legendFormat": "p99 {{envoy_cluster_name}}",
           "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.95, rate(envoy_cluster_upstream_rq_time_bucket[$interval]))",
+          "format": "time_series",
+          "instant": false,
+          "intervalFactor": 1,
+          "legendFormat": "p95 {{envoy_cluster_name}}",
+          "refId": "B"
         }
       ],
       "thresholds": [],
@@ -210,8 +220,8 @@
     ]
   },
   "time": {
-    "from": "now-15m",
-    "to": "now"
+    "from": "2021-06-10T16:35:30.740Z",
+    "to": "2021-06-10T16:41:16.351Z"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -241,5 +251,5 @@
   "timezone": "",
   "title": "Envoy - HTTP Response Stats",
   "uid": "-uqu1CrZk",
-  "version": 1
+  "version": 2
 }

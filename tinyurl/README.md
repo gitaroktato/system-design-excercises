@@ -8,26 +8,26 @@
 ## Non-functional Requirements
 _Performance_
 * The URL resolution should happen near real-time.
-* Reading and creating shortened URLs (read/write) should be separated
-* URL resolution should be cached, but warmup period should not affect overall read performance
+* Reading and creating shortened URLs (read/write) should be separated.
+* URL resolution should be cached, but warmup period should not affect overall read performance.
 
 _Availability_
-* There shouldn't be any single point of failure for any component
-* System should tolerate failure of writes/reads independently
+* There shouldn't be any single point of failure for any component.
+* System should tolerate failure of writes/reads independently.
 
 _Scalability_
-* Every component should be individually horizontally scalable
-* Reading and creating shortened URLs (read/write) should be independently scalable
+* Every component should be individually horizontally scalable.
+* Reading and creating shortened URLs (read/write) should be independently scalable.
 
 _Observability_
 The following data should be measured and collected:
-- New URLs created
-- Total redirections
-- New URLs / second
-- URL redirections / second
-- Storage capacity
-- Memory usage / application
-- Memory usage / distributed cache
+- New URLs created.
+- Total redirections.
+- New URLs / second.
+- URL redirections / second.
+- Storage capacity.
+- Memory usage / application.
+- Memory usage / distributed cache.
 
 _Consistency_
 There should be a one-to-one mapping between a shortened URL and its longer version.
@@ -93,7 +93,11 @@ Riak is able to [assign random keys](https://docs.riak.com/riak/kv/latest/develo
 but this will bind our key generation algorithm to a specific data store.
 Also note, that the random key is 28 characters long, and we can't truncate it. So this solution is not advisable.
 
+## High Level Design
+![design](documentation/tinyurl-high-level.png)
+
 ## Telemetry
+
 
 ## Caching
 https://gist.github.com/jboner/2841832
@@ -116,7 +120,6 @@ Result "service.UrlShortenerBenchmark.benchmarkShorten":
   (min, avg, max) = (378526.417, 418224.978, 443561.668), stdev = 26509.072
   CI (99.9%): [316147.981, 520301.976] (assumes normal distribution)
 ```
-
 
 ## Starting the application 
 Use the following command:
