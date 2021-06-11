@@ -109,8 +109,12 @@ out-of-the hood in this format.
 Unfortunately Riak is an exceptions, so I had to use another external service, called [riak-exporter](https://github.com/anti1869/riak_exporter).
 
 All the metrics dashboards are accessible after starting the containers with Docker compose.
+- http://DOCKER_HOST_IP:9090 is the Prometheus entrypoint URL.
+- http://DOCKER_HOST_IP:3000 is the Grafana entrypoint URL.
 
-<img src="documentation/screenshot_prometheus.png" width="150" />
+<img src="documentation/screenshot_prometheus.png" width="450" />
+<img src="documentation/screenshot_grafana_cache.png" width="450" />
+<img src="documentation/screenshot_grafana_shortenings.png" width="450" />
 
 ## Caching
 https://gist.github.com/jboner/2841832
