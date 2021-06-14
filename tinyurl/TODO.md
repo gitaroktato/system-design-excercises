@@ -18,4 +18,3 @@
 - Resilience (backpressure by header ID)
 - JMH tutorial
 
-- Nice dashboards (even for multiple instances)

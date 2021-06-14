@@ -61,7 +61,7 @@ to check if the key for the URL is already present.
 
 A key-value store with CP characteristics from CAP would be the best choice.
 Because consistency [can be provided various ways](http://jepsen.io/consistency), we can try to reduce the possibility of key collisions
-instead of aiming for strong consistency.
+instead of aiming for strong consistency. This leaves us with technology choices, like Redis or Riak. 
 
 Riak allows us to store every version of a key individually by providing [siblings](https://docs.riak.com/riak/kv/latest/developing/usage/conflict-resolution/index.html#siblings),
 so we can actively monitor the number of key collisions during tests. 
@@ -95,16 +95,30 @@ Also note, that the random key is 28 characters long, and we can't truncate it. 
 
 ## High Level Design
 ![design](documentation/tinyurl-high-level.png)
+As I wrote earlier, we have to separate reads from writes for better scalability. A homogenic workload is always
+easier to fine-tune and this way we can scale out writes independently of reads. 
+
+## Application stack
+The nature of redirects bounds us to HTTP protocol. To reach near real-time performance
+we have to choose a non-blocking reactive framework for serving the requests, like Vert.X, RxJava, Spring WebFlux or similar. 
+For this particular project I chose Spring WebFlux.
 
 ## Telemetry
+For building the metrics I chose to use OpenMetrics with Prometheus and Grafana. Many applications are offering their metrics
+out-of-the hood in this format. 
+Unfortunately Riak is an exceptions, so I had to use another external service, called [riak-exporter](https://github.com/anti1869/riak_exporter).
 
+All the metrics dashboards are accessible after starting the containers with Docker compose.
+
+<img src="documentation/screenshot_prometheus.png" width="450" />
+<img src="documentation/screenshot_grafana_cache.png" width="450" />
+<img src="documentation/screenshot_grafana_shortenings.png" width="450" />
 
 ## Caching
 https://gist.github.com/jboner/2841832
 - Ignite, Hazelcast, Infinispan, EhCache
 
 ## Load Balancing
-
 
 ## Hash Operations Benchmark
 The benchmark can be executed with
@@ -133,22 +147,23 @@ make e2e
 
 ### Endpoint URLs
 
-Riak admin UI is available at: http://DOCKER_HOST_IP:8098/admin
-Traefik admin UI is available at: http://DOCKER_HOST_IP:8080
-Grafana UI is available at: http://DOCKER_HOST_IP:3000
+Riak admin UI is available at: `http://DOCKER_HOST_IP:8098/admin`
+Envoy admin UI is available at: `http://DOCKER_HOST_IP:8080`
+Grafana UI is available at: `http://DOCKER_HOST_IP:3000`
+Prometheus UI is available at: `http://DOCKER_HOST_IP:9090`
 
-Swagger UI for shortener is available at: http://localhost:8080/v1/swagger-ui.html
-Swagger UI for resolver is available at: http://localhost:8081/v1/swagger-ui.html
+Swagger UI for shortener is available at: `http://localhost:8080/v1/swagger-ui.html`
+Swagger UI for resolver is available at: `http://localhost:8081/v1/swagger-ui.html`
 
-Both resolver and shortener can be accessed via Traefik using port 80.
+Both resolver and shortener can be accessed via Envoy using port 80.
 ```bash
 curl -X POST -H "Content-Type: application/json" \
  -d '{"originalUrl":"https://google.com"}' \
- http://192.168.99.100
+ http://192.168.99.100/v1/url
 ```
 
 ```bash
-curl  http://192.168.99.100/mZmevP
+curl  http://192.168.99.100/v1/url/mZmevP
 ```
 
 ### Scaling out specific services
