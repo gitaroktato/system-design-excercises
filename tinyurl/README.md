@@ -35,7 +35,8 @@ Hash collisions should be resolved before the final value of the data is persist
 
 ## High-level estimates
 
-Assuming 500 million new URLs per month and 100:1 read:write ratio.
+Assuming 500 million new URLs per month and 100:1 read:write ratio. Let's also assume, that 
+the size of one object is 500 bytes.
 
 |   Requirement  | Measure    |
 | --- | --- |
@@ -44,7 +45,7 @@ Assuming 500 million new URLs per month and 100:1 read:write ratio.
 |Incoming data|	100KB/s|
 |Outgoing data|	10MB/s|
 |Storage for 5 years|	15TB|
-|Memory for cache|	170GB|
+|Memory for caching top 20% of daily URL redirections|	170GB|
 
 ## API
 
@@ -94,9 +95,10 @@ but this will bind our key generation algorithm to a specific data store.
 Also note, that the random key is 28 characters long, and we can't truncate it. So this solution is not advisable.
 
 ## High Level Design
-![design](documentation/tinyurl-high-level.png)
 As I wrote earlier, we have to separate reads from writes for better scalability. A homogenic workload is always
-easier to fine-tune and this way we can scale out writes independently of reads. 
+easier to fine-tune and this way we can scale out writes independently of reads.
+
+![design](documentation/tinyurl-high-level.png)
 
 ## Application stack
 The nature of redirects bounds us to HTTP protocol. To reach near real-time performance
@@ -115,10 +117,24 @@ All the metrics dashboards are accessible after starting the containers with Doc
 <img src="documentation/screenshot_grafana_shortenings.png" width="450" />
 
 ## Caching
-https://gist.github.com/jboner/2841832
-- Ignite, Hazelcast, Infinispan, EhCache
+When choosing the right cache provider for the reads, we have to keep several things in mind.
+
+We need an in-memory cache provider, so we don't have to pay additional penalty for the extra network hop.
+The penalty does not seem much, but if we compare it to in-memory access we can say
+that there's a two orders of magnitude difference between main memory access
+and getting 1K bytes over a gigabit network. See [Latency Numbers Every Programmer Should Know](
+https://gist.github.com/jboner/2841832) for further info.
+
+This means, that we can't use distributed cache, like Redis. 
+The candidates we have to consider are: Apache Ignite, Hazelcast, Infinispan, EhCache.
+
+I chose Hazelcast, because it's providing [auto-discovery with IP multicast](https://docs.hazelcast.com/imdg/4.2/clusters/discovering-by-multicast.html)
+so there's no additional component required for cluster membership management (like Zookeper).
+
+**TODO** Add screenshot from backup replication
 
 ## Load Balancing
+
 
 ## Hash Operations Benchmark
 The benchmark can be executed with
