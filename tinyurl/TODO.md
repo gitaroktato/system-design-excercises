@@ -15,6 +15,8 @@
   -- https://docs.riak.com/riak/kv/latest/using/reference/statistics-monitoring/index.html
 - ✔ Load-balancing with Envoy
 - ✔ Caching and warm cache
+- Envoy TCP proxy
+  -- https://gist.github.com/int128/5b02bd1f9b7882aa6b48727b838e658e
 - Resilience (backpressure by header ID)
 - JMH tutorial
 

@@ -89,6 +89,10 @@ With 10 character long keys we will still have around 10% chance of collision af
 The calculator can be viewed at:
 https://www.desmos.com/calculator/v254ajn3bf
 
+### Conclusion
+In conclusion, I would say that a randomly assigned string which features more characters and uses all 8 bits
+would cause less collision and perform much better, than [Base64](https://en.wikipedia.org/wiki/Base64#Base64_table).
+
 ### Relying on Database mechanism
 Riak is able to [assign random keys](https://docs.riak.com/riak/kv/latest/developing/usage/creating-objects/index.html#store-a-new-object-and-assign-a-random-key) automatically
 but this will bind our key generation algorithm to a specific data store.
@@ -112,9 +116,9 @@ Unfortunately Riak is an exceptions, so I had to use another external service, c
 
 All the metrics dashboards are accessible after starting the containers with Docker compose.
 
-<img src="documentation/screenshot_prometheus.png" width="450" />
-<img src="documentation/screenshot_grafana_cache.png" width="450" />
-<img src="documentation/screenshot_grafana_shortenings.png" width="450" />
+<img src="documentation/screenshot_prometheus.png" width="75%" />
+<img src="documentation/screenshot_grafana_cache.png" width="75%" />
+<img src="documentation/screenshot_grafana_shortenings.png" width="75%" />
 
 ## Caching
 When choosing the right cache provider for the reads, we have to keep several things in mind.
@@ -134,7 +138,15 @@ so there's no additional component required for cluster membership management (l
 **TODO** Add screenshot from backup replication
 
 ## Load Balancing
+The load balancer should redirect workload in a round-robin fashion. 
+Interpreting the HTTP payload for every request will increase latency, so it would be a good choice to 
+use [Layer 4 (TCP)](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/listeners/tcp_proxy)
+load-balancing instead of Layer 7 (HTTP) for redirecting shortened URLs.
 
+Beside round-robin, Envoy offers [ring hash](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/load_balancers#ring-hash) load balancing
+which consistently forwards each request to the appropriate host by hashing some property of the request.
+This might result more cache hits but comes with the cost of using Layer 7 routing, and an additional hashing operation
+at load-balancer level.
 
 ## Hash Operations Benchmark
 The benchmark can be executed with
@@ -151,12 +163,21 @@ Result "service.UrlShortenerBenchmark.benchmarkShorten":
   CI (99.9%): [316147.981, 520301.976] (assumes normal distribution)
 ```
 
+## Shortening Performance
+
+
+## Resolution Performance
+
+
 ## Starting the application 
 Use the following command:
 ```bash
 make
 ```
-Running end-to-end tests requires Taurus being installed. It can be done with the following:
+
+Running end-to-end tests requires Taurus being installed. 
+You need to configure your Docker host and the test case in the `Makefile`.
+Tests can be executed with the following command.
 ```bash
 make e2e
 ```
@@ -224,10 +245,10 @@ https://github.com/vegasbrianc/docker-traefik-prometheus/blob/master/prometheus/
 ### Google Jib
 https://github.com/GoogleContainerTools/jib/tree/master/examples/multi-module
 
-### Traefik
-https://doc.traefik.io/traefik/routing/routers/#rule
-https://doc.traefik.io/traefik/middlewares/replacepath/
-https://doc.traefik.io/traefik/routing/providers/docker/#tcp
+### Envoy
+https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/load_balancers#ring-hash
+https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/arch_overview
+https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/listeners/tcp_proxy
 
 ### Caching
 http://highscalability.com/ehcache-java-distributed-cache
