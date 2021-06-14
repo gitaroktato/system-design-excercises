@@ -5,6 +5,8 @@ services:
     ports:
       # The HTTP port
       - "80:80"
+      # The TCP port
+      - "10000:10000"
       # The Admin UI
       - "9901:9901"
     volumes:
