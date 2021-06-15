@@ -204,7 +204,9 @@ curl  http://192.168.99.100/v1/url/mZmevP
 ```
 
 ### Scaling out specific services
-Scaling applications (needs lots of resources by the way)
+Reads/Writes can be scaled out individually.
+Because every request is load-balanced, instances does not need to be reconfigured and redeployed. 
+Scaling applications with Docker(needs lots of resources by the way):
 ```bash
 docker-compose scale member=2 resolver=2
 ```
