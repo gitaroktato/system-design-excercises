@@ -135,20 +135,24 @@ The candidates we have to consider are: Apache Ignite, Hazelcast, Infinispan, Eh
 I chose Hazelcast, because it's providing [auto-discovery with IP multicast](https://docs.hazelcast.com/imdg/4.2/clusters/discovering-by-multicast.html)
 so there's no additional component required for cluster membership management (like Zookeper).
 
-**TODO** Add screenshot from backup replication
+Below there's a screenshot of the cache being repartitioned after a second instance of the resolver was started.
+<img src="documentation/resolution_cache_replication.png" width="75%" />
 
 ## Load Balancing
 The load balancer should redirect workload in a round-robin fashion. 
 Interpreting the HTTP payload for every request will increase latency, so it would be a good choice to 
 use [Layer 4 (TCP)](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/listeners/tcp_proxy)
-load-balancing instead of Layer 7 (HTTP) for redirecting shortened URLs.
+load-balancing instead of Layer 7 (HTTP) for redirecting shortened URLs. In practice Envoy was showing
+lower performance when using Layer 4 load-balancing, so I just reverted to Layer 7.
 
 Beside round-robin, Envoy offers [ring hash](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/load_balancers#ring-hash) load balancing
 which consistently forwards each request to the appropriate host by hashing some property of the request.
 This might result more cache hits but comes with the cost of using Layer 7 routing, and an additional hashing operation
 at load-balancer level.
 
-## Hash Operations Benchmark
+## Performance Evaluation
+
+### Hash Operations Benchmark
 The benchmark can be executed with
 ```shell
 ./gradlew clean build jmhJar
@@ -163,11 +167,32 @@ Result "service.UrlShortenerBenchmark.benchmarkShorten":
   CI (99.9%): [316147.981, 520301.976] (assumes normal distribution)
 ```
 
-## Shortening Performance
+### Shortening Performance
+Performance reached 500 ops/s for a single instance, so two instances from shortener nodes are enough.
+This is only required to ensure high-availability. The P99 percentile of the response times can be kept
+under 50ms.
 
+<img src="documentation/shortening_rate.png" width="75%" />
+<img src="documentation/shortening_response_time.png" width="75%" />
+<img src="documentation/shortening_response_time_taurus.png" width="75%" />
 
-## Resolution Performance
+### Resolution Performance
+Just to be safe, we can assume that one instance can provide 1000 ops/s at-minimum if the URLs are cached locally.
+I would estimate the number of nodes required to 20 nodes performing resolution and 20 Riak read replicas. 
+The URL resolution seemed to be CPU hungry on both the instances and Riak read replicas, so autoscaling based on 
+CPU metrics would help to optimize the cost.
 
+<img src="documentation/resolution_http_perf.png" width="75%" />
+<img src="documentation/resolution_http_perf_envoy.png" width="75%" />
+<img src="documentation/resolution_rate.png" width="75%" />
+<img src="documentation/resolution_response_time_taurus.png" width="75%" />
+
+### Cache Performance
+27000 entries just cost 4 MB to cache, so one entity needs 148 bytes. With 20000 ops/s read performance in total, we would need
+to cache 1,728,000,000 entities. Let's assume we can apply Pareto rule here, and we just need to cache the top 20% of the entities.
+This leaves us with 51 GB to total cache space. The cache cost should be distributed across nodes, by applying
+[ring hash](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/load_balancers#ring-hash) load balancing
+to ensure that URL redirection is sent to the same node consistently. 
 
 ## Starting the application 
 Use the following command:
