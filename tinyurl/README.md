@@ -136,6 +136,8 @@ I chose Hazelcast, because it's providing [auto-discovery with IP multicast](htt
 so there's no additional component required for cluster membership management (like Zookeper).
 
 Below there's a screenshot of the cache being repartitioned after a second instance of the resolver was started.
+
+
 <img src="documentation/resolution_cache_replication.png" width="75%" />
 
 ## Load Balancing
@@ -193,6 +195,8 @@ to cache 1,728,000,000 entities. Let's assume we can apply Pareto rule here, and
 This leaves us with 51 GB to total cache space. The cache cost should be distributed across nodes, by applying
 [ring hash](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/load_balancers#ring-hash) load balancing
 to ensure that URL redirection is sent to the same node consistently. 
+
+<img src="documentation/resolution_cache_hits_2700_entities.png" width="75%" />
 
 ## Starting the application 
 Use the following command:
