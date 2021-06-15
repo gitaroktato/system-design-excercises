@@ -136,6 +136,8 @@ I chose Hazelcast, because it's providing [auto-discovery with IP multicast](htt
 so there's no additional component required for cluster membership management (like Zookeper).
 
 Below there's a screenshot of the cache being repartitioned after a second instance of the resolver was started.
+
+
 <img src="documentation/resolution_cache_replication.png" width="75%" />
 
 ## Load Balancing
@@ -149,6 +151,17 @@ Beside round-robin, Envoy offers [ring hash](https://www.envoyproxy.io/docs/envo
 which consistently forwards each request to the appropriate host by hashing some property of the request.
 This might result more cache hits but comes with the cost of using Layer 7 routing, and an additional hashing operation
 at load-balancer level.
+
+
+## Resilience
+[Rate limiting](https://resilience4j.readme.io/docs/ratelimiter) should be introduced by each API key to ensure that bad behaving clients are not draining all
+the resources. 
+If we don't want to bound each API key to a specific instance, we need to use a [global rate limiter](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/other_features/global_rate_limiting)
+which updates the statistics in a central storage (Memcached or Redis), so all the rate limits are in-sync. 
+In this case rate limiting should be applied in load balancers and not in the URL resolving nodes themselves.
+
+To increase the availability, we need to ensure that cached URLs are returned even if Riak nodes are unavailable.
+A simple [circuit breaker](https://resilience4j.readme.io/docs/examples-1#decorate-mono-or-flux-with-a-circuitbreaker) is enough to implement this functionality.
 
 ## Performance Evaluation
 
@@ -193,6 +206,8 @@ to cache 1,728,000,000 entities. Let's assume we can apply Pareto rule here, and
 This leaves us with 51 GB to total cache space. The cache cost should be distributed across nodes, by applying
 [ring hash](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/load_balancers#ring-hash) load balancing
 to ensure that URL redirection is sent to the same node consistently. 
+
+<img src="documentation/resolution_cache_hits_2700_entities.png" width="75%" />
 
 ## Starting the application 
 Use the following command:
@@ -283,3 +298,7 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-featu
 https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-hazelcast
 https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html#production-ready-metrics-cache
 https://guides.hazelcast.org/caching-springboot/
+
+### Resilience4J
+https://resilience4j.readme.io/docs
+https://resilience4j.readme.io/docs/examples-1
