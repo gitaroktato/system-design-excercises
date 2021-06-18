@@ -1,5 +1,7 @@
 package com.example.tinyurl.resolving.infrastructure.webflux;
 
+import static com.example.tinyurl.resolving.infrastructure.spring.CachingMetricsConfiguration.URL_CACHE_NAME;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Optional;
@@ -7,10 +9,8 @@ import java.util.concurrent.ExecutionException;
 
 import com.example.tinyurl.resolving.application.ResolvingAction;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
-import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import io.vavr.control.Try;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -29,7 +29,7 @@ public class UrlResolvingHandler {
     private CircuitBreaker circuitBreaker;
 
     @Autowired
-    private Cache cache;
+    private CacheManager cacheManager;
 
     public Mono<ServerResponse> resolve(ServerRequest request) {
         var hashKey = request.pathVariable("hash");
@@ -51,14 +51,15 @@ public class UrlResolvingHandler {
     }
 
     private URI recoverUriFromCache(String hashKey, Throwable cause) {
-            return Optional.ofNullable(cache.get(hashKey, String.class))
-                    .map(uri -> {
-                        try {
-                            return new URI(uri);
-                        } catch (URISyntaxException e) {
-                            throw Exceptions.propagate(e);
-                        }
-                    }).orElseThrow(() -> Exceptions.propagate(cause));
+        var cache = cacheManager.getCache(URL_CACHE_NAME);
+        return Optional.ofNullable(cache.get(hashKey, String.class))
+                .map(uri -> {
+                    try {
+                        return new URI(uri);
+                    } catch (URISyntaxException e) {
+                        throw Exceptions.propagate(e);
+                    }
+                }).orElseThrow(() -> Exceptions.propagate(cause));
     }
 
     private URI resolve(String hashKey) {

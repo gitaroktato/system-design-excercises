@@ -1,24 +1,19 @@
 package com.example.tinyurl.resolving.infrastructure.riak;
 
-import static com.example.tinyurl.resolving.infrastructure.spring.CachingConfiguration.URL_CACHE_NAME;
+import static com.example.tinyurl.resolving.infrastructure.spring.CachingMetricsConfiguration.URL_CACHE_NAME;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
 import javax.annotation.PostConstruct;
 
 import com.basho.riak.client.api.RiakClient;
 import com.basho.riak.client.api.cap.Quorum;
 import com.basho.riak.client.api.commands.kv.FetchValue;
-import com.basho.riak.client.api.commands.kv.StoreValue;
 import com.basho.riak.client.core.query.Location;
 import com.basho.riak.client.core.query.Namespace;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
-import reactor.core.Exceptions;
 
 @Repository
 public class UrlRepository {
