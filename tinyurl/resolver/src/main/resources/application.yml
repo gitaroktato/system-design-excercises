@@ -13,6 +13,7 @@ application:
   riak:
     bucket_type: tinyurl
     bucket_name: url
+    fetch_timeout: 200
     port: 8087
 # Actuator settings
 management.endpoints.web.exposure.include: info, health, prometheus, caches
