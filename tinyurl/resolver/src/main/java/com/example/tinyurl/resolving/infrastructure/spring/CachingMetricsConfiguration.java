@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class CachingMetricsConfiguration {
 
+    public static final String URL_CACHE_NAME = "URLs";
     private final CacheMetricsRegistrar cacheMetricsRegistrar;
     private final CacheManager cacheManager;
 
@@ -15,7 +16,7 @@ public class CachingMetricsConfiguration {
                                        CacheManager cacheManager) {
         this.cacheMetricsRegistrar = cacheMetricsRegistrar;
         this.cacheManager = cacheManager;
-        Cache URLs = this.cacheManager.getCache("URLs");
+        Cache URLs = cacheManager.getCache(URL_CACHE_NAME);
         this.cacheMetricsRegistrar.bindCacheToRegistry(URLs);
     }
 }
