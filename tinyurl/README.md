@@ -215,6 +215,11 @@ Use the following command:
 make
 ```
 
+If you have trouble starting the Riak coordinator node, just force-start it again:
+```bash
+docker-compose up -d --force coordinator
+```
+
 Running end-to-end tests requires Taurus being installed. 
 You need to configure your Docker host and the test case in the `Makefile`.
 Tests can be executed with the following command.
