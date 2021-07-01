@@ -1,0 +1,86 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition for Pastebin
+  version: v1
+servers:
+- url: http://localhost:8081
+  description: New paste creation
+- url: http://localhost:8080
+  description: Paste resolution
+- url: http://localhost:80
+  description: Load-balancer entrypoint
+paths:
+  /v1/paste:
+    post:
+      summary: Create a new paste
+      parameters: 
+        - name: ApiKey
+          in: header
+          description: API key for traffic shaping
+          required: true
+          allowEmptyValue: false
+          schema: 
+            type: string
+      operationId: paste
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Paste'
+      responses:
+        "200":
+          description: New paste created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Paste'
+  /v1/paste/{uuid}:
+    get:
+      summary: Retrieve paste by unique ID
+      operationId: getPaste
+      parameters:
+      - name: ApiKey
+        in: header
+        description: API key for traffic shaping
+        required: true
+        allowEmptyValue: false
+        schema: 
+          type: string
+      - name: uuid
+        in: path
+        description: Paste's unique ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Paste retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Paste'
+        "404":
+          description: Paste not found
+components:
+  schemas:
+    Paste:
+      type: object
+      required: [content]
+      properties:
+        uuid:
+          type: string
+          description: The unique ID of the paste.
+        content:
+          type: string
+          description: The textual content of the paste.
+        title:
+          type: string
+          description: An optional title for the paste.
+        alias:
+          type: string
+          description: The alias of the paste that becomes part of the URL.
+        userName:
+          type: string
+        expiry:
+          type: integer
+          description: The expiry in unix time stamp.
