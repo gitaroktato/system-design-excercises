@@ -16,7 +16,7 @@ import com.basho.riak.client.core.RiakCluster;
 import com.basho.riak.client.core.RiakNode;
 import com.basho.riak.client.core.query.Location;
 import com.basho.riak.client.core.query.Namespace;
-import com.example.tinyurl.shortening.api.dto.UrlDto;
+import com.example.tinyurl.shortening.application.dto.UrlDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;

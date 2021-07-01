@@ -11,9 +11,14 @@
   -- Verify key collisions
 - ✔ Contract
 - ✔ Modular Gradle with multiple applications
-- Telemetry
+- ✔ Telemetry
   -- https://docs.riak.com/riak/kv/latest/using/reference/statistics-monitoring/index.html
-- Load-balancing with Traefik
-- Caching and warm cache
-- Resilience
+- ✔ Load-balancing with Envoy
+- ✔ Caching and warm cache
+- ✔ Envoy TCP proxy
+  -- https://gist.github.com/int128/5b02bd1f9b7882aa6b48727b838e658e
+- Resilience 
+  -- Backpressure by header ID
+  -- Using in-memory cache if DB is not available.
 - JMH tutorial
+
