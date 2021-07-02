@@ -1,14 +1,12 @@
-package com.example.tinyurl.shortening.api;
+package com.example.tinyurl.shortening.infrastructure.webflux;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
-import com.example.tinyurl.shortening.api.dto.UrlDto;
-import com.example.tinyurl.shortening.api.dto.UrlShortenedDto;
-import com.example.tinyurl.shortening.domain.UrlShortener;
-import com.example.tinyurl.shortening.infrastructure.riak.UrlRepository;
+import com.example.tinyurl.shortening.application.dto.UrlDto;
+import com.example.tinyurl.shortening.application.dto.UrlShortenedDto;
+import com.example.tinyurl.shortening.application.ShorteningAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -22,9 +20,7 @@ import reactor.core.scheduler.Schedulers;
 public class UrlShorteningHandler {
 
     @Autowired
-    private UrlShortener shortener;
-    @Autowired
-    private UrlRepository repo;
+    private ShorteningAction shorteningAction;
 
     Mono<ServerResponse> shorten(ServerRequest request) {
         var apiKey = request.queryParam("apiKey");
@@ -47,25 +43,13 @@ public class UrlShorteningHandler {
     }
 
     private Mono<UrlShortenedDto> shortenAsync(UrlDto dto) {
-        return Mono.fromCallable(() -> this.doShorten(dto))
-                .subscribeOn(Schedulers.boundedElastic());
+        return Mono.fromCallable(() -> {
+            try {
+                return shorteningAction.doShortening(dto);
+            } catch (MalformedURLException | ExecutionException | InterruptedException e) {
+                throw Exceptions.propagate(e);
+            }
+        }) .subscribeOn(Schedulers.boundedElastic());
     }
 
-    private UrlShortenedDto doShorten(UrlDto dto) {
-        try {
-            var url = new URL(dto.originalUrl);
-            var result = shortener.shorten(url);
-            String key = getKeyFromUrl(result);
-            repo.save(key, dto.originalUrl);
-            return new UrlShortenedDto(dto.originalUrl, result.toString());
-        } catch (MalformedURLException | ExecutionException | InterruptedException e) {
-            throw Exceptions.propagate(e);
-        }
-    }
-
-    private String getKeyFromUrl(URL result) {
-        var pathAsString = result.getPath();
-        int hashIndex = pathAsString.lastIndexOf('/') + 1;
-        return pathAsString.substring(hashIndex);
-    }
 }

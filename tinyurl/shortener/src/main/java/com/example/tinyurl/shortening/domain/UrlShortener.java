@@ -1,9 +1,8 @@
 package com.example.tinyurl.shortening.domain;
 
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,33 +14,35 @@ public class UrlShortener {
     @Value("${application.resolver.host}")
     private String serverAddress;
 
-    @Value("${application.resolver.path}")
-    private String serverPath;
+    @Value("${application.resolver.path:#{null}}")
+    private Optional<String> serverPath;
 
-    @Value("${application.resolver.port}")
-    private String serverPort;
+    @Value("${application.resolver.port:#{null}}")
+    private Optional<Integer> serverPort;
+
+    @Value("${application.shortener.keyLength}")
+    private int hashKeyLength;
 
     public void setServerAddress(String serverAddress) {
         this.serverAddress = serverAddress;
     }
 
-    public void setServerPort(String serverPort) {
-        this.serverPort = serverPort;
+    public void setServerPort(int serverPort) {
+        this.serverPort = Optional.of(serverPort);
     }
 
     public void setServerPath(String serverPath) {
-        this.serverPath = serverPath;
+        this.serverPath = Optional.of(serverPath);
     }
 
-    public static final int URL_SHORTENED_LENGTH = 6;
+    public void setHashKeyLength(int hashLength) {
+        this.hashKeyLength = hashLength;
+    }
 
-    public URL shorten(URL target) throws MalformedURLException {
-        String value = target.toString();
-        var hash = DigestUtils.md5Digest(value.getBytes(StandardCharsets.UTF_8));
-        var encoded = Base64.getEncoder().encodeToString(hash);
-        encoded = encoded.substring(0, URL_SHORTENED_LENGTH);
-        var resultUrl = String.format("http://%s:%s/%s/%s", serverAddress, serverPort,
-                serverPath, encoded);
-        return new URL(resultUrl);
+    public Url shorten(Url target) throws MalformedURLException {
+        var md5Sum = DigestUtils.md5Digest(target.toBytes());
+        var hashKey = Base64.getEncoder().encodeToString(md5Sum);
+        var hashKeyStripped = hashKey.substring(0, hashKeyLength);
+        return Url.from(serverAddress, hashKeyStripped, serverPort, serverPath);
     }
 }

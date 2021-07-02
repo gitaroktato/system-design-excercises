@@ -3,3 +3,10 @@ plugins {
 }
 
 jib.to.image = 'gitaroktato/tinyurl/resolver'
+
+dependencies {
+    implementation "com.hazelcast:hazelcast-all:$hazelcastVersion"
+    implementation "io.github.resilience4j:resilience4j-circuitbreaker:$resilience4JVersion"
+    implementation "io.github.resilience4j:resilience4j-micrometer:$resilience4JVersion"
+    implementation "io.github.resilience4j:resilience4j-reactor:$resilience4JVersion"
+}

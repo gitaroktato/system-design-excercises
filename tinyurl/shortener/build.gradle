@@ -5,8 +5,6 @@ plugins {
 
 jib.to.image = 'gitaroktato/tinyurl/shortener'
 
-def testcontainersVersion = '1.15.3'
-
 dependencies {
 	testCompile "org.testcontainers:testcontainers:$testcontainersVersion"
 	testImplementation "org.testcontainers:junit-jupiter:$testcontainersVersion"

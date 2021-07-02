@@ -63,3 +63,16 @@ scrape_configs:
           - 'shortener'
         type: 'A'
         port: 8080
+
+  - job_name: 'envoy'
+
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+
+    # scheme defaults to 'http'.
+    metrics_path: /stats/prometheus
+    dns_sd_configs:
+      - names:
+          - 'envoy'
+        type: 'A'
+        port: 9901

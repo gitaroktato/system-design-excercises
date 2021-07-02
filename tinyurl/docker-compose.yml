@@ -1,15 +1,24 @@
 version: "3"
 services:
+  envoy:
+    image: envoyproxy/envoy:v1.13.1
+    ports:
+      # The HTTP port
+      - "80:80"
+      # The Admin UI
+      - "9901:9901"
+    volumes:
+      - ./src/main/docker/envoy/envoy.yaml:/etc/envoy/envoy.yaml
   resolver:
     image: gitaroktato/tinyurl/resolver
     ports:
-      - 8081:8081
+      - "8081"
     environment:
       - 'spring.profiles.active=docker'
   shortener:
     image: gitaroktato/tinyurl/shortener
     ports:
-      - 8080:8080
+      - "8080"
     environment:
       - 'spring.profiles.active=docker'
   prometheus:
@@ -29,11 +38,8 @@ services:
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
       - GF_USERS_ALLOW_SIGN_UP=false
-      - GF_INSTALL_PLUGINS=grafana-piechart-panel
     ports:
       - 3000:3000
-    # On MacOS, remove next line and replace localhost by host.docker.internal in prometheus/prometheus.yml and
-    # grafana/provisioning/datasources/datasource.yml
   riak-exporter:
     command: --address=0.0.0.0 --port=8097 --riak=http://coordinator:8098/stats --endpoint=/metrics
     build: ./src/main/docker/riak-exporter
@@ -50,7 +56,8 @@ services:
     labels:
       - "com.basho.riak.cluster.name=riakkv"
     volumes:
-      - schemas:/etc/riak/schemas
+      - ./src/main/docker/riak/schemas:/etc/riak/schemas
+      - ./src/main/docker/riak/poststart.d/03-bootstrap-my-datatype.sh:/etc/riak/poststart.d/03-bootstrap-my-datatype.sh:ro
   member:
     image: basho/riak-kv
     ports:

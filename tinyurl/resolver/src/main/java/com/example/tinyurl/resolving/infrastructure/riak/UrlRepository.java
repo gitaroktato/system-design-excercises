@@ -6,7 +6,6 @@ import javax.annotation.PostConstruct;
 import com.basho.riak.client.api.RiakClient;
 import com.basho.riak.client.api.cap.Quorum;
 import com.basho.riak.client.api.commands.kv.FetchValue;
-import com.basho.riak.client.api.commands.kv.StoreValue;
 import com.basho.riak.client.core.query.Location;
 import com.basho.riak.client.core.query.Namespace;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,8 @@ public class UrlRepository {
     private String bucketType;
     @Value("${application.riak.bucket_name}")
     private String bucketName;
+    @Value("${application.riak.fetch_timeout}")
+    private int fetchTimeout;
     private Namespace bucket;
 
     @PostConstruct
@@ -34,6 +35,7 @@ public class UrlRepository {
         var fetch = new FetchValue.Builder(location)
                 .withOption(FetchValue.Option.NOTFOUND_OK, false)
                 .withOption(FetchValue.Option.R, Quorum.oneQuorum())
+                .withTimeout(fetchTimeout)
                 .build();
         var response = client.execute(fetch);
         return response.getValue(String.class);
