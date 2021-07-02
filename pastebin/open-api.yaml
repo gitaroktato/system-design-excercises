@@ -73,14 +73,77 @@ paths:
                 $ref: '#/components/schemas/Paste'
           links:
             getUser:
-              operationRef: '#/paths/v1/user/{name}/get'
+              operationRef: '#/paths/v1/user/{id}/get'
               parameters:
-                name: '$response.body#/userName'
+                name: '$response.body#/userId'
               description: >
-                The `userName` value returned in the paste can be used as
-                the `name` parameter in `GET /v1/user/{name}/get`.
+                The `userId` value returned in the paste can be used as
+                the `id` parameter in `GET /v1/user/{id}/get`.
         "404":
           description: Paste not found
+  /v1/user:
+    post:
+      summary: Create a new user
+      parameters: 
+        - name: ApiKey
+          in: header
+          description: API key for traffic shaping
+          required: true
+          allowEmptyValue: false
+          schema: 
+            type: string
+      operationId: user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Unique ID of the created user.
+          links:
+            getUser:  
+              operationRef: '#/paths/v1/user/{id}/get'
+              parameters:
+                id: '$response.body#/id'
+              description: >
+                The `id` value returned in the response can be used as
+                the `id` parameter in `GET /v1/user/{id}`.
+  /v1/user/{id}:
+    get:
+      summary: Retrieve user by synthetic ID
+      operationId: getUser
+      parameters:
+      - name: ApiKey
+        in: header
+        description: API key for traffic shaping
+        required: true
+        allowEmptyValue: false
+        schema: 
+          type: string
+      - name: id
+        in: path
+        description: User's synthetic ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: User retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "404":
+          description: User not found
 components:
   schemas:
     Paste:
@@ -99,7 +162,7 @@ components:
         alias:
           type: string
           description: The alias of the paste that becomes part of the URL.
-        userName:
+        userId:
           type: string
         expiry:
           type: integer
@@ -108,5 +171,16 @@ components:
       type: object
       required: [name]
       properties: 
+        id:
+          type: string
+          description: User's synthetic ID
         name:
           type: string
+        email:
+          type: string
+        creationDate:
+          type: integer
+          description: The creation date in unix time stamp.
+        lastLogin:
+          type: integer
+          description: The last login in unix time stamp.
