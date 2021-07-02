@@ -28,12 +28,24 @@ paths:
             schema:
               $ref: '#/components/schemas/Paste'
       responses:
-        "200":
-          description: New paste created
+        '201':
+          description: Paste successfully created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Paste'
+                type: object
+                properties:
+                  uuid:
+                    type: string
+                    description: Unique ID of the created paste.
+          links:
+            getPaste:  
+              operationRef: '#/paths/v1/paste/{uuid}/get'
+              parameters:
+                uuid: '$response.body#/uuid'
+              description: >
+                The `uuid` value returned in the response can be used as
+                the `uuid` parameter in `GET /v1/paste/{uuid}`.
   /v1/paste/{uuid}:
     get:
       summary: Retrieve paste by unique ID
@@ -59,6 +71,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Paste'
+          links:
+            getUser:
+              operationRef: '#/paths/v1/user/{name}/get'
+              parameters:
+                name: '$response.body#/userName'
+              description: >
+                The `userName` value returned in the paste can be used as
+                the `name` parameter in `GET /v1/user/{name}/get`.
         "404":
           description: Paste not found
 components:
@@ -84,3 +104,9 @@ components:
         expiry:
           type: integer
           description: The expiry in unix time stamp.
+    User:
+      type: object
+      required: [name]
+      properties: 
+        name:
+          type: string
