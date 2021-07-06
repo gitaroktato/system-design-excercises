@@ -30,14 +30,6 @@ paths:
       responses:
         '201':
           description: Paste successfully created
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  uuid:
-                    type: string
-                    description: Unique ID of the created paste.
           links:
             getPaste:  
               operationRef: '#/paths/v1/paste/{uuid}/get'
@@ -46,6 +38,12 @@ paths:
               description: >
                 The `uuid` value returned in the response can be used as
                 the `uuid` parameter in `GET /v1/paste/{uuid}`.
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Error
+        '503':
+          description: Service Temporarily Unavailable
   /v1/paste/{uuid}:
     get:
       summary: Retrieve paste by unique ID
@@ -101,14 +99,6 @@ paths:
       responses:
         '201':
           description: User successfully created
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    description: Unique ID of the created user.
           links:
             getUser:  
               operationRef: '#/paths/v1/user/{id}/get'
@@ -117,6 +107,12 @@ paths:
               description: >
                 The `id` value returned in the response can be used as
                 the `id` parameter in `GET /v1/user/{id}`.
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Error
+        '503':
+          description: Service Temporarily Unavailable
   /v1/user/{id}:
     get:
       summary: Retrieve user by synthetic ID
@@ -144,11 +140,15 @@ paths:
                 $ref: '#/components/schemas/User'
         "404":
           description: User not found
+        '500':
+          description: Internal Error
+        '503':
+          description: Service Temporarily Unavailable
 components:
   schemas:
     Paste:
       type: object
-      required: [content]
+      required: [content, title]
       properties:
         uuid:
           type: string
@@ -165,8 +165,8 @@ components:
         userId:
           type: string
         expiry:
-          type: integer
-          description: The expiry in unix time stamp.
+          type: string
+          format: date
     User:
       type: object
       required: [name]
@@ -179,8 +179,8 @@ components:
         email:
           type: string
         creationDate:
-          type: integer
-          description: The creation date in unix time stamp.
+          type: string
+          format: date
         lastLogin:
-          type: integer
-          description: The last login in unix time stamp.
+          type: string
+          format: date
