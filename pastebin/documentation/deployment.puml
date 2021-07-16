@@ -1,0 +1,39 @@
+@startuml deployment-diagram
+package "Pastes" {
+    component [Paste content] as ContentService
+    component [Paste metadata] as MetadataService
+    interface " " as ContentInterface
+    interface " " as MetadataInterface
+    
+    database BLOB [
+        BLOB store
+        ....
+        S3
+    ]
+    
+    database Metadata [
+        Column-oriented store
+        ....
+        Cassandra
+    ]
+}
+
+package "Users" {
+    component [Users] as UserService
+    interface " " as UserInterface
+
+    database Users [
+        Document based store
+        ....
+        MongoDB
+    ]
+}
+
+
+ContentInterface - ContentService
+ContentService - BLOB
+UserInterface - UserService
+UserService - Users
+MetadataInterface - MetadataService
+MetadataService - Metadata
+@enduml
