@@ -1,0 +1,27 @@
+@startuml data-model
+entity Paste {
+    *uuid : string <<id, generated>>
+    ---
+    *title : string
+    *alias : string
+    *userId: string <<FK>>
+    *expiry: date
+}
+
+entity Paste_Content {
+    *uuid : string <<id, FK>>
+    *content : blob
+}
+
+entity User {
+    *id : int <<id, generated>>
+    ---
+    *name : string
+    *email : string
+    *creationDate : date
+    *lastLogin : date
+}
+
+Paste }|--|| User
+Paste ||--|| Paste_Content
+@enduml
