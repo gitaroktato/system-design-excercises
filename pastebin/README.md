@@ -62,9 +62,17 @@ OpenAPI documentation is available in the [open-api.yaml](open-api.yaml) file.
 
 ## Data Model
 
-![](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/plantuml/plantuml-server/master/src/main/webapp/resource/test2diagrams.txt)
+![](documentation\data-model.png)
 
 Each paste can be stored in 5 MB at maximum, so if we keep the pastes for 2 years we will need 15 TB of total database storage. Although 5 MB for each row doesn't seem to be much, the paste content can be decoupled from the metadata of each paste. You can store the paste metadata in a specific NoSQL storage type and use a different storaget type for binary data, like S3.
+
+![](documentation\component-diagram.png)
+![](documentation\deployment-diagram.png)
+
+This means that our components serving the paste content will have to connect to two different storage engines and aggregate the results in-place. The aggregation takes time, so it's more efficient to cache the aggregated results.
+
+### Caching
+Caching is easier to do after aggregation to avoid recalculation. Multi-level caches.
 
 ## References 
 ### Casandra
