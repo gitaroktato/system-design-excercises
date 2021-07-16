@@ -62,7 +62,7 @@ OpenAPI documentation is available in the [open-api.yaml](open-api.yaml) file.
 
 ## Data Model
 
-![](documentation\data-model.png)
+![](documentation/data-model.png)
 
 Each paste can be stored in 5 MB at maximum, so if we keep the pastes for 2 years we will need 15 TB of total database storage. Although 5 MB for each row doesn't seem to be much, the paste content can be decoupled from the metadata of each paste. You can store the paste metadata in a specific NoSQL storage type and use a different storaget type for binary data, like S3.
 
