@@ -66,8 +66,8 @@ OpenAPI documentation is available in the [open-api.yaml](open-api.yaml) file.
 
 Each paste can be stored in 5 MB at maximum, so if we keep the pastes for 2 years we will need 15 TB of total database storage. Although 5 MB for each row doesn't seem to be much, the paste content can be decoupled from the metadata of each paste. You can store the paste metadata in a specific NoSQL storage type and use a different storaget type for binary data, like S3.
 
-![](documentation\component-diagram.png)
-![](documentation\deployment-diagram.png)
+![](documentation/component-diagram.png)
+![](documentation/deployment-diagram.png)
 
 This means that our components serving the paste content will have to connect to two different storage engines and aggregate the results in-place. The aggregation takes time, so it's more efficient to cache the aggregated results.
 
