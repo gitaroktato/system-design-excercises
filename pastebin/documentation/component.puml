@@ -1,0 +1,41 @@
+@startuml component-diagram
+package "Pastes" {
+    component PasteReader
+    component PasteWriter
+    interface " " as PasteReadInterface
+    interface " " as PasteWriteInterface
+    
+    database BLOB [
+        BLOB store
+        ....
+        S3
+    ]
+    
+    database Metadata [
+        Column-oriented store
+        ....
+        Cassandra
+    ]
+}
+
+package "Users" {
+    component [Users] as UserService
+    interface " " as UserInterface
+
+    database Users [
+        Document based store
+        ....
+        MongoDB
+    ]
+}
+
+
+PasteReadInterface -d- PasteReader
+PasteReader -d-> BLOB
+UserInterface -d- UserService
+UserService -d-> Users
+PasteReader -d-> Metadata
+PasteWriteInterface -d- PasteWriter
+PasteWriter -d-> BLOB
+PasteWriter -d-> Metadata
+@enduml
