@@ -12,9 +12,9 @@ package "Pastes" {
     ]
     
     database Metadata [
-        Column-oriented store
+        RDBMS
         ....
-        Cassandra
+        MariaDB
     ]
 }
 
