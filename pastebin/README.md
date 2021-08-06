@@ -86,3 +86,7 @@ Just to have as many kind of databases showcased as possible.
 Caching is easier to do after aggregation to avoid recalculation. Multi-level caches.
 
 ## References 
+### Micronaut
+https://docs.micronaut.io/latest/guide/index.html
+#### OpenAPI
+https://micronaut-projects.github.io/micronaut-openapi/latest/guide/index.html
