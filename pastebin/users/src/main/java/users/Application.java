@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "OpenAPI definition for Pastebin",
+                title = "Users API",
                 version = "v1"
         )
 )
