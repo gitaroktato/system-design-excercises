@@ -8,6 +8,7 @@ package users.api;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.*;
 import io.reactivex.Single;
@@ -26,9 +27,9 @@ public interface UsersApi {
     @ApiResponse(responseCode = "404", description = "User not found")
     @ApiResponse(responseCode = "500", description = "Internal Error")
     @ApiResponse(responseCode = "503", description = "Service Temporarily Unavailable")
-    @Get(value = "/v1/user/{id}", produces = { "application/json" })
-    default Single<HttpResponse<User>> getUser(@NotNull @Parameter(description = "API key for traffic shaping") @Valid @Header(value = "ApiKey") String apiKey
-,@Parameter(description = "User's synthetic ID") @PathVariable("id") String id
+    @Get(value = "/v1/user/{id}", produces = { "application/json+hal" })
+    default Single<HttpResponse<User>> getUser(@NotNull @Parameter(description = "API key for traffic shaping") @Header(value = "ApiKey") String apiKey
+,@Parameter(description = "User's synthetic ID") @PathVariable("id") String id, HttpRequest<?> request
 ) {
         return Single.fromCallable(() -> {
             throw new UnsupportedOperationException();
@@ -41,8 +42,8 @@ public interface UsersApi {
     @ApiResponse(responseCode = "500", description = "Internal Error")
     @ApiResponse(responseCode = "503", description = "Service Temporarily Unavailable")
     @Post(value = "/v1/user", consumes = {"application/json"})
-    default Single<HttpResponse<Void>> createUser(@NotNull @Parameter(description = "API key for traffic shaping") @Valid @Header(value = "ApiKey") String apiKey
-, @Parameter(description = "") @Valid @Body User body
+    default Single<HttpResponse<Void>> createUser(@NotNull @Parameter(description = "API key for traffic shaping") @Header(value = "ApiKey") String apiKey
+, @Parameter(description = "") @Valid @Body User body, HttpRequest<?> request
 ) {
         return Single.fromCallable(() -> {
             throw new UnsupportedOperationException();

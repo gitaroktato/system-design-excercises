@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.micronaut.http.hateoas.AbstractResource;
 import io.micronaut.validation.Validated;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -16,7 +17,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Validated
 @Generated(value = "io.swagger.codegen.v3.generators.java.MicronautCodegen",
         date = "2021-08-06T08:24:32.099Z[GMT]")
-public class User {
+@Schema(allOf = {})
+public class User extends AbstractResource<User> {
   @JsonProperty("id")
   private String id = null;
 

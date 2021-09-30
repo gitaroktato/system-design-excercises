@@ -85,6 +85,10 @@ Just to have as many kind of databases showcased as possible.
 ### Caching
 Caching is easier to do after aggregation to avoid recalculation. Multi-level caches.
 
+
+# Running the Demo
+Swagger UI is available at: http://{HOST}:{PORT}/swagger-ui
+
 ## References 
 ### Micronaut
 https://docs.micronaut.io/latest/guide/index.html
