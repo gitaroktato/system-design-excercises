@@ -90,7 +90,15 @@ Caching is easier to do after aggregation to avoid recalculation. Multi-level ca
 Swagger UI is available at: http://{HOST}:{PORT}/swagger-ui
 
 ## References 
+
+### OpenAPI
+#### Specification
+https://swagger.io/docs/specification/about/
+#### Codegen
+https://swagger.io/docs/open-source-tools/swagger-codegen/
+
 ### Micronaut
 https://docs.micronaut.io/latest/guide/index.html
 #### OpenAPI
 https://micronaut-projects.github.io/micronaut-openapi/latest/guide/index.html
+

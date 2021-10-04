@@ -10,16 +10,14 @@ import javax.validation.constraints.NotNull;
 
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
+import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
 import io.reactivex.Single;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.MicronautCodegen", date = "2021-08-06T08:24:32.099Z[GMT]")
-@Controller
 public interface UsersApi {
-
 
 
     @Operation(summary = "Retrieve user by synthetic ID", operationId = "getUser", description = "" )
@@ -27,10 +25,10 @@ public interface UsersApi {
     @ApiResponse(responseCode = "404", description = "User not found")
     @ApiResponse(responseCode = "500", description = "Internal Error")
     @ApiResponse(responseCode = "503", description = "Service Temporarily Unavailable")
-    @Get(value = "/v1/user/{id}", produces = { "application/json+hal" })
+    @Get(value = "/v1/user/{id}", produces = MediaType.APPLICATION_HAL_JSON)
     default Single<HttpResponse<User>> getUser(@NotNull @Parameter(description = "API key for traffic shaping") @Header(value = "ApiKey") String apiKey
-,@Parameter(description = "User's synthetic ID") @PathVariable("id") String id, HttpRequest<?> request
-) {
+            , @Parameter(description = "User's synthetic ID") @PathVariable("id") String id, HttpRequest<?> request
+    ) {
         return Single.fromCallable(() -> {
             throw new UnsupportedOperationException();
         });
@@ -43,8 +41,8 @@ public interface UsersApi {
     @ApiResponse(responseCode = "503", description = "Service Temporarily Unavailable")
     @Post(value = "/v1/user", consumes = {"application/json"})
     default Single<HttpResponse<Void>> createUser(@NotNull @Parameter(description = "API key for traffic shaping") @Header(value = "ApiKey") String apiKey
-, @Parameter(description = "") @Valid @Body User body, HttpRequest<?> request
-) {
+            ,@Parameter(description = "") @Valid @Body User body, HttpRequest<?> request
+    ) {
         return Single.fromCallable(() -> {
             throw new UnsupportedOperationException();
         });
