@@ -1,4 +1,4 @@
-
+- Get back either JSON+HAL or JSON???
 - JWT
 - 
 -- https://sultanov.dev/blog/securing-java-grpc-services-with-jwt-based-authentication/
