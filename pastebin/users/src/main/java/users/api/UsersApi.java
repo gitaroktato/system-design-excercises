@@ -13,13 +13,21 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
 import io.reactivex.Single;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.links.Link;
 import io.swagger.v3.oas.annotations.links.LinkParameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
+@OpenAPIDefinition(
+        info = @Info(
+                title = "Users API",
+                version = "v1"
+        )
+)
 public interface UsersApi {
 
     @Operation(summary = "Retrieve user by synthetic ID", operationId = "getUser", description = "")

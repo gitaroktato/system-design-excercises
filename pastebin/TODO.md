@@ -1,10 +1,10 @@
-- Get back either JSON+HAL or JSON???
+- Get back either HAL+JSON or JSON???
 - JWT
 - 
 -- https://sultanov.dev/blog/securing-java-grpc-services-with-jwt-based-authentication/
 - GRPC
 
-- REST: Cache-Control, ETag, HATEOAS
+- REST: Cache-Control, ETag
 - Modular builds
 
 

@@ -79,12 +79,11 @@ The 900 GB of storage space for metadata is not considered significantly large.
 [MongoDB](https://docs.mongodb.com/manual/reference/limits/#data) or [MariaDB](https://mariadb.com/kb/en/innodb-limitations/)
 can handle database sizes up to 4-8 TB for sure. So we're not bound to use a columnar store, like Cassandra for these purposes.
 
-For the purpose of the exercise, I'll use MariaDB for the metadata store.
+For the sake of the exercise, I'll use MariaDB for the metadata store.
 Just to have as many kind of databases showcased as possible. 
 
 ### Caching
 Caching is easier to do after aggregation to avoid recalculation. Multi-level caches.
-
 
 # Running the Demo
 Swagger UI is available at: http://{HOST}:{PORT}/swagger-ui
