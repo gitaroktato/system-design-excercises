@@ -65,7 +65,7 @@ paths:
         "200":
           description: Paste retrieved successfully
           content:
-            application/json+hal:
+            application/hal+json:
               schema:
                 $ref: '#/components/schemas/Paste'
           links:
@@ -138,7 +138,7 @@ paths:
         "200":
           description: User retrieved successfully
           content:
-            application/json+hal:
+            application/hal+json:
               schema:
                 $ref: '#/components/schemas/User'
           links:
