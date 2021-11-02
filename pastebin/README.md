@@ -79,10 +79,32 @@ The 900 GB of storage space for metadata is not considered significantly large.
 [MongoDB](https://docs.mongodb.com/manual/reference/limits/#data) or [MariaDB](https://mariadb.com/kb/en/innodb-limitations/)
 can handle database sizes up to 4-8 TB for sure. So we're not bound to use a columnar store, like Cassandra for these purposes.
 
-For the purpose of the exercise, I'll use MariaDB for the metadata store.
+For the sake of the exercise, I'll use MariaDB for the metadata store.
 Just to have as many kind of databases showcased as possible. 
 
 ### Caching
-Caching is easier to do after aggregation to avoid recalculation. Multi-level caches.
+Caching is easier to do after aggregation to avoid recalculation. Multi-level caches...
+
+# Running the Demo
+Swagger UI is available at: http://{HOST}:{PORT}/swagger-ui
 
 ## References 
+
+### CNCF API Gateways
+https://landscape.cncf.io/card-mode?category=api-gateway&grouping=category&license=open-source&sort=stars
+#### Caching
+https://apisix.apache.org/docs/apisix/plugins/proxy-cache/
+https://docs.konghq.com/hub/kong-inc/proxy-cache/
+
+
+### OpenAPI
+#### Specification
+https://swagger.io/docs/specification/about/
+#### Codegen
+https://swagger.io/docs/open-source-tools/swagger-codegen/
+
+### Micronaut
+https://docs.micronaut.io/latest/guide/index.html
+#### OpenAPI
+https://micronaut-projects.github.io/micronaut-openapi/latest/guide/index.html
+
