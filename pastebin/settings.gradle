@@ -2,3 +2,4 @@ rootProject.name="pastebin"
 
 include 'users'
 include 'pastereads'
+include 'pastewrites'
