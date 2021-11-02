@@ -83,12 +83,19 @@ For the sake of the exercise, I'll use MariaDB for the metadata store.
 Just to have as many kind of databases showcased as possible. 
 
 ### Caching
-Caching is easier to do after aggregation to avoid recalculation. Multi-level caches.
+Caching is easier to do after aggregation to avoid recalculation. Multi-level caches...
 
 # Running the Demo
 Swagger UI is available at: http://{HOST}:{PORT}/swagger-ui
 
 ## References 
+
+### CNCF API Gateways
+https://landscape.cncf.io/card-mode?category=api-gateway&grouping=category&license=open-source&sort=stars
+#### Caching
+https://apisix.apache.org/docs/apisix/plugins/proxy-cache/
+https://docs.konghq.com/hub/kong-inc/proxy-cache/
+
 
 ### OpenAPI
 #### Specification
