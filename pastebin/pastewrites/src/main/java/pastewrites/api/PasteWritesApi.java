@@ -19,7 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "Paste Reads API",
+                title = "Paste Writes API",
                 version = "v1"
         )
 )
@@ -28,7 +28,7 @@ public interface PasteWritesApi {
     @Operation(summary = "Create a new paste", operationId = "paste", description = "" )
     @ApiResponse(responseCode = "201", description = "Paste successfully created",
         headers = @io.swagger.v3.oas.annotations.headers.Header(name = "location",
-            schema = @Schema(type = "string", description = "The newly created Paste's URL", example = "/v1/paste/{uuid}")))
+            schema = @Schema(type = "string", format = "URL", description = "The created Paste's URL", example = "/v1/paste/{uuid}")))
     @ApiResponse(responseCode = "400", description = "Bad Request")
     @ApiResponse(responseCode = "500", description = "Internal Error")
     @ApiResponse(responseCode = "503", description = "Service Temporarily Unavailable")
