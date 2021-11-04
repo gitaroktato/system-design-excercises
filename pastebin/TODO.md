@@ -1,3 +1,4 @@
+- Refactor build and modules
 - Micronaut API versioning?
 - JWT, AuthZ
 - 
@@ -12,4 +13,3 @@ https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/header-cachin
 https://support.cloudflare.com/hc/en-us/articles/200172516-Understanding-Cloudflare-s-CDN
 
 # Contract based testing???
-
