@@ -1,14 +1,6 @@
-plugins {
-    id("com.github.johnrengelman.shadow") version "7.0.0"
-    id("io.micronaut.application") version "1.5.4"
-}
 
 version = "0.1"
 group = "pastewrites"
-
-repositories {
-    mavenCentral()
-}
 
 micronaut {
     runtime("netty")
@@ -26,7 +18,6 @@ dependencies {
     implementation("io.swagger.core.v3:swagger-annotations")
     runtimeOnly("ch.qos.logback:logback-classic")
     implementation("io.micronaut:micronaut-validation")
-
 }
 
 
