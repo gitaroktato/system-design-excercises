@@ -11,4 +11,27 @@ subprojects {
     repositories {
         mavenCentral()
     }
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    dependencies {
+        implementation("io.micronaut:micronaut-http-client")
+        implementation("io.micronaut:micronaut-runtime")
+        runtimeOnly("ch.qos.logback:logback-classic")
+        implementation("io.micronaut:micronaut-validation")
+        implementation("io.swagger.core.v3:swagger-annotations")
+        annotationProcessor("io.micronaut.openapi:micronaut-openapi:2.6.0")
+    }
+
+    micronaut {
+        runtime("netty")
+        testRuntime("junit5")
+        processing {
+            incremental(true)
+        }
+    }
+
 }
