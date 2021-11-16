@@ -5,7 +5,7 @@ services:
     image: "apache/apisix-dashboard:${APISIX_DASHBOARD_TAG:-latest}"
     # restart: always
     volumes:
-      - ${pwd}/src/main/docker/dashboard_conf.yaml:/usr/local/apisix-dashboard/conf/conf.yaml:ro
+      - ${pwd}/src/main/docker/apisix/dashboard_conf.yaml:/usr/local/apisix-dashboard/conf/conf.yaml:ro
     depends_on:
       - etcd
     ports:
@@ -17,7 +17,7 @@ services:
     image: "apache/apisix:${APISIX_DOCKER_TAG:-latest}"
     # restart: always
     volumes:
-      - ${pwd}/src/main/docker/config.yaml:/usr/local/apisix/conf/config.yaml:ro
+      - ${pwd}/src/main/docker/apisix/config.yaml:/usr/local/apisix/conf/config.yaml:ro
     depends_on:
       - etcd
     ports:
@@ -26,6 +26,19 @@ services:
       - "9443:9443/tcp"
     networks:
       - apisix
+
+  apisix-bootstrap:
+    image: "curlimages/curl"
+    volumes:
+      - ${pwd}/src/main/docker/apisix/routes.json:/work/routes.json:ro
+      - ${pwd}/src/main/docker/apisix/bootstrap.sh:/work/bootstrap.sh:rw
+    depends_on:
+      - apisix
+    networks:
+      - apisix
+    entrypoint:
+      - sh
+    command: ["-c", "chmod u+x /work/bootstrap.sh; /work/bootstrap.sh" ]
 
   etcd:
     image: bitnami/etcd:3.4.9
