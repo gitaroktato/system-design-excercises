@@ -1,4 +1,3 @@
-- Refactor build and modules
 - Micronaut API versioning?
 - JWT, AuthZ
 - 

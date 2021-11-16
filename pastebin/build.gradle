@@ -1,12 +1,14 @@
 plugins {
     id("com.github.johnrengelman.shadow") version "7.0.0" apply false
     id("io.micronaut.application") version "1.5.4" apply false
+    id("com.google.cloud.tools.jib") version "3.1.4" apply false
 }
 
 
 subprojects {
     apply plugin: "com.github.johnrengelman.shadow"
     apply plugin: "io.micronaut.application"
+    apply plugin: "com.google.cloud.tools.jib"
 
     repositories {
         mavenCentral()

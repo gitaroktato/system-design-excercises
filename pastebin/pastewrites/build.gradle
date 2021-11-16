@@ -1,6 +1,7 @@
-
 version = "0.1"
 group = "pastewrites"
+
+jib.to.image = "gitaroktato/pastebin/pastewrites"
 
 micronaut {
     processing {

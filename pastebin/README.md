@@ -92,7 +92,7 @@ Swagger UI is available at: http://{HOST}:{PORT}/swagger-ui
 
 ### CNCF API Gateways
 https://landscape.cncf.io/card-mode?category=api-gateway&grouping=category&license=open-source&sort=stars
-#### Caching
+#### Proxy-Cache
 https://apisix.apache.org/docs/apisix/plugins/proxy-cache/
 https://docs.konghq.com/hub/kong-inc/proxy-cache/
 
