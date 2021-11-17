@@ -64,6 +64,21 @@ services:
     networks:
       - apisix
 
+  pastereads:
+    image: gitaroktato/pastebin/pastereads
+    ports:
+      - "8081:8081/tcp"
+    networks:
+      - apisix
+
+  pastewrites:
+    image: gitaroktato/pastebin/pastewrites
+    ports:
+      - "8082:8082/tcp"
+    networks:
+      - apisix
+
+
 networks:
   apisix:
     driver: bridge

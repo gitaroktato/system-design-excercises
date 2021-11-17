@@ -7,8 +7,9 @@ do_with_retry()
 
 submit_json()
 {
-  do_with_retry "curl -d@${1} http://apisix:9080/apisix/admin/routes/1 -H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X PUT"
+  do_with_retry "curl -d@${1} http://apisix:9080/apisix/admin/routes -H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X POST"
 }
 
 submit_json /work/user-routes.json
-submit_json /work/paste-routes.json
+submit_json /work/pasteread-routes.json
+submit_json /work/pastewrite-routes.json
