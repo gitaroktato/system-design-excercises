@@ -1,4 +1,4 @@
-# Examples of system design excercises
+# Examples of System Design Excercises
 
 **Please give this repo a star if you find the content valuable, so others can find it too.**
 
@@ -6,10 +6,10 @@ Each example comes with a fully functional sandbox focusing on the most interest
 
 Aditionally, I included a README file that contains the key functional/non-functional requirements and explaining the solution in depth. They also include some key findings from the sandbox implementation. 
 
-## [TinyURL](tinyurl/README.md)
-## [Pastebin](pastebin/README.md)
+## [TinyURL](tinyurl)
+## [Pastebin](pastebin)
 
-# Technologies covered (so far)
+# Technologies Covered (so far)
 
 ### APIs Gateways and Proxies
 - Apisix
