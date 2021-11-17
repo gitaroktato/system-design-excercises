@@ -30,7 +30,7 @@ services:
   apisix-bootstrap:
     image: "curlimages/curl"
     volumes:
-      - ${pwd}/src/main/docker/apisix/routes.json:/work/routes.json:ro
+      - ${pwd}/src/main/docker/apisix:/work
       - ${pwd}/src/main/docker/apisix/bootstrap.sh:/work/bootstrap.sh:rw
     depends_on:
       - apisix

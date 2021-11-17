@@ -1,0 +1,56 @@
+{
+  "uri": "/v1/user/*",
+  "name": "users",
+  "methods": [
+    "GET",
+    "POST",
+    "OPTIONS",
+    "HEAD"
+  ],
+  "plugins": {
+    "proxy-cache": {
+      "cache_http_status": [
+        200,
+        301,
+        404
+      ],
+      "cache_key": [
+        "$host",
+        "$request_uri"
+      ],
+      "cache_method": [
+        "GET",
+        "HEAD"
+      ],
+      "cache_zone": "disk_cache_one",
+      "disable": false,
+      "hide_cache_headers": false
+    }
+  },
+  "upstream": {
+    "nodes": [
+      {
+        "host": "users",
+        "port": 8080,
+        "weight": 1
+      }
+    ],
+    "timeout": {
+      "connect": 6,
+      "send": 6,
+      "read": 6
+    },
+    "type": "roundrobin",
+    "scheme": "http",
+    "pass_host": "pass",
+    "keepalive_pool": {
+      "idle_timeout": 60,
+      "requests": 1000,
+      "size": 320
+    }
+  },
+  "labels": {
+    "API_VERSION": "1"
+  },
+  "status": 1
+}
