@@ -83,10 +83,23 @@ For the sake of the exercise, I'll use MariaDB for the metadata store.
 Just to have as many kind of databases showcased as possible. 
 
 ### Caching
-Caching is easier to do after aggregation to avoid recalculation. Multi-level caches...
+Caching is easier to do after aggregation to avoid recalculation. 
+
+#### Multi-level Caches
+We should also introduce caching at API level, to ensure that 
+.. CDN integration.
 
 # Running the Demo
-Swagger UI is available at: http://{HOST}:{PORT}/swagger-ui
+
+## Make
+Building and running the demo is easier with `make`. Just use the following command:
+```bash
+make docker compose
+```
+
+## Endpoints
+Swagger UI is available, when running locally: http://localhost:{PORT}/swagger-ui
+APISIX Admin UI (just use `admin:admin` as username/password): http://{DOCKER_IP}:9000/
 
 ## References 
 
