@@ -9,3 +9,6 @@ micronaut:
       swagger-ui:
         paths: classpath:META-INF/swagger/views/swagger-ui
         mapping: /swagger-ui/**
+
+application:
+  http.cache.max-age: 31556926
