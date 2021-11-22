@@ -181,4 +181,8 @@ public class User extends AbstractResource<User> {
     }
     return o.toString().replace("\n", "\n    ");
   }
+
+  public String getETag() {
+    return Integer.toHexString(hashCode());
+  }
 }

@@ -7,7 +7,8 @@
 - GRPC
 
 - REST: Cache-Control, ETag
-- Modular builds
+-- Persistent ETag? (computation is faster)
+- Modular builds (Java 9?)
 
 # CDN
 https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/header-caching.html
