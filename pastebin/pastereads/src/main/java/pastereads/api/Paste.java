@@ -5,6 +5,8 @@ import java.util.Objects;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Produces;
@@ -35,6 +37,7 @@ public class Paste extends AbstractResource<Paste> {
     private String userId = null;
 
     @JsonProperty("expiry")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate expiry = null;
 
     public Paste uuid(String uuid) {
@@ -201,5 +204,10 @@ public class Paste extends AbstractResource<Paste> {
             return "null";
         }
         return o.toString().replace("\n", "\n    ");
+    }
+
+    @JsonIgnore
+    public String getETag() {
+        return Integer.toHexString(hashCode());
     }
 }

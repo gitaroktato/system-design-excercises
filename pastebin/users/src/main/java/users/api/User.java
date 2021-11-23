@@ -6,6 +6,8 @@ import javax.annotation.Generated;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Produces;
@@ -32,9 +34,11 @@ public class User extends AbstractResource<User> {
   private String email = null;
 
   @JsonProperty("creationDate")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
   private LocalDate creationDate = null;
 
   @JsonProperty("lastLogin")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
   private LocalDate lastLogin = null;
 
   public User id(String id) {
@@ -180,5 +184,10 @@ public class User extends AbstractResource<User> {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+
+  @JsonIgnore
+  public String getETag() {
+    return Integer.toHexString(hashCode());
   }
 }
