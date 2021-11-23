@@ -89,6 +89,10 @@ Caching is easier to do after aggregation to avoid recalculation.
 We should also introduce caching at API level, to ensure that 
 .. CDN integration.
 
+### Security
+
+### Telemetry
+
 # Running the Demo
 
 ## Make
