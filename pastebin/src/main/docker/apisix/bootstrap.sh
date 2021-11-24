@@ -12,4 +12,4 @@ submit_json()
 
 submit_json /work/user-routes.json user
 submit_json /work/pasteread-routes.json pasteread
-submit_json /work/pastewrite-routes.json pasewrite
+submit_json /work/pastewrite-routes.json pastewrite

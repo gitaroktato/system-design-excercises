@@ -80,7 +80,7 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 12,
+        "w": 14,
         "x": 0,
         "y": 0
       },
@@ -130,10 +130,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 7,
         "w": 5,
-        "x": 12,
-        "y": 0
+        "x": 0,
+        "y": 9
       },
       "id": 5,
       "options": {
@@ -170,7 +170,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "HTTP Responses - User GET",
+      "title": "HTTP Responses - Users",
       "type": "piechart"
     },
     {
@@ -192,12 +192,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 7,
         "w": 5,
-        "x": 17,
-        "y": 0
+        "x": 5,
+        "y": 9
       },
-      "id": 4,
+      "id": 6,
       "options": {
         "displayLabels": [
           "percent"
@@ -232,7 +232,69 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "HTTP Responses - Paste GET",
+      "title": "HTTP Responses - Paste reads",
+      "type": "piechart"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 10,
+        "y": 9
+      },
+      "id": 4,
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.2.5",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(apisix_http_status{route=\"pastewrite\"}) by (code, route)",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "HTTP {{code}}",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "HTTP Responses - Paste writes",
       "type": "piechart"
     }
   ],
@@ -275,5 +337,5 @@
   "timezone": "",
   "title": "APISIX Dashboard",
   "uid": "ZWgC8Ktnk",
-  "version": 1
+  "version": 3
 }

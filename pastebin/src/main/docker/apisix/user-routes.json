@@ -1,5 +1,5 @@
 {
-  "uri": "/v1/user/*",
+  "uri": "/v1/user*",
   "name": "users",
   "methods": [
     "GET",

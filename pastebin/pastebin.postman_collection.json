@@ -38,6 +38,46 @@
 			"response": []
 		},
 		{
+			"name": "http://{{host}}/v1/user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "ApiKey",
+						"value": "1",
+						"type": "text"
+					},
+					{
+						"key": "If-None-Match",
+						"value": "b2caec84",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"John Smith\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}/v1/user",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v1",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "http://{{host}}/v1/paste/1",
 			"request": {
 				"method": "GET",
@@ -64,6 +104,46 @@
 						"v1",
 						"paste",
 						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://{{host}}/v1/paste",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "ApiKey",
+						"value": "1",
+						"type": "text"
+					},
+					{
+						"key": "If-None-Match",
+						"value": "b2caec84",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\": \"psvm(String[] args) { Hello world in Java }\",\r\n    \"title\": \"Hello World in Java!\",\r\n    \"alias\": \"coreModel\",\r\n    \"userId\": \"13\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}/v1/paste",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v1",
+						"paste"
 					]
 				}
 			},
