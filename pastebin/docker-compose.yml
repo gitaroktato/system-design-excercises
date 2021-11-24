@@ -72,7 +72,7 @@ services:
       - apisix
 
   grafana:
-    image: grafana/grafana:6.2.5
+    image: grafana/grafana
     volumes:
       - ./src/main/docker/grafana/provisioning/:/etc/grafana/provisioning/
     environment:
