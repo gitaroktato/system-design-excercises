@@ -5,6 +5,7 @@
     "GET"
   ],
   "plugins": {
+    "prometheus":{},
     "proxy-cache": {
       "cache_http_status": [
         200,

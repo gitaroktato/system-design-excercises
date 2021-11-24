@@ -1,10 +1,13 @@
 {
-  "uri": "/v1/paste/*",
+  "uri": "/v1/paste*",
   "name": "pastewrites",
   "methods": [
     "POST",
     "PUT"
   ],
+  "plugins": {
+    "prometheus":{}
+  },
   "upstream": {
     "nodes": [
       {
