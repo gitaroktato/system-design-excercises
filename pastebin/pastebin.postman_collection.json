@@ -1,0 +1,67 @@
+{
+	"info": {
+		"_postman_id": "b6a88576-9a56-4517-934a-26d3968f2d34",
+		"name": "pastebin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://{{host}}/v1/user/1",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "ApiKey",
+						"value": "1",
+						"type": "text"
+					},
+					{
+						"key": "If-None-Match",
+						"value": "b2caec84",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}/v1/user/1",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v1",
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "192.168.99.100:9080"
+		}
+	]
+}
