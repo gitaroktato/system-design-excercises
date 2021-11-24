@@ -103,6 +103,7 @@ make docker compose
 
 ## Endpoints
 Swagger UI is available, when running locally: http://localhost:{PORT}/swagger-ui
+
 APISIX Admin UI (just use `admin:admin` as username/password): http://{DOCKER_IP}:9000/
 
 ## References 

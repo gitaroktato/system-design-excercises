@@ -5,6 +5,9 @@
     "POST",
     "PUT"
   ],
+  "plugins": {
+    "prometheus":{}
+  },
   "upstream": {
     "nodes": [
       {
