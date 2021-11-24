@@ -36,6 +36,38 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "http://{{host}}/v1/paste/1",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "ApiKey",
+						"value": "1",
+						"type": "text"
+					},
+					{
+						"key": "If-None-Match",
+						"value": "b2caec84",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}/v1/paste/1",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v1",
+						"paste",
+						"1"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
