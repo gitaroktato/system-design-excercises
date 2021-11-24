@@ -106,6 +106,10 @@ Swagger UI is available, when running locally: http://localhost:{PORT}/swagger-u
 
 APISIX Admin UI (just use `admin:admin` as username/password): http://{DOCKER_IP}:9000/
 
+Grafana Dashboards (just use `admin:admin` as username/password): http://{DOCKER_IP}:3000/
+
+Prometheus: http://{DOCKER_IP}:9090/
+
 ## References 
 
 ### CNCF API Gateways
