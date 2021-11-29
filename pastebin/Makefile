@@ -1,5 +1,10 @@
-# Traefik endpoint is 192.168.99.100
-DOCKER_IP = 192.168.99.100
+DOCKER_IP = 192.168.99.100:9080
+SCENARIO = paste-read-test
+TAURUS_COMMAND = bzt \
+	-o settings.artifacts-dir=e2e/logs \
+	-o settings.env.BASE_URL=$(DOCKER_IP) \
+	-o settings.env.BASE_URL=$(DOCKER_IP) \
+	-o execution.0.scenario=$(SCENARIO) e2e/taurus.yml
 
 .PHONY: gradle e2e
 
@@ -16,3 +21,6 @@ compose:
 
 clean:
 	bash -c "./gradlew clean" && docker-compose down --volumes
+
+e2e:
+	$(TAURUS_COMMAND)
