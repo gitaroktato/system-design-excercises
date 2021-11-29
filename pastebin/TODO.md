@@ -9,6 +9,7 @@
 - Modular builds (Java 9, domain export)
 
 ## Low-value
+- Use X-Api-Key instead of ApiKey
 - Swagger UI from Apisix
 - Micronaut API versioning?
 - GRPC??

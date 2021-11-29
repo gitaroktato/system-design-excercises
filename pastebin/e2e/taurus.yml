@@ -1,0 +1,31 @@
+---
+settings:
+  env:
+    BASE_URL: 192.168.99.100
+
+execution:
+  - concurrency: 10
+    hold-for: 5m
+    # ramp-up: 40s
+    scenario: paste-read-test
+scenarios:
+  paste-read-test:
+    requests:
+      - label: paste-read
+        method: GET
+        url: http://${BASE_URL}/v1/paste/${uuid}
+        headers:
+          ApiKey: cafebabe
+    data-sources:
+      - path: e2e/uuid.csv   # this is a full form
+        delimiter: ','
+        quoted: true
+        encoding: "utf-8"
+        loop: true
+        variable-names: uuid
+        random-order: true
+
+
+modules:
+  jmeter:
+    gui: true
