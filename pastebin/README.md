@@ -10,7 +10,7 @@
 
 _Consistency_
 * Each paste should have a unique ID assigned.
-* We don't have a limitation on the ID's length. It can be shortened if required (the solution is identical to the solution in [tinyurl][../tinyurl]).
+* We don't have a limitation on the ID's length. It can be shortened if required (the solution is identical to the solution in [tinyurl](../tinyurl]).
 
 _Performance_
 * Reading and creating pastes (read/write) should be performing differently based on different read/write performance requirements.

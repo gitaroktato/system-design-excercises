@@ -3,8 +3,9 @@ SCENARIO = paste-read-test
 TAURUS_COMMAND = bzt \
 	-o settings.artifacts-dir=e2e/logs \
 	-o settings.env.BASE_URL=$(DOCKER_IP) \
-	-o settings.env.BASE_URL=$(DOCKER_IP) \
 	-o execution.0.scenario=$(SCENARIO) e2e/taurus.yml
+
+CURRENT_DIR = $(shell pwd)
 
 .PHONY: gradle e2e
 
@@ -24,3 +25,8 @@ clean:
 
 e2e:
 	$(TAURUS_COMMAND)
+
+e2e-container:
+	docker run -it --rm --network pastebin_apisix -v $(CURRENT_DIR)/e2e:/bzt-configs blazemeter/taurus \
+	-o modules.jmeter.gui=false \
+	-o settings.env.BASE_URL=apisix:9080 taurus.yml
