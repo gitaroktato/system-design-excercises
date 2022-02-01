@@ -104,6 +104,10 @@ services:
     networks:
       - apisix
 
+  user-store:
+    image: mongo
+    ports:
+      - "27017:27017"
 
 networks:
   apisix:
