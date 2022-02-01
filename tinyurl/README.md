@@ -230,7 +230,6 @@ make e2e
 ### Endpoint URLs
 
 Riak admin UI is available at: `http://DOCKER_HOST_IP:8098/admin`
-Envoy admin UI is available at: `http://DOCKER_HOST_IP:8080`
 Grafana UI is available at: `http://DOCKER_HOST_IP:3000`
 Prometheus UI is available at: `http://DOCKER_HOST_IP:9090`
 

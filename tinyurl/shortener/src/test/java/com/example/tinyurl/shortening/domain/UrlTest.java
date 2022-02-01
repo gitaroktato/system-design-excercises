@@ -53,10 +53,4 @@ public class UrlTest {
         var url = Url.from("127.0.0.1", "xAKf4FDbuXd");
         assertEquals("http://127.0.0.1/xAKf4FDbuXd", url.toString());
     }
-
-    @Test
-    public void testCreate_withInvalidCharactersReplaced() throws Exception {
-        var url = Url.from("localhost", "xAQu/Dfw", 80, "/v1/url");
-        Assertions.assertEquals("xAQu_Dfw", url.getHashKey());
-    }
 }

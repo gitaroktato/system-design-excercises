@@ -26,7 +26,7 @@ public final class Url {
         var urlString = "http://" + host +
                 port.map(p -> ":" + p).orElse("")
                 + path.map(p -> "/" + Url.stripPathFromForwardSlashes(p)).orElse("")
-                + "/" + replaceUnwantedCharactersInHashKey(hashKey);
+                + "/" + hashKey;
         var url = new URL(urlString);
         return from(url);
     }
@@ -35,20 +35,12 @@ public final class Url {
         return from(host, hashKey, Optional.empty(), Optional.empty());
     }
 
-    public static Url from(String host, String hashKey, Integer port) throws MalformedURLException {
-        return from(host, hashKey, Optional.ofNullable(port), Optional.empty());
-    }
-
     public static Url from(String host, String hashKey, String path) throws MalformedURLException {
         return from(host, hashKey, Optional.empty(), Optional.ofNullable(path));
     }
 
     public static Url from(String host, String hashKey, Integer port, String path) throws MalformedURLException {
         return from(host, hashKey, Optional.ofNullable(port), Optional.ofNullable(path));
-    }
-
-    private static String replaceUnwantedCharactersInHashKey(String hashKey) {
-        return hashKey.replaceAll("/", "_");
     }
 
     private static String stripPathFromForwardSlashes(String path) {
