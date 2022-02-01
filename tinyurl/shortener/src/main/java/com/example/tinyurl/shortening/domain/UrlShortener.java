@@ -41,7 +41,7 @@ public class UrlShortener {
 
     public Url shorten(Url target) throws MalformedURLException {
         var md5Sum = DigestUtils.md5Digest(target.toBytes());
-        var hashKey = Base64.getEncoder().encodeToString(md5Sum);
+        var hashKey = Base64.getUrlEncoder().encodeToString(md5Sum);
         var hashKeyStripped = hashKey.substring(0, hashKeyLength);
         return Url.from(serverAddress, hashKeyStripped, serverPort, serverPath);
     }
