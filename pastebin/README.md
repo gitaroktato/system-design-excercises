@@ -130,3 +130,9 @@ https://docs.micronaut.io/latest/guide/index.html
 #### OpenAPI
 https://micronaut-projects.github.io/micronaut-openapi/latest/guide/index.html
 
+### MongoDB
+https://github.com/senssei/mongo-cluster-docker
+https://github.com/chefsplate/mongo-shard-docker-compose
+https://github.com/singram/mongo-docker-compose/blob/master/docker-compose.yml
+https://docs.mongodb.com/manual/core/sharded-cluster-components/
+

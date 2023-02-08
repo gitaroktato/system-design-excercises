@@ -104,10 +104,45 @@ services:
     networks:
       - apisix
 
-  user-store:
-    image: mongo
+  mongors1n1:
+    image: mongo:5.0.4
+    command: mongod --noprealloc --smallfiles --replSet mongors1 --dbpath /data/db --nojournal --oplogSize 16 --noauth
+    environment:
+      TERM: xterm
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DATA_DIR}/mongors1n1:/data/db
+
+  mongors1n2:
+    image: mongo:5.0.4
+    command: mongod --noprealloc --smallfiles --replSet mongors1 --dbpath /data/db --nojournal --oplogSize 16 --noauth
+    environment:
+      TERM: xterm
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DATA_DIR}/mongors1n2:/data/db
+
+  mongocfg:
+    image: mongo:5.0.4
+    command: mongod --noprealloc --smallfiles --dbpath /data/db --configsvr --noauth --port 27017
+    environment:
+      TERM: xterm
+    expose:
+      - "27017"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DATA_DIR}/mongocfg1:/data/db
+
+  mongos:
+    container_name: mongos1
+    image: mongo:5.0.4
+    depends_on:
+      - mongocfg
+    command: mongos --configdb mongocfg:27017 --port 27017
     ports:
-      - "27017:27017"
+      - 27017:27017
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
 
 networks:
   apisix:
