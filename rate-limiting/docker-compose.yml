@@ -10,7 +10,9 @@ services:
       - ./src/main/docker/prometheus/:/etc/prometheus/
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
-    network_mode: "host"
+    # networks: 
+    #   - local
+    network_mode: host
 
   grafana:
     image: grafana/grafana
@@ -19,5 +21,12 @@ services:
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
       - GF_USERS_ALLOW_SIGN_UP=false
-    network_mode: "host"
+    ports:
+      - 9090:9090
+    # networks: 
+    #   - local
+    network_mode: host
 
+# networks:
+#   local:
+#     driver: host
