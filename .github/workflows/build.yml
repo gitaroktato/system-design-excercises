@@ -38,3 +38,19 @@ jobs:
         run: chmod +x ./pastebin/gradlew
       - name: Build with Gradle
         run: ./pastebin/gradlew build -b ./pastebin/build.gradle
+
+  build-rate-limiting:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          cache: gradle
+      - name: chmod
+        run: chmod +x ./rate-limiting/gradlew
+      - name: Build with Gradle
+        run: ./rate-limiting/gradlew build -b ./rate-limiting/build.gradle
