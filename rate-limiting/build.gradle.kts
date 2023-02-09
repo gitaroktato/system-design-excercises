@@ -30,6 +30,7 @@ dependencies {
     implementation("io.ktor:ktor-server-metrics-micrometer:$ktor_version")
     implementation("io.micrometer:micrometer-registry-prometheus:$prometheus_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
+    implementation("aws.sdk.kotlin:dynamodb:0.18.0-beta")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }

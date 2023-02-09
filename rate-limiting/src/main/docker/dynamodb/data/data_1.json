@@ -1,0 +1,100 @@
+{
+  "key_values": [
+    {
+      "PutRequest": {
+        "Item": {
+          "key": {
+            "S": "key1"
+          },
+          "value": {
+            "S": "value1"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "key": {
+            "S": "key2"
+          },
+          "value": {
+            "S": "value2"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "key": {
+            "S": "key3"
+          },
+          "value": {
+            "S": "value3"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "key": {
+            "S": "key4"
+          },
+          "value": {
+            "S": "value4"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "key": {
+            "S": "key5"
+          },
+          "value": {
+            "S": "value5"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "key": {
+            "S": "key6"
+          },
+          "value": {
+            "S": "value6"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "key": {
+            "S": "key7"
+          },
+          "value": {
+            "S": "value7"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "key": {
+            "S": "key8"
+          },
+          "value": {
+            "S": "value8"
+          }
+        }
+      }
+    }
+  ]
+}

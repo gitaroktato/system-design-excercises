@@ -8,6 +8,7 @@ fun Application.configureRouting() {
     routing {
         get("/") {
             call.respondText("Hello World!")
+            getValueForKey("key_values", "key", "key1")
         }
     }
 }

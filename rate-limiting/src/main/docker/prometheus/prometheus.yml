@@ -33,8 +33,6 @@ scrape_configs:
 
     # scheme defaults to 'http'.
     metrics_path: /metrics
-    dns_sd_configs:
-      - names:
-        - 'localhost'
-        type: 'A'
-        port: 8080
+    static_configs:
+      - targets:
+        - 'localhost:8080'
