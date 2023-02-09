@@ -8,10 +8,15 @@ Aditionally, I included a README file that contains the key functional/non-funct
 
 ## [TinyURL](tinyurl)
 ## [Pastebin](pastebin)
+## [Rate Limiting](rate-limiting)
 
 # Technologies Covered (so far)
 
-### APIs Gateways and Proxies
+### Languages
+- Java
+- Kotlin
+
+### API Gateways and Proxies
 - Apisix
 - Envoy
 - Open API 3.x
@@ -21,6 +26,7 @@ Aditionally, I included a README file that contains the key functional/non-funct
 - Spring Boot
 - Micronaut
 - Reactor
+- Ktor
 
 ### Caching
 - Hazelcast
