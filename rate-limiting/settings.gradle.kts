@@ -1,1 +1,1 @@
-rootProject.name = "com.example.rate-limiting"
+rootProject.name = "rate-limiting-service"
