@@ -33,6 +33,8 @@ Aditionally, I included a README file that contains the key functional/non-funct
 
 ### Databases
 - Riak
+- DynamoDB
+- MongoDB
 
 ### Metrics and Tracing
 - Grafana
