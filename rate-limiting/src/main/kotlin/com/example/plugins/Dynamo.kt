@@ -1,11 +1,11 @@
 package com.example.plugins
 
-import aws.sdk.kotlin.runtime.auth.credentials.StaticCredentialsProvider
 import aws.sdk.kotlin.services.dynamodb.DynamoDbClient
+import aws.sdk.kotlin.services.dynamodb.endpoints.EndpointProvider
 import aws.sdk.kotlin.services.dynamodb.model.AttributeValue
 import aws.sdk.kotlin.services.dynamodb.model.GetItemRequest
-import aws.smithy.kotlin.runtime.auth.awssigning.AwsSigner
 import aws.smithy.kotlin.runtime.http.Url
+import aws.smithy.kotlin.runtime.http.endpoints.Endpoint
 
 suspend fun getValueForKey(tableNameVal: String, keyName: String, keyVal: String) {
 
@@ -16,15 +16,12 @@ suspend fun getValueForKey(tableNameVal: String, keyName: String, keyVal: String
         key = keyToGet
         tableName = tableNameVal
     }
-    val provider = StaticCredentialsProvider.Builder().apply {
-        accessKeyId = "fakeMyKeyId"
-        secretAccessKey = "fakeSecretAccessKey"
-    }.build()
+
+    val endpoint = EndpointProvider { Endpoint(Url.parse("http://localhost:8000")) }
 
     DynamoDbClient {
-        credentialsProvider = provider
-        region = "us-east-1"
-        endpointUrl = Url.parse("http://localhost:8000")
+        region = "us-west-2"
+        endpointProvider = endpoint
     }.use { ddb ->
         val returnedItem = ddb.getItem(request)
         val numbersMap = returnedItem.item
