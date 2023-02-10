@@ -7,7 +7,7 @@ import aws.sdk.kotlin.services.dynamodb.model.GetItemRequest
 import aws.smithy.kotlin.runtime.http.Url
 import aws.smithy.kotlin.runtime.http.endpoints.Endpoint
 
-suspend fun getValueForKey(tableNameVal: String, keyName: String, keyVal: String) {
+suspend fun getValueForKey(tableNameVal: String, keyName: String, keyVal: String): String? {
 
     val keyToGet = mutableMapOf<String, AttributeValue>()
     keyToGet[keyName] = AttributeValue.S(keyVal)
@@ -24,11 +24,12 @@ suspend fun getValueForKey(tableNameVal: String, keyName: String, keyVal: String
         endpointProvider = endpoint
     }.use { ddb ->
         val returnedItem = ddb.getItem(request)
-        val numbersMap = returnedItem.item
-        numbersMap?.forEach { entry ->
+        val result = returnedItem.item
+        result?.forEach { entry ->
             println(entry.key)
             println(entry.value)
         }
+        return result?.get("value")?.asS()
     }
 }
 
