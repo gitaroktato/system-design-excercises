@@ -53,4 +53,4 @@ jobs:
       - name: chmod
         run: chmod +x ./rate-limiting/gradlew
       - name: Build with Gradle
-        run: ./rate-limiting/gradlew build -b ./rate-limiting/build.gradle
+        run: ./rate-limiting/gradlew build -b ./rate-limiting/build.gradle.kts
