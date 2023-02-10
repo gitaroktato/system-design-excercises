@@ -15,6 +15,7 @@ fun Application.configureRouting() {
                 "Missing key",
                 status = HttpStatusCode.BadRequest
             )
+            println("Getting value for key: $key")
             val entry = getValueForKey("key_values", "key", key)
             call.respondText(entry.orEmpty())
         }
