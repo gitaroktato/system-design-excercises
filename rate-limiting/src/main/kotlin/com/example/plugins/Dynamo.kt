@@ -1,5 +1,6 @@
 package com.example.plugins
 
+import aws.sdk.kotlin.runtime.auth.credentials.StaticCredentialsProvider
 import aws.sdk.kotlin.services.dynamodb.DynamoDbClient
 import aws.sdk.kotlin.services.dynamodb.endpoints.EndpointProvider
 import aws.sdk.kotlin.services.dynamodb.model.AttributeValue
@@ -16,12 +17,16 @@ suspend fun getValueForKey(tableNameVal: String, keyName: String, keyVal: String
         key = keyToGet
         tableName = tableNameVal
     }
-
+    val credentials = StaticCredentialsProvider.Builder().apply {
+        accessKeyId = "DUMMYIDEXAMPLE"
+        secretAccessKey = "DUMMYIDEXAMPLE"
+    }.build()
     val endpoint = EndpointProvider { Endpoint(Url.parse("http://localhost:8000")) }
 
     DynamoDbClient {
         region = "us-west-2"
         endpointProvider = endpoint
+        credentialsProvider = credentials
     }.use { ddb ->
         val returnedItem = ddb.getItem(request)
         val result = returnedItem.item
