@@ -82,7 +82,32 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "{address=\"localhost:8080\", instance=\"localhost:8080\", job=\"rate-limiting\", method=\"GET\", route=\"/direct/{key?}\", status=\"200\", throwable=\"n/a\"}"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -110,7 +135,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "rate(ktor_http_server_requests_seconds_count{route=\"/{key?}\", status=\"200\", address=\"localhost:8080\"}[10s])",
+          "expr": "rate(ktor_http_server_requests_seconds_count{route=\"/direct/{key?}\", status=\"200\", address=\"localhost:8080\"}[10s])",
           "instant": true,
           "key": "Q-e6640d7e-d402-4cb3-8f03-e9de326d17d6-0",
           "legendFormat": "__auto",
@@ -134,7 +159,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "10s",
+  "refresh": "5s",
   "schemaVersion": 37,
   "style": "dark",
   "tags": [],
@@ -142,7 +167,7 @@
     "list": []
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},
