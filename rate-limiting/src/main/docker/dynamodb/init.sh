@@ -1,7 +1,7 @@
 #!/bin/bash
-AWS_SECRET_ACCESS_KEY=DUMMYIDEXAMPLE
-AWS_ACCESS_KEY_ID=DUMMYIDEXAMPLE
-AWS_DEFAULT_REGION=us-west-2
+export AWS_SECRET_ACCESS_KEY=DUMMYIDEXAMPLE
+export AWS_ACCESS_KEY_ID=DUMMYIDEXAMPLE
+export AWS_DEFAULT_REGION=us-west-2
 
 aws dynamodb list-tables --endpoint-url http://localhost:8000
 if [ $? -eq 0 ]; then
