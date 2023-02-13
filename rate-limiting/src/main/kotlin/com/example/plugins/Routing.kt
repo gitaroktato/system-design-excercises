@@ -19,5 +19,14 @@ fun Application.configureRouting() {
             val entry = DynamoDb.getValueForKey("key_values", "key", key)
             call.respondText(entry.orEmpty())
         }
+        get("/async/{key?}") {
+            val key = call.parameters["id"] ?: return@get call.respondText(
+                "Missing key",
+                status = HttpStatusCode.BadRequest
+            )
+            println("Async getting value for key: $key")
+            RabbitMq.send()
+            call.respondText("OK")
+        }
     }
 }

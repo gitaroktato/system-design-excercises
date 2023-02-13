@@ -1,6 +1,13 @@
 version: "3"
 
 services:
+  rabbitmq:
+    image: rabbitmq:3.11-management
+    network_mode: host
+    ports:
+      - 5672:5672
+      - 15672:15672
+
   dynamodb:
     image: amazon/dynamodb-local
     network_mode: host
