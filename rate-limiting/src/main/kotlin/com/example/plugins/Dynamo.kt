@@ -8,33 +8,40 @@ import aws.sdk.kotlin.services.dynamodb.model.GetItemRequest
 import aws.smithy.kotlin.runtime.http.Url
 import aws.smithy.kotlin.runtime.http.endpoints.Endpoint
 
-suspend fun getValueForKey(tableNameVal: String, keyName: String, keyVal: String): String? {
+object DynamoDb {
 
-    val keyToGet = mutableMapOf<String, AttributeValue>()
-    keyToGet[keyName] = AttributeValue.S(keyVal)
+    val client: DynamoDbClient
 
-    val request = GetItemRequest {
-        key = keyToGet
-        tableName = tableNameVal
-    }
-    val credentials = StaticCredentialsProvider.Builder().apply {
-        accessKeyId = "DUMMYIDEXAMPLE"
-        secretAccessKey = "DUMMYIDEXAMPLE"
-    }.build()
-    val endpoint = EndpointProvider { Endpoint(Url.parse("http://localhost:8000")) }
+    init {
 
-    DynamoDbClient {
-        region = "us-west-2"
-        endpointProvider = endpoint
-        credentialsProvider = credentials
-    }.use { ddb ->
-        val returnedItem = ddb.getItem(request)
-        val result = returnedItem.item
-        result?.forEach { entry ->
-            println(entry.key)
-            println(entry.value)
+        val credentials = StaticCredentialsProvider.Builder().apply {
+            accessKeyId = "DUMMYIDEXAMPLE"
+            secretAccessKey = "DUMMYIDEXAMPLE"
+        }.build()
+
+        val endpoint = EndpointProvider { Endpoint(Url.parse("http://localhost:8000")) }
+
+        client = DynamoDbClient {
+            region = "us-west-2"
+            endpointProvider = endpoint
+            credentialsProvider = credentials
         }
+    }
+
+    suspend fun getValueForKey(tableNameVal: String, keyName: String, keyVal: String): String? {
+
+        val keyToGet = mutableMapOf<String, AttributeValue>()
+        keyToGet[keyName] = AttributeValue.S(keyVal)
+
+        val request = GetItemRequest {
+            key = keyToGet
+            tableName = tableNameVal
+        }
+
+        val returnedItem = client.getItem(request)
+        val result = returnedItem.item
         return result?.get("value")?.asS()
     }
 }
+
 

@@ -16,7 +16,7 @@ fun Application.configureRouting() {
                 status = HttpStatusCode.BadRequest
             )
             println("Getting value for key: $key")
-            val entry = getValueForKey("key_values", "key", key)
+            val entry = DynamoDb.getValueForKey("key_values", "key", key)
             call.respondText(entry.orEmpty())
         }
     }
