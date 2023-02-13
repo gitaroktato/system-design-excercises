@@ -34,3 +34,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Node JS ###
+**/node_modules
+**/dist

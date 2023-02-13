@@ -1,0 +1,21 @@
+{
+  "name": "rate-limiting-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docker": "wsl docker run --network=host --rm -i grafana/k6 run --vus 10 --duration 60s - <request-direct.test.js"
+  },
+  "author": "gitaroktato",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.20.12",
+    "@babel/preset-env": "^7.20.2",
+    "babel-loader": "^9.1.2",
+    "core-js": "^3.27.2",
+    "k6": "0.0.0",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
+  }
+}

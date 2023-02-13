@@ -12,3 +12,8 @@ https://github.com/aws-samples/aws-sam-java-rest
 ## Allow WSL2 to connect to Windows host
 https://superuser.com/questions/1535269/how-to-connect-wsl-to-a-windows-localhost
 https://superuser.com/questions/1679757/how-to-access-windows-localhost-from-wsl2
+
+
+## k6 With TypeSript Template
+https://k6.io/docs/testing-guides/api-load-testing/
+https://github.com/grafana/k6-template-typescript

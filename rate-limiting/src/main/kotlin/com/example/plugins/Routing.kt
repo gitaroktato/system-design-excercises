@@ -10,12 +10,13 @@ fun Application.configureRouting() {
         get("/ping") {
             call.respondText("Hello World!")
         }
-        get("/{key?}") {
+        get("/direct/{key?}") {
             val key = call.parameters["id"] ?: return@get call.respondText(
                 "Missing key",
                 status = HttpStatusCode.BadRequest
             )
-            val entry = getValueForKey("key_values", "key", key)
+            println("Getting value for key: $key")
+            val entry = DynamoDb.getValueForKey("key_values", "key", key)
             call.respondText(entry.orEmpty())
         }
     }
