@@ -10,7 +10,7 @@ fun Application.configureRouting() {
         get("/ping") {
             call.respondText("Hello World!")
         }
-        get("/{key?}") {
+        get("/direct/{key?}") {
             val key = call.parameters["id"] ?: return@get call.respondText(
                 "Missing key",
                 status = HttpStatusCode.BadRequest
