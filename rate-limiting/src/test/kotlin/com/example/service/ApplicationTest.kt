@@ -1,11 +1,11 @@
-package com.example
+package com.example.service
 
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.server.testing.*
 import kotlin.test.*
 import io.ktor.http.*
-import com.example.plugins.*
+import com.example.service.plugins.configureRouting
 
 class ApplicationTest {
     @Test

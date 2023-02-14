@@ -1,5 +1,7 @@
-package com.example.plugins
+package com.example.service.plugins
 
+import com.example.interaction.DynamoDb
+import com.example.interaction.RabbitMq
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
@@ -18,6 +20,15 @@ fun Application.configureRouting() {
             println("Getting value for key: $key")
             val entry = DynamoDb.getValueForKey("key_values", "key", key)
             call.respondText(entry.orEmpty())
+        }
+        get("/async/{key?}") {
+            val key = call.parameters["id"] ?: return@get call.respondText(
+                "Missing key",
+                status = HttpStatusCode.BadRequest
+            )
+            println("Async getting value for key: $key")
+            val entry = RabbitMq.call(key)
+            call.respondText(entry)
         }
     }
 }

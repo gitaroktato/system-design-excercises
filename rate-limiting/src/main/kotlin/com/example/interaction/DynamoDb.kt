@@ -1,4 +1,4 @@
-package com.example.plugins
+package com.example.interaction
 
 import aws.sdk.kotlin.runtime.auth.credentials.StaticCredentialsProvider
 import aws.sdk.kotlin.services.dynamodb.DynamoDbClient
