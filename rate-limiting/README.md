@@ -36,3 +36,5 @@ https://medium.com/swlh/async-messaging-with-kotlin-and-rabbitmq-d69df1937b25
 
 https://www.rabbitmq.com/tutorials/tutorial-six-java.html
 
+https://github.com/rabbitmq/rabbitmq-tutorials/blob/main/kotlin/src/main/kotlin/RPCServer.kt
+

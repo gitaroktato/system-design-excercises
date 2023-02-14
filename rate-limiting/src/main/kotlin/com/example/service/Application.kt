@@ -1,7 +1,7 @@
-package com.example
+package com.example.service
 
-import com.example.plugins.configureRouting
-import com.example.plugins.configureSerialization
+import com.example.service.plugins.configureRouting
+import com.example.service.plugins.configureSerialization
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.metrics.micrometer.*

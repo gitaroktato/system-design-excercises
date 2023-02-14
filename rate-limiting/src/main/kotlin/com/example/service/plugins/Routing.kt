@@ -1,5 +1,7 @@
-package com.example.plugins
+package com.example.service.plugins
 
+import com.example.interaction.DynamoDb
+import com.example.interaction.RabbitMq
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
@@ -25,8 +27,8 @@ fun Application.configureRouting() {
                 status = HttpStatusCode.BadRequest
             )
             println("Async getting value for key: $key")
-            RabbitMq.send()
-            call.respondText("OK")
+            val entry = RabbitMq.call(key)
+            call.respondText(entry)
         }
     }
 }
