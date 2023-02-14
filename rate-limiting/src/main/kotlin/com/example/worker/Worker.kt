@@ -5,15 +5,17 @@ import com.rabbitmq.client.CancelCallback
 import com.rabbitmq.client.ConnectionFactory
 import com.rabbitmq.client.DeliverCallback
 import com.rabbitmq.client.Delivery
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.nio.charset.StandardCharsets
 
 fun main(): Unit = runBlocking {
     val factory = ConnectionFactory()
     val connection = factory.newConnection("amqp://guest:guest@localhost:5672/")
     val channel = connection.createChannel()
-    val consumerTag = "SimpleConsumer"
+    val consumerTag = "SimpleConsumer - ${ProcessHandle.current().pid()}"
 
     channel.queueDeclare("test_queue", false, false, false, null)
 
