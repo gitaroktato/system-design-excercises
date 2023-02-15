@@ -15,7 +15,6 @@ fun main(): Unit = runBlocking {
     val factory = ConnectionFactory()
     val connection = factory.newConnection("amqp://guest:guest@localhost:5672/")
     val channel = connection.createChannel()
-    // Setting QoS per channel.
     channel.basicQos(1, false)
     val consumerTag = "SimpleConsumer - ${ProcessHandle.current().pid()}"
 
@@ -29,12 +28,6 @@ fun main(): Unit = runBlocking {
             println("[$tag] Calling DynamoDB")
             val entry = DynamoDb.getValueForKey("key_values", "key", key)
             println("[$tag] Received value: '$entry'")
-            channel.basicPublish(
-                "",
-                delivery.properties.replyTo,
-                delivery.properties,
-                entry!!.toByteArray(charset("UTF-8"))
-            )
         }
     }
     val cancelCallback = CancelCallback { tag: String? ->

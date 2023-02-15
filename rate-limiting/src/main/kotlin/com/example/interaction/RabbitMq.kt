@@ -1,53 +1,49 @@
 package com.example.interaction
 
-import com.rabbitmq.client.*
-import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.Channel as CoroutineChannel
+import com.rabbitmq.client.Channel
+import com.rabbitmq.client.ConnectionFactory
+import com.rabbitmq.client.RpcClient
+import com.rabbitmq.client.RpcClientParams
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.nio.charset.StandardCharsets
-import java.util.*
 
 object RabbitMq {
 
-    val channel: Channel
+    private val queueName: String
+    private val channel: Channel
+    private val replyQueueName: String
+    private val rpcClient: RpcClient
 
     init {
         channel = ConnectionFactory().newConnection("amqp://guest:guest@localhost:5672/").createChannel()
-        channel.queueDeclare("test_queue", false, false, false, null)
+        queueName = channel.queueDeclare(
+            "test_queue",
+            false, false,
+            false,
+            null
+        ).queue
+        replyQueueName = channel.queueDeclare().queue
+        val params = RpcClientParams()
+        params.channel(channel)
+        params.exchange("")
+        params.routingKey(queueName)
+        params.replyTo(replyQueueName)
+        rpcClient = RpcClient(params)
     }
 
-    fun send() {
-        val message = "Hello World!"
+    suspend fun send(key: String) {
         channel.basicPublish(
                 "",
-                "test_queue",
+                queueName,
                 null,
-                message.toByteArray(StandardCharsets.UTF_8)
+                key.toByteArray(StandardCharsets.UTF_8)
             )
-        println(" [x] Sent '$message'")
+        println(" [x] Sent '$key'")
     }
 
 
     suspend fun call(key: String): String = withContext(Dispatchers.IO) {
-        val corrId = UUID.randomUUID().toString()
-        val replyQueueName = channel.queueDeclare().queue
-
-        val props = AMQP.BasicProperties.Builder()
-            .correlationId(corrId)
-            .replyTo(replyQueueName)
-            .build()
-
-        channel.basicPublish("", "test_queue", props, key.toByteArray(charset("UTF-8")))
-        val consumerChannel = CoroutineChannel<String>()
-        channel.basicConsume(replyQueueName, true, object : DefaultConsumer(channel) {
-            override fun handleDelivery(consumerTag: String, envelope: Envelope, properties: AMQP.BasicProperties, body: ByteArray) {
-                if (properties.correlationId == corrId) {
-                    launch {
-                        val result = String(body, charset("UTF-8"))
-                        consumerChannel.send(result)
-                    }
-                }
-            }
-        })
-        consumerChannel.receive()
+        rpcClient.stringCall(key)
     }
 }
