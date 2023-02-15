@@ -15,6 +15,7 @@ Aditionally, I included a README file that contains the key functional/non-funct
 ### Languages
 - Java
 - Kotlin
+- JavaScript & NodeJS
 
 ### API Gateways and Proxies
 - Apisix

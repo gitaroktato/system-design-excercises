@@ -13,6 +13,10 @@ The solution should also scale properly:
 - New clients can arrive with a previously unseen API key.
 - Rate-limiting rules are global: If our services start to scale out, the allowed capacity per API key should remain the same.
 
+The solution should introduce a non-breaking change:
+- If limit is reached for a consumer their request rate are just slowed down instead of dropped.
+- Clients can choose to just wait for a longer period still be able to retrieve results.
+
 ![baseline](docs/rate-limiting-reqs.drawio.png)
 
 ## Implementation Algorithms and Examples
@@ -34,11 +38,22 @@ The solution should also scale properly:
 
 ## Design Considerations
 ### Builtin Rate-Limiter Inside the Service
+We could use a simple rate-limiter implementation inside each service, configured to a fixed rate. [Resilience4J implementation](https://resilience4j.readme.io/docs/ratelimiter) is a good example. This won't satisfy the "global rate-limiting" requirement as the allowed capacity will increase/decrease by scaling the service in & out.
 
+![Rate-LimiterEmbedded](docs/rate-limiting-embedded.drawio.png)
 
 ### Rate-Limiting with Service Mesh
+A better solution would be to have a centralized place to apply rate limits. [Envoy](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/other_features/global_rate_limiting#per-connection-or-per-http-request-rate-limiting) and [Istio](https://istio.io/latest/docs/tasks/policy-enforcement/rate-limit/) offers global rate limiting by keeping track of current utilization in Redis. 
+
+Local rate limits, like the ones offered by [Traefik Proxy](https://doc.traefik.io/traefik/middlewares/http/ratelimit/) are not applicable for the same reasons as above.
+
+The solutions above will drop requests immediately and respond with an HTTP error if limit is reached for a specific API key. So clients have no option to just wait for their response. They need to retry.
+
+### Delegating to DynamoDB & Retry
+
 
 ### Rate-Limiting with RabbitMQ
+
 
 #### Using Queue Length Limits
 See https://www.rabbitmq.com/maxlength.html
