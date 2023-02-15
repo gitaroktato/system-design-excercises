@@ -153,6 +153,20 @@
           "legendFormat": "__auto",
           "range": true,
           "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "rate(ktor_http_server_requests_seconds_count{route=\"/async/{key?}\", status=\"200\", address=\"localhost:8080\"}[10s])",
+          "hide": false,
+          "instant": true,
+          "key": "Q-e6640d7e-d402-4cb3-8f03-e9de326d17d6-0",
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "C"
         }
       ],
       "title": "Request Rate",
@@ -174,6 +188,6 @@
   "timezone": "",
   "title": "rate-limiting-service",
   "uid": "kk8cQRJVz",
-  "version": 2,
+  "version": 4,
   "weekStart": ""
 }

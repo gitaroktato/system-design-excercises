@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "docker": "wsl docker run --network=host --rm -i grafana/k6 run --vus 10 --duration 60s - <request-async.test.js"
+    "docker": "wsl docker run --network=host --rm -i grafana/k6 run --vus 10 --duration 120s - <request-async.test.js"
   },
   "author": "gitaroktato",
   "license": "MIT",
