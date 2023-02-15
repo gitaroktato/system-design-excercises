@@ -1,3 +1,4 @@
 - [ ] Proper logging
-- [ ] Faster RPC calls (thread safety)
+- [x] Faster RPC calls (thread safety)
 - [ ] Get rid of println
+- [ ] Multi-module with worker metrics.

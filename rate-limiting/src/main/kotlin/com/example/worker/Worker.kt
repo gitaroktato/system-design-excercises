@@ -16,7 +16,7 @@ fun main(): Unit = runBlocking {
     val connection = factory.newConnection("amqp://guest:guest@localhost:5672/")
     val channel = connection.createChannel()
     // Setting QoS per channel.
-    channel.basicQos(1, false)
+    channel.basicQos(20, false)
     val consumerTag = "SimpleConsumer - ${ProcessHandle.current().pid()}"
 
     channel.queueDeclare("test_queue", false, false, false, null)
