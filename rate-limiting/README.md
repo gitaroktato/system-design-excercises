@@ -49,6 +49,8 @@ Local rate limits, like the ones offered by [Traefik Proxy](https://doc.traefik.
 
 The solutions above will drop requests immediately and respond with an HTTP error if limit is reached for a specific API key. So clients have no option to just wait for their response. They need to retry.
 
+![ServiceMesh](docs/rate-limiting-mesh.drawio.png)
+
 ### Delegating to DynamoDB & Retry
 
 
