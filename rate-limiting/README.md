@@ -45,7 +45,7 @@ We could use a simple rate-limiter implementation inside each service, configure
 ### Rate-Limiting with Service Mesh
 A better solution would be to have a centralized place to apply rate limits. [Envoy](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/other_features/global_rate_limiting#per-connection-or-per-http-request-rate-limiting) and [Istio](https://istio.io/latest/docs/tasks/policy-enforcement/rate-limit/) offers global rate limiting by keeping track of current utilization in Redis. 
 
-Local rate limits, like the ones offered by [Traefik Proxy](https://doc.traefik.io/traefik/middlewares/http/ratelimit/) are not applicable for the same reasons as above.
+Local rate limits, like the ones offered by [Traefik Proxy](https://doc.traefik.io/traefik/middlewares/http/ratelimit/) are not applicable for the same reasons as above. [Linkerd](https://github.com/linkerd/linkerd/issues/1006) is not yet offering any option for rate-limiting.
 
 The solutions above will drop requests immediately and respond with an HTTP error if limit is reached for a specific API key. So clients have no option to just wait for their response. They need to retry.
 
