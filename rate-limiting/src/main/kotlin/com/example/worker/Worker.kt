@@ -16,28 +16,26 @@ fun main(): Unit = runBlocking {
     channel.basicQos(1, false)
     val consumerTag = "SimpleConsumer - ${ProcessHandle.current().pid()}"
 
-//    channel.queueDeclare("test_queue", false, false, false, null)
-
     println("[$consumerTag] Waiting for messages...")
-    val deliverCallback = DeliverCallback { tag: String?, delivery: Delivery ->
+    val deliverCallback = DeliverCallback { consumerTag: String?, delivery: Delivery ->
         val key = String(delivery.body, StandardCharsets.UTF_8)
-        println("[$tag] Received key: '$key'")
+        println("[$consumerTag] Received key: '$key'")
+        channel.basicAck(delivery.envelope.deliveryTag, false)
         runBlocking {
-            println("[$tag] Calling DynamoDB")
+            println("[$consumerTag] Calling DynamoDB")
             val entry = DynamoDb.getValueForKey("key_values", "key", key)
-            println("[$tag] Received value: '$entry'")
+            println("[$consumerTag] Received value: '$entry'")
             channel.basicPublish(
                 "",
                 delivery.properties.replyTo,
                 delivery.properties,
                 entry!!.toByteArray(charset("UTF-8"))
             )
-            // delay(200)
         }
     }
-    val cancelCallback = CancelCallback { tag: String? ->
-        println("[$tag] was canceled")
+    val cancelCallback = CancelCallback { consumerTag: String? ->
+        println("[$consumerTag] was canceled")
     }
 
-    channel.basicConsume("test_queue", true, consumerTag, deliverCallback, cancelCallback)
+    channel.basicConsume("test_queue", false, consumerTag, deliverCallback, cancelCallback)
 }
