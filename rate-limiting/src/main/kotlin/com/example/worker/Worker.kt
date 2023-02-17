@@ -14,9 +14,9 @@ fun main(): Unit = runBlocking {
     val channel = connection.createChannel()
     // Setting QoS per channel.
     channel.basicQos(1, false)
-    val consumerTag = "SimpleConsumer - ${ProcessHandle.current().pid()}"
+    val workerConsumerTag = "SimpleConsumer - ${ProcessHandle.current().pid()}"
 
-    println("[$consumerTag] Waiting for messages...")
+    println("[$workerConsumerTag] Waiting for messages...")
     val deliverCallback = DeliverCallback { consumerTag: String?, delivery: Delivery ->
         val key = String(delivery.body, StandardCharsets.UTF_8)
         println("[$consumerTag] Received key: '$key'")
@@ -37,5 +37,18 @@ fun main(): Unit = runBlocking {
         println("[$consumerTag] was canceled")
     }
 
-    channel.basicConsume("test_queue", false, consumerTag, deliverCallback, cancelCallback)
+    channel.basicConsume(
+        "api_one",
+        false,
+        "$workerConsumerTag [api_one]",
+        deliverCallback,
+        cancelCallback
+    )
+    channel.basicConsume(
+        "api_two",
+        false,
+        "$workerConsumerTag [api_two]",
+        deliverCallback,
+        cancelCallback
+    )
 }
