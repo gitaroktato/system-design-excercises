@@ -111,32 +111,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "rate(ktor_http_server_requests_seconds_count{route=\"/direct/{key?}\", status=\"200\", address=\"localhost:8080\"}[10s])",
-          "instant": true,
-          "key": "Q-e6640d7e-d402-4cb3-8f03-e9de326d17d6-0",
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "editorMode": "code",
-          "expr": "rate(ktor_http_server_requests_seconds_count{route=\"/ping\", status=\"200\", address=\"localhost:8080\"}[10s])",
-          "hide": false,
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "B"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "editorMode": "code",
-          "expr": "rate(ktor_http_server_requests_seconds_count{route=\"/async/{key?}\", status=\"200\", address=\"localhost:8080\"}[10s])",
+          "expr": "rate(ktor_http_server_requests_seconds_count{route!=\"/metrics\", status=\"200\", address=\"localhost:8080\"}[10s])",
           "hide": false,
           "instant": true,
           "key": "Q-e6640d7e-d402-4cb3-8f03-e9de326d17d6-0",
@@ -232,7 +207,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "rate(ktor_http_server_requests_seconds_sum{instance=\"localhost:8080\", route=\"/async/{key?}\"}[5m]) / rate(ktor_http_server_requests_seconds_count{address=\"localhost:8080\", route=\"/async/{key?}\"}[5m]) * 1000",
+          "expr": "rate(ktor_http_server_requests_seconds_sum{instance=\"localhost:8080\", route!=\"/metrics\"}[5m]) / rate(ktor_http_server_requests_seconds_count{address=\"localhost:8080\", route!=\"/metrics\"}[5m]) * 1000",
           "hide": false,
           "legendFormat": "{{route}} - {{api_key}}",
           "range": true,
@@ -250,7 +225,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "continuous-GrYlRd"
           },
           "custom": {
             "fillOpacity": 80,
@@ -262,74 +237,48 @@
             },
             "lineWidth": 1
           },
-          "mappings": [
-            {
-              "options": {
-                "api_key": {
-                  "color": "orange",
-                  "index": 0,
-                  "text": "API key"
-                }
-              },
-              "type": "value"
-            }
-          ],
+          "mappings": [],
           "thresholds": {
             "mode": "percentage",
             "steps": [
               {
                 "color": "green",
                 "value": null
-              }
-            ]
-          },
-          "unit": "s"
-        },
-        "overrides": [
-          {
-            "__systemRef": "hideSeriesFrom",
-            "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": [
-                  "{api_key=\"api_two\", instance=\"localhost:8080\", job=\"rate-limiting\", method=\"GET\", route=\"/async/{key?}\", status=\"200\", throwable=\"n/a\"}",
-                  "{api_key=\"api_one\", instance=\"localhost:8080\", job=\"rate-limiting\", method=\"GET\", route=\"/async/{key?}\", status=\"200\", throwable=\"n/a\"}"
-                ],
-                "prefix": "All except:",
-                "readOnly": true
-              }
-            },
-            "properties": [
+              },
               {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": true
-                }
+                "color": "#EAB839",
+                "value": 50
+              },
+              {
+                "color": "semi-dark-orange",
+                "value": 80
+              },
+              {
+                "color": "semi-dark-red",
+                "value": 90
               }
             ]
           }
-        ]
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 12,
+        "x": 0,
         "y": 8
       },
-      "id": 5,
+      "id": 7,
       "options": {
-        "bucketOffset": 0,
         "combine": false,
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         }
       },
+      "pluginVersion": "9.3.6",
       "targets": [
         {
           "datasource": {
@@ -338,34 +287,97 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "histogram_quantile(0.99, sum without(address) (rate(ktor_http_server_requests_seconds_bucket{route=\"/async/{key?}\"}[5m])))",
-          "format": "time_series",
+          "expr": "sum(rate(ktor_http_server_requests_seconds_bucket{route!=\"/metrics\", route=\"$route\", api_key=\"$api_key\"}[5m])) by(le)",
+          "format": "heatmap",
           "hide": false,
           "instant": false,
-          "legendFormat": "{{route}} - {{api_key}}",
+          "interval": "",
+          "legendFormat": "__auto",
           "range": true,
-          "refId": "B"
+          "refId": "A"
         }
       ],
-      "title": "P99 Response Time Distribution",
+      "title": "Response Time Distribution",
+      "transformations": [],
       "type": "histogram"
     }
   ],
-  "refresh": "5s",
+  "refresh": false,
   "schemaVersion": 37,
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "current": {
+          "selected": true,
+          "text": "/direct/{key?}",
+          "value": "/direct/{key?}"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "route",
+        "multi": false,
+        "name": "route",
+        "options": [
+          {
+            "selected": true,
+            "text": "/direct/{key?}",
+            "value": "/direct/{key?}"
+          },
+          {
+            "selected": false,
+            "text": "/async/{key?}",
+            "value": "/async/{key?}"
+          }
+        ],
+        "query": "/direct/{key?}, /async/{key?}",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "api_one",
+          "value": "api_one"
+        },
+        "hide": 0,
+        "includeAll": true,
+        "multi": false,
+        "name": "api_key",
+        "options": [
+          {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": true,
+            "text": "api_one",
+            "value": "api_one"
+          },
+          {
+            "selected": false,
+            "text": "api_two",
+            "value": "api_two"
+          }
+        ],
+        "query": "api_one, api_two",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
   },
   "time": {
-    "from": "now-5m",
-    "to": "now"
+    "from": "2023-02-17T10:06:21.060Z",
+    "to": "2023-02-17T10:08:44.462Z"
   },
   "timepicker": {},
   "timezone": "",
   "title": "rate-limiting-service",
   "uid": "kk8cQRJVz",
-  "version": 5,
+  "version": 10,
   "weekStart": ""
 }
