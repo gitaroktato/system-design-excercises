@@ -17,11 +17,15 @@ object RabbitMq {
 
     init {
         channel = ConnectionFactory().newConnection("amqp://guest:guest@localhost:5672/").createChannel()
+        val args = mapOf(
+            "x-max-length" to 5,
+            "x-overflow" to "reject-publish"
+        )
         queueName = channel.queueDeclare(
             "test_queue",
             false, false,
             false,
-            null
+            args
         ).queue
         replyQueueName = channel.queueDeclare().queue
         val params = RpcClientParams()
