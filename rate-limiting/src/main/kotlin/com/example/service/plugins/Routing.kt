@@ -26,8 +26,12 @@ fun Application.configureRouting() {
                 "Missing key",
                 status = HttpStatusCode.BadRequest
             )
-            println("Async getting value for key: $key")
-            val entry = RabbitMq.call(key)
+            val apiKey = call.parameters["apiKey"] ?: return@get call.respondText(
+                "Missing API key",
+                status = HttpStatusCode.BadRequest
+            )
+            println("Async getting value for key: $key with API key $apiKey")
+            val entry = RabbitMq.call(apiKey, key)
             call.respondText(entry)
         }
     }

@@ -10,29 +10,35 @@ import java.nio.charset.StandardCharsets
 
 object RabbitMq {
 
-    private val queueName: String
-    private val channel: Channel
-    private val replyQueueName: String
-    private val rpcClient: RpcClient
+    private var channel: Channel
+    private val rpcClients = mutableMapOf<String, RpcClient>()
 
     init {
         channel = ConnectionFactory().newConnection("amqp://guest:guest@localhost:5672/").createChannel()
-        queueName = channel.queueDeclare(
-            "test_queue",
+    }
+
+    fun init(queueName: String) {
+        val args = mapOf(
+            "x-max-length" to 5,
+            "x-overflow" to "reject-publish"
+        )
+        channel.queueDeclare(
+            queueName,
             false, false,
             false,
-            null
-        ).queue
-        replyQueueName = channel.queueDeclare().queue
+            args
+        )
+        val replyQueueName = channel.queueDeclare().queue
         val params = RpcClientParams()
         params.channel(channel)
         params.exchange("")
         params.routingKey(queueName)
         params.replyTo(replyQueueName)
-        rpcClient = RpcClient(params)
+        val rpcClient = RpcClient(params)
+        rpcClients[queueName] = rpcClient
     }
 
-    suspend fun send(key: String) {
+    suspend fun send(queueName: String, key: String) {
         channel.basicPublish(
                 "",
                 queueName,
@@ -42,8 +48,7 @@ object RabbitMq {
         println(" [x] Sent '$key'")
     }
 
-
-    suspend fun call(key: String): String = withContext(Dispatchers.IO) {
-        rpcClient.stringCall(key)
+    suspend fun call(queueName: String, key: String): String = withContext(Dispatchers.IO) {
+        rpcClients[queueName]!!.stringCall(key)
     }
 }

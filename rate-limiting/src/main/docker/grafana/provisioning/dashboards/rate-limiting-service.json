@@ -80,34 +80,10 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "ops"
         },
-        "overrides": [
-          {
-            "__systemRef": "hideSeriesFrom",
-            "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": [
-                  "{address=\"localhost:8080\", instance=\"localhost:8080\", job=\"rate-limiting\", method=\"GET\", route=\"/direct/{key?}\", status=\"200\", throwable=\"n/a\"}"
-                ],
-                "prefix": "All except:",
-                "readOnly": true
-              }
-            },
-            "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": true
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -164,13 +140,215 @@
           "hide": false,
           "instant": true,
           "key": "Q-e6640d7e-d402-4cb3-8f03-e9de326d17d6-0",
-          "legendFormat": "__auto",
+          "legendFormat": "{{route}} - {{api_key}}",
           "range": true,
           "refId": "C"
         }
       ],
       "title": "Request Rate",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "rate(ktor_http_server_requests_seconds_sum{instance=\"localhost:8080\", route=\"/async/{key?}\"}[5m]) / rate(ktor_http_server_requests_seconds_count{address=\"localhost:8080\", route=\"/async/{key?}\"}[5m]) * 1000",
+          "hide": false,
+          "legendFormat": "{{route}} - {{api_key}}",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Response Time Average",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1
+          },
+          "mappings": [
+            {
+              "options": {
+                "api_key": {
+                  "color": "orange",
+                  "index": 0,
+                  "text": "API key"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "{api_key=\"api_two\", instance=\"localhost:8080\", job=\"rate-limiting\", method=\"GET\", route=\"/async/{key?}\", status=\"200\", throwable=\"n/a\"}",
+                  "{api_key=\"api_one\", instance=\"localhost:8080\", job=\"rate-limiting\", method=\"GET\", route=\"/async/{key?}\", status=\"200\", throwable=\"n/a\"}"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "id": 5,
+      "options": {
+        "bucketOffset": 0,
+        "combine": false,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "histogram_quantile(0.99, sum without(address) (rate(ktor_http_server_requests_seconds_bucket{route=\"/async/{key?}\"}[5m])))",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "{{route}} - {{api_key}}",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "P99 Response Time Distribution",
+      "type": "histogram"
     }
   ],
   "refresh": "5s",
@@ -181,13 +359,13 @@
     "list": []
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "rate-limiting-service",
   "uid": "kk8cQRJVz",
-  "version": 4,
+  "version": 5,
   "weekStart": ""
 }

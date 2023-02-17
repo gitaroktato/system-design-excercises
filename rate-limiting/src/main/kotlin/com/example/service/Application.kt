@@ -1,5 +1,7 @@
 package com.example.service
 
+import com.example.interaction.RabbitMq
+import com.example.service.plugins.configureMetrics
 import com.example.service.plugins.configureRouting
 import com.example.service.plugins.configureSerialization
 import io.ktor.server.application.*
@@ -8,6 +10,7 @@ import io.ktor.server.metrics.micrometer.*
 import io.ktor.server.netty.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.micrometer.core.instrument.distribution.DistributionStatisticConfig
 import io.micrometer.prometheus.PrometheusConfig
 import io.micrometer.prometheus.PrometheusMeterRegistry
 
@@ -17,15 +20,9 @@ fun main() {
 }
 
 fun Application.module() {
-    val appMicrometerRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
-    install(MicrometerMetrics) {
-        registry = appMicrometerRegistry
-    }
-    routing {
-        get("/metrics") {
-            call.respond(appMicrometerRegistry.scrape())
-        }
-    }
+    configureMetrics()
     configureSerialization()
     configureRouting()
+    RabbitMq.init("api_one")
+    RabbitMq.init("api_two")
 }

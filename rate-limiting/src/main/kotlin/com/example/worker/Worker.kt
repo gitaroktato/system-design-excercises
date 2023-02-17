@@ -5,10 +5,7 @@ import com.rabbitmq.client.CancelCallback
 import com.rabbitmq.client.ConnectionFactory
 import com.rabbitmq.client.DeliverCallback
 import com.rabbitmq.client.Delivery
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.nio.charset.StandardCharsets
 
 fun main(): Unit = runBlocking {
@@ -16,19 +13,18 @@ fun main(): Unit = runBlocking {
     val connection = factory.newConnection("amqp://guest:guest@localhost:5672/")
     val channel = connection.createChannel()
     // Setting QoS per channel.
-    channel.basicQos(20, false)
-    val consumerTag = "SimpleConsumer - ${ProcessHandle.current().pid()}"
+    channel.basicQos(1, false)
+    val workerConsumerTag = "SimpleConsumer - ${ProcessHandle.current().pid()}"
 
-    channel.queueDeclare("test_queue", false, false, false, null)
-
-    println("[$consumerTag] Waiting for messages...")
-    val deliverCallback = DeliverCallback { tag: String?, delivery: Delivery ->
+    println("[$workerConsumerTag] Waiting for messages...")
+    val deliverCallback = DeliverCallback { consumerTag: String?, delivery: Delivery ->
         val key = String(delivery.body, StandardCharsets.UTF_8)
-        println("[$tag] Received key: '$key'")
+        println("[$consumerTag] Received key: '$key'")
+        channel.basicAck(delivery.envelope.deliveryTag, false)
         runBlocking {
-            println("[$tag] Calling DynamoDB")
+            println("[$consumerTag] Calling DynamoDB")
             val entry = DynamoDb.getValueForKey("key_values", "key", key)
-            println("[$tag] Received value: '$entry'")
+            println("[$consumerTag] Received value: '$entry'")
             channel.basicPublish(
                 "",
                 delivery.properties.replyTo,
@@ -37,9 +33,22 @@ fun main(): Unit = runBlocking {
             )
         }
     }
-    val cancelCallback = CancelCallback { tag: String? ->
-        println("[$tag] was canceled")
+    val cancelCallback = CancelCallback { consumerTag: String? ->
+        println("[$consumerTag] was canceled")
     }
 
-    channel.basicConsume("test_queue", true, consumerTag, deliverCallback, cancelCallback)
+    channel.basicConsume(
+        "api_one",
+        false,
+        "$workerConsumerTag [api_one]",
+        deliverCallback,
+        cancelCallback
+    )
+    channel.basicConsume(
+        "api_two",
+        false,
+        "$workerConsumerTag [api_two]",
+        deliverCallback,
+        cancelCallback
+    )
 }
