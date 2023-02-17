@@ -83,32 +83,7 @@
           },
           "unit": "ops"
         },
-        "overrides": [
-          {
-            "__systemRef": "hideSeriesFrom",
-            "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": [
-                  "{address=\"localhost:8080\", instance=\"localhost:8080\", job=\"rate-limiting\", method=\"GET\", route=\"/async/{key?}\", status=\"200\", throwable=\"n/a\"}"
-                ],
-                "prefix": "All except:",
-                "readOnly": true
-              }
-            },
-            "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": true
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -165,7 +140,7 @@
           "hide": false,
           "instant": true,
           "key": "Q-e6640d7e-d402-4cb3-8f03-e9de326d17d6-0",
-          "legendFormat": "__auto",
+          "legendFormat": "{{route}} - {{api_key}}",
           "range": true,
           "refId": "C"
         }
@@ -257,21 +232,9 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "ktor_http_server_requests_seconds{address=\"localhost:8080\", route=\"/async/{key?}\"}",
-          "hide": true,
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "editorMode": "code",
           "expr": "rate(ktor_http_server_requests_seconds_sum{instance=\"localhost:8080\", route=\"/async/{key?}\"}[5m]) / rate(ktor_http_server_requests_seconds_count{address=\"localhost:8080\", route=\"/async/{key?}\"}[5m]) * 1000",
           "hide": false,
-          "legendFormat": "__auto",
+          "legendFormat": "{{route}} - {{api_key}}",
           "range": true,
           "refId": "B"
         }
@@ -287,7 +250,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
           },
           "custom": {
             "fillOpacity": 80,
@@ -299,23 +262,56 @@
             },
             "lineWidth": 1
           },
-          "mappings": [],
+          "mappings": [
+            {
+              "options": {
+                "api_key": {
+                  "color": "orange",
+                  "index": 0,
+                  "text": "API key"
+                }
+              },
+              "type": "value"
+            }
+          ],
           "thresholds": {
-            "mode": "absolute",
+            "mode": "percentage",
             "steps": [
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
           "unit": "s"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "{api_key=\"api_two\", instance=\"localhost:8080\", job=\"rate-limiting\", method=\"GET\", route=\"/async/{key?}\", status=\"200\", throwable=\"n/a\"}",
+                  "{api_key=\"api_one\", instance=\"localhost:8080\", job=\"rate-limiting\", method=\"GET\", route=\"/async/{key?}\", status=\"200\", throwable=\"n/a\"}"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -341,21 +337,12 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
+          "exemplar": false,
           "expr": "histogram_quantile(0.99, sum without(address) (rate(ktor_http_server_requests_seconds_bucket{route=\"/async/{key?}\"}[5m])))",
-          "hide": true,
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "editorMode": "code",
-          "expr": "histogram_quantile(0.99, sum without(address) (rate(ktor_http_server_requests_seconds_bucket{route=\"/async/{key?}\"}[5m])))",
+          "format": "time_series",
           "hide": false,
-          "legendFormat": "__auto",
+          "instant": false,
+          "legendFormat": "{{route}} - {{api_key}}",
           "range": true,
           "refId": "B"
         }
@@ -364,7 +351,7 @@
       "type": "histogram"
     }
   ],
-  "refresh": false,
+  "refresh": "5s",
   "schemaVersion": 37,
   "style": "dark",
   "tags": [],
@@ -372,8 +359,8 @@
     "list": []
   },
   "time": {
-    "from": "2023-02-17T09:07:42.421Z",
-    "to": "2023-02-17T09:08:21.170Z"
+    "from": "now-5m",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "",
