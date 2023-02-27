@@ -1,1 +1,2 @@
-rootProject.name = "rate-limiting-service"
+rootProject.name = "rate-limiting"
+include("service", "worker")

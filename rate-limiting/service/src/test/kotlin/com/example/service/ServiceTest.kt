@@ -7,7 +7,7 @@ import kotlin.test.*
 import io.ktor.http.*
 import com.example.service.plugins.configureRouting
 
-class ApplicationTest {
+class ServiceTest {
     @Test
     fun testRoot() = testApplication {
         application {
