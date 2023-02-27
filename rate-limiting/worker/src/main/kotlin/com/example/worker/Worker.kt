@@ -1,13 +1,14 @@
 package com.example.worker
 
-import com.example.interaction.RabbitMq
+import com.example.worker.plugins.configureMessaging
 import com.example.worker.plugins.configureMetrics
 import com.example.worker.plugins.configureRouting
 import com.example.worker.plugins.configureSerialization
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import kotlinx.coroutines.runBlocking
+import io.micrometer.prometheus.PrometheusConfig
+import io.micrometer.prometheus.PrometheusMeterRegistry
 
 fun main() {
     embeddedServer(Netty, port = 8081, host = "0.0.0.0", module = Application::module)
@@ -15,9 +16,9 @@ fun main() {
 }
 
 fun Application.module() {
-    configureMetrics()
+    val meterRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
+    configureMessaging(meterRegistry)
+    configureMetrics(meterRegistry)
     configureSerialization()
     configureRouting()
-    RabbitMq.consumeFrom("api_one")
-    RabbitMq.consumeFrom("api_two")
 }

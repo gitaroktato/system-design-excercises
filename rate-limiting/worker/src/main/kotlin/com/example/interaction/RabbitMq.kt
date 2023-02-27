@@ -1,12 +1,13 @@
 package com.example.interaction
 
 import com.rabbitmq.client.*
-import kotlinx.coroutines.Dispatchers
+import io.ktor.util.logging.*
+import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.Timer
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import java.nio.charset.StandardCharsets
 
-object RabbitMq {
+class RabbitMq(private val logger: Logger, private val meterRegistry: MeterRegistry) {
     private val channel: Channel
     private val workerConsumerTag: String
     private val cancelCallback: CancelCallback
@@ -16,27 +17,31 @@ object RabbitMq {
         channel = ConnectionFactory().newConnection("amqp://guest:guest@localhost:5672/").createChannel()
         // Setting QoS per channel.
         channel.basicQos(1, false)
+        // Setting up workers
         workerConsumerTag = "SimpleConsumer - ${ProcessHandle.current().pid()}"
-
-        println("[$workerConsumerTag] Waiting for messages...")
-        deliverCallback = DeliverCallback { consumerTag: String?, delivery: Delivery -> runBlocking {
+        deliverCallback = DeliverCallback { consumerTag: String?, delivery: Delivery ->
+            runBlocking {
+                val sample: Timer.Sample = Timer.start(meterRegistry)
                 val key = String(delivery.body, StandardCharsets.UTF_8)
-                println("[$consumerTag] Received key: '$key'")
+                logger.info("[$consumerTag] Received key: '$key'")
                 channel.basicAck(delivery.envelope.deliveryTag, false)
-                println("[$consumerTag] Calling DynamoDB")
+                logger.info("[$consumerTag] Calling DynamoDB")
                 val entry = DynamoDb.getValueForKey("key_values", "key", key)
-                println("[$consumerTag] Received value: '$entry'")
+                logger.info("[$consumerTag] Received value: '$entry'")
                 channel.basicPublish(
                     "",
                     delivery.properties.replyTo,
                     delivery.properties,
                     entry!!.toByteArray(charset("UTF-8"))
                 )
+                sample.stop(meterRegistry.timer("mq_execution_time", "consumer_tag", consumerTag))
             }
         }
         cancelCallback = CancelCallback { consumerTag: String? ->
-            println("[$consumerTag] was canceled")
+            logger.error("[$consumerTag] was canceled")
         }
+        // Ready
+        logger.info("[$workerConsumerTag] Waiting for messages...")
     }
 
     fun consumeFrom(queueName: String) {
