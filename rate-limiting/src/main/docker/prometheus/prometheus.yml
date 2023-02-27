@@ -26,7 +26,7 @@ scrape_configs:
   #         - localhost:8080
 
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-  - job_name: 'rate-limiting'
+  - job_name: 'rate-limiting-service'
 
     # Override the global default and scrape targets from this job every 5 seconds.
     scrape_interval: 5s
@@ -36,3 +36,13 @@ scrape_configs:
     static_configs:
       - targets:
         - 'localhost:8080'
+  - job_name: 'rate-limiting-worker'
+
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+
+    # scheme defaults to 'http'.
+    metrics_path: /metrics
+    static_configs:
+      - targets:
+          - 'localhost:8081'

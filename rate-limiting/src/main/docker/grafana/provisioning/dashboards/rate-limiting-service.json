@@ -270,6 +270,7 @@
       },
       "id": 7,
       "options": {
+        "bucketOffset": 0,
         "combine": false,
         "legend": {
           "calcs": [],
@@ -300,6 +301,124 @@
       "title": "Response Time Distribution",
       "transformations": [],
       "type": "histogram"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "{consumer_tag=\"SimpleConsumer - 7477 [api_one]\", instance=\"localhost:8081\", job=\"rate-limiting-worker\"}"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "id": 9,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "mq_execution_time_seconds_sum / mq_execution_time_seconds_count",
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Worker Execution Time",
+      "type": "timeseries"
     }
   ],
   "refresh": false,
@@ -311,8 +430,8 @@
       {
         "current": {
           "selected": true,
-          "text": "/direct/{key?}",
-          "value": "/direct/{key?}"
+          "text": "/async/{key?}",
+          "value": "/async/{key?}"
         },
         "hide": 0,
         "includeAll": false,
@@ -321,12 +440,12 @@
         "name": "route",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "/direct/{key?}",
             "value": "/direct/{key?}"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "/async/{key?}",
             "value": "/async/{key?}"
           }
@@ -371,13 +490,13 @@
     ]
   },
   "time": {
-    "from": "2023-02-17T10:06:21.060Z",
-    "to": "2023-02-17T10:08:44.462Z"
+    "from": "2023-02-27T13:29:42.755Z",
+    "to": "2023-02-27T13:30:45.945Z"
   },
   "timepicker": {},
   "timezone": "",
   "title": "rate-limiting-service",
   "uid": "kk8cQRJVz",
-  "version": 10,
+  "version": 12,
   "weekStart": ""
 }
