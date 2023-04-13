@@ -41,6 +41,9 @@ services:
     ports:
       - 8080:8080
     profiles: ["perf"]
+    depends_on:
+      - rabbitmq
+      - dynamodb
 
   worker-1:
     image: rate-limiting-worker
@@ -50,6 +53,9 @@ services:
     ports:
       - 8081:8081
     profiles: ["perf"]
+    depends_on:
+      - rabbitmq
+      - dynamodb
 
   worker-2:
     image: rate-limiting-worker
@@ -59,6 +65,9 @@ services:
     ports:
       - 8082:8081
     profiles: ["perf"]
+    depends_on:
+      - rabbitmq
+      - dynamodb
 
   worker-3:
     image: rate-limiting-worker
@@ -68,6 +77,9 @@ services:
     ports:
       - 8083:8081
     profiles: ["perf"]
+    depends_on:
+      - rabbitmq
+      - dynamodb
 
   worker-4:
     image: rate-limiting-worker
@@ -77,6 +89,9 @@ services:
     ports:
       - 8084:8081
     profiles: ["perf"]
+    depends_on:
+      - rabbitmq
+      - dynamodb
 
   worker-5:
     image: rate-limiting-worker
@@ -86,4 +101,7 @@ services:
     ports:
       - 8085:8081
     profiles: ["perf"]
+    depends_on:
+      - rabbitmq
+      - dynamodb
 

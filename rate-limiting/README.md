@@ -81,24 +81,29 @@ Run the worker with Gradle (slow)
 ```shell
 ./gradlew -p worker run
 ```
-Dockerize both service and worker for performance testing
+Dockerizing both service and worker for performance testing
 ```shell
 ./gradlew publishImageToLocalRegistry
 ```
+Run service & workers for performance testing
+```shell
+docker compose --profile perf up -d 
+```
 
 ## HTTP Requests
+You can use the following examples to get values directly and asynchronously through HTTP API.
+See [`src/main/docker/dynamodb/data/data_1.json`](src/main/docker/dynamodb/data/data_1.json) for the keys inserted to DynamoDB.
 
 ### Getting values through messaging
-
 - http://localhost:8080/async/key?id=key1&apiKey=api_one
 - http://localhost:8080/async/key?id=key2&apiKey=api_two
 
 ### Getting values directly
-You can use the following examples to get values directly through HTTP API.
-
-
 - http://localhost:8080/direct/key?id=key1&apiKey=api_one
 - http://localhost:8080/direct/key?id=key2&apiKey=api_two
+
+## Reviewing Metrics
+Go to http://localhost:3000/d/kk8cQRJVz/rate-limiting-service
 
 # References
 
