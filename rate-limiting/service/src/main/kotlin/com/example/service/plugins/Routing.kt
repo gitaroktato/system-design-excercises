@@ -30,7 +30,7 @@ fun Application.configureRouting(mq: RabbitMq) {
                 "Missing API key",
                 status = HttpStatusCode.BadRequest
             )
-            println("Async getting value for key: $key with API key $apiKey")
+            call.application.log.info("Async getting value for key: $key with API key $apiKey")
             val entry = mq.call(apiKey, key)
             call.respondText(entry)
         }

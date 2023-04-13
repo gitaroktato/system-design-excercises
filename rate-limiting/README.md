@@ -61,31 +61,44 @@ The solutions above will drop requests immediately and respond with an HTTP erro
 See https://www.rabbitmq.com/maxlength.html
 
 # Running the Sandbox
-
 Use [SDKMan](https://sdkman.io/usage) to set the proper Java version.
 ```shell
 sdk env
 ```
-
+Run all dependencies with Docker compose
+```shell
+docker compose up -d
+```
+Inject mock data to DynamoDB
+```shell
+src/main/docker/dynamodb/init.sh
+```
 Run the service with Gradle (slow)
 ```shell
 ./gradlew -p service run
 ```
-
-Run the service with Gradle (slow)
+Run the worker with Gradle (slow)
 ```shell
 ./gradlew -p worker run
 ```
-
-Dockerize
+Dockerize both service and worker for performance testing
 ```shell
 ./gradlew publishImageToLocalRegistry
 ```
 
 ## HTTP Requests
 
+### Getting values through messaging
+
 - http://localhost:8080/async/key?id=key1&apiKey=api_one
-- http://localhost:8080/async/key?id=key1&apiKey=api_two
+- http://localhost:8080/async/key?id=key2&apiKey=api_two
+
+### Getting values directly
+You can use the following examples to get values directly through HTTP API.
+
+
+- http://localhost:8080/direct/key?id=key1&apiKey=api_one
+- http://localhost:8080/direct/key?id=key2&apiKey=api_two
 
 # References
 
