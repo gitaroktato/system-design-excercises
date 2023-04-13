@@ -35,3 +35,55 @@ services:
     ports:
       - 3000:3000
 
+  service:
+    image: rate-limiting-service
+    network_mode: host
+    ports:
+      - 8080:8080
+    profiles: ["perf"]
+
+  worker-1:
+    image: rate-limiting-worker
+    network_mode: host
+    environment:
+      - PORT=8081
+    ports:
+      - 8081:8081
+    profiles: ["perf"]
+
+  worker-2:
+    image: rate-limiting-worker
+    network_mode: host
+    environment:
+      - PORT=8082
+    ports:
+      - 8082:8081
+    profiles: ["perf"]
+
+  worker-3:
+    image: rate-limiting-worker
+    network_mode: host
+    environment:
+      - PORT=8083
+    ports:
+      - 8083:8081
+    profiles: ["perf"]
+
+  worker-4:
+    image: rate-limiting-worker
+    network_mode: host
+    environment:
+      - PORT=8084
+    ports:
+      - 8084:8081
+    profiles: ["perf"]
+
+  worker-5:
+    image: rate-limiting-worker
+    network_mode: host
+    environment:
+      - PORT=8085
+    ports:
+      - 8085:8081
+    profiles: ["perf"]
+

@@ -62,12 +62,24 @@ See https://www.rabbitmq.com/maxlength.html
 
 # Running the Sandbox
 
+Use [SDKMan](https://sdkman.io/usage) to set the proper Java version.
+```shell
+sdk env
+```
+
+Run the service with Gradle (slow)
 ```shell
 ./gradlew -p service run
 ```
 
+Run the service with Gradle (slow)
 ```shell
 ./gradlew -p worker run
+```
+
+Dockerize
+```shell
+./gradlew publishImageToLocalRegistry
 ```
 
 ## HTTP Requests

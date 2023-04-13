@@ -14,6 +14,12 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
 }
 
+ktor {
+    docker {
+        localImageName.set("rate-limiting-service")
+    }
+}
+
 application {
     mainClass.set("com.example.service.ServiceKt")
 

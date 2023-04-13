@@ -16,6 +16,6 @@ fun main() {
 fun Application.module() {
     configureMetrics()
     configureSerialization()
-    configureRouting()
-    configureMessaging()
+    val mq = configureMessaging()
+    configureRouting(mq)
 }

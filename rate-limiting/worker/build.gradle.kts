@@ -14,14 +14,18 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
 }
 
+ktor {
+    docker {
+        localImageName.set("rate-limiting-worker")
+    }
+}
+
 application {
     mainClass.set("com.example.worker.WorkerKt")
 
     val isDevelopment: Boolean = project.ext.has("development")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
 }
-
-
 
 repositories {
     mavenCentral()
