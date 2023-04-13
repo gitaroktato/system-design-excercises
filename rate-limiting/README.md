@@ -45,7 +45,7 @@ We could use a simple rate-limiter implementation inside each service, configure
 ### Rate-Limiting with Service Mesh
 A better solution would be to have a centralized place to apply rate limits. [Envoy](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/other_features/global_rate_limiting#per-connection-or-per-http-request-rate-limiting) and [Istio](https://istio.io/latest/docs/tasks/policy-enforcement/rate-limit/) offers global rate limiting by keeping track of current utilization in Redis. 
 
-Local rate limits, like the ones offered by [Traefik Proxy](https://doc.traefik.io/traefik/middlewares/http/ratelimit/) are not applicable for the same reasons as above. [Linkerd](https://github.com/linkerd/linkerd/issues/1006) is not yet offering any option for rate-limiting.
+Local rate limits, like the ones offered by [Traefik Proxy](https://doc.traefik.io/traefik/middlewares/http/ratelimit/) are not applicable for the same reasons as above. [Linkerd](https://github.com/linkerd/linkerd2/issues/7278) is [not](https://github.com/linkerd/linkerd2/issues/6323) yet offering any option for rate-limiting.
 
 The solutions above will drop requests immediately and respond with an HTTP error if limit is reached for a specific API key. So clients have no option to just wait for their response. They need to retry.
 
@@ -60,6 +60,45 @@ The solutions above will drop requests immediately and respond with an HTTP erro
 #### Using Queue Length Limits
 See https://www.rabbitmq.com/maxlength.html
 
+# Running the Sandbox
+Use [SDKMan](https://sdkman.io/usage) to set the proper Java version.
+```shell
+sdk env
+```
+Run all dependencies with Docker compose
+```shell
+docker compose up -d
+```
+Inject mock data to DynamoDB
+```shell
+src/main/docker/dynamodb/init.sh
+```
+Run the service with Gradle (slow)
+```shell
+./gradlew -p service run
+```
+Run the worker with Gradle (slow)
+```shell
+./gradlew -p worker run
+```
+Dockerize both service and worker for performance testing
+```shell
+./gradlew publishImageToLocalRegistry
+```
+
+## HTTP Requests
+
+### Getting values through messaging
+
+- http://localhost:8080/async/key?id=key1&apiKey=api_one
+- http://localhost:8080/async/key?id=key2&apiKey=api_two
+
+### Getting values directly
+You can use the following examples to get values directly through HTTP API.
+
+
+- http://localhost:8080/direct/key?id=key1&apiKey=api_one
+- http://localhost:8080/direct/key?id=key2&apiKey=api_two
 
 # References
 

@@ -4,16 +4,17 @@ import com.rabbitmq.client.Channel
 import com.rabbitmq.client.ConnectionFactory
 import com.rabbitmq.client.RpcClient
 import com.rabbitmq.client.RpcClientParams
+import io.ktor.util.logging.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.nio.charset.StandardCharsets
 
-object RabbitMq {
+class RabbitMq(private val logger: Logger) {
 
-    private var channel: Channel
+    private lateinit var channel: Channel
     private val rpcClients = mutableMapOf<String, RpcClient>()
 
-    init {
+    fun open() {
         channel = ConnectionFactory().newConnection("amqp://guest:guest@localhost:5672/").createChannel()
     }
 
@@ -45,7 +46,7 @@ object RabbitMq {
                 null,
                 key.toByteArray(StandardCharsets.UTF_8)
             )
-        println(" [x] Sent '$key'")
+        logger.info(" [x] Sent '$key'")
     }
 
     suspend fun call(queueName: String, key: String): String = withContext(Dispatchers.IO) {

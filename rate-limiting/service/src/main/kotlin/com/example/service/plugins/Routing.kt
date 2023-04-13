@@ -7,7 +7,7 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Application.configureRouting() {
+fun Application.configureRouting(mq: RabbitMq) {
     routing {
         get("/ping") {
             call.respondText("Hello World!")
@@ -30,8 +30,8 @@ fun Application.configureRouting() {
                 "Missing API key",
                 status = HttpStatusCode.BadRequest
             )
-            println("Async getting value for key: $key with API key $apiKey")
-            val entry = RabbitMq.call(apiKey, key)
+            call.application.log.info("Async getting value for key: $key with API key $apiKey")
+            val entry = mq.call(apiKey, key)
             call.respondText(entry)
         }
     }
