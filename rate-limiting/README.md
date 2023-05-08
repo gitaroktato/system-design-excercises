@@ -90,6 +90,11 @@ Run service & workers for performance testing
 docker compose --profile perf up -d 
 ```
 
+Force start just the workers
+```shell
+for i in {1..5}; do bash -c "wsl docker compose --profile perf up -d --force-recreate worker-${i}"; done
+```
+
 Run the performance tests. See `package.json` for all the options.
 ```shell
 cd src/main/docker/k6
