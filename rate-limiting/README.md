@@ -90,10 +90,10 @@ Run service & workers for performance testing
 docker compose --profile perf up -d 
 ```
 
-Run the performance tests
+Run the performance tests. See `package.json` for all the options.
 ```shell
 cd src/main/docker/k6
-npm run docker-direct
+npm run direct-duration-api-one
 ```
 
 ## HTTP Requests
@@ -110,6 +110,11 @@ See [`src/main/docker/dynamodb/data/data_1.json`](src/main/docker/dynamodb/data/
 
 ## Reviewing Metrics
 Go to http://localhost:3000/d/kk8cQRJVz/rate-limiting-service
+Username and password is `admin/admin`
+
+## RabbitMQ Endpoint
+Go to http://localhost:15672/
+Username and password is `guest/guest`
 
 # References
 

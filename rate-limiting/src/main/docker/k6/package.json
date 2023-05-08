@@ -5,9 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "docker-direct": "wsl docker run --network=host --rm -i grafana/k6 run --vus 10 --iterations 1875 - <request-direct.test.js",
-    "docker-direct-duration": "wsl docker run --network=host --rm -i grafana/k6 run --vus 10 --duration 2m - <request-direct.test.js",
-    "docker-async": "wsl docker run --network=host --rm -i grafana/k6 run --vus 10 --iterations 1875 - <request-async.test.js"
+    "direct-duration-api-one": "wsl docker run --network=host --rm -i grafana/k6 run -e API_KEY=api_one -e PATH=direct --vus 10 --duration 2m - <request.test.js",
+    "direct-duration-api-two": "wsl docker run --network=host --rm -i grafana/k6 run -e API_KEY=api_two -e PATH=direct --vus 10 --duration 2m - <request.test.js",
+    "async-duration-api-one": "wsl docker run --network=host --rm -i grafana/k6 run -e API_KEY=api_one -e PATH=async --vus 10 --duration 2m - <request.test.js",
+    "async-duration-api-two": "wsl docker run --network=host --rm -i grafana/k6 run -e API_KEY=api_two -e PATH=async --vus 10 --duration 2m - <request.test.js",
+    "direct-api-one": "wsl docker run --network=host --rm -i grafana/k6 run -e API_KEY=api_one -e PATH=direct --vus 10 --iterations 1875 - <request.test.js",
+    "async-api-one": "wsl docker run --network=host --rm -i grafana/k6 run -e API_KEY=api_one -e PATH=async --vus 10 --iterations 1875 - <request.test.js"
   },
   "author": "gitaroktato",
   "license": "MIT",
