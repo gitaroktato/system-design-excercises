@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "docker-direct": "wsl docker run --network=host --rm -i grafana/k6 run --vus 10 --iterations 5000 - <request-direct.test.js",
-    "docker-async": "wsl docker run --network=host --rm -i grafana/k6 run --vus 10 --iterations 5000 - <request-async.test.js"
+    "docker-direct": "wsl docker run --network=host --rm -i grafana/k6 run --vus 10 --iterations 1875 - <request-direct.test.js",
+    "docker-direct-duration": "wsl docker run --network=host --rm -i grafana/k6 run --vus 10 --duration 2m - <request-direct.test.js",
+    "docker-async": "wsl docker run --network=host --rm -i grafana/k6 run --vus 10 --iterations 1875 - <request-async.test.js"
   },
   "author": "gitaroktato",
   "license": "MIT",

@@ -90,6 +90,12 @@ Run service & workers for performance testing
 docker compose --profile perf up -d 
 ```
 
+Run the performance tests
+```shell
+cd src/main/docker/k6
+npm run docker-direct
+```
+
 ## HTTP Requests
 You can use the following examples to get values directly and asynchronously through HTTP API.
 See [`src/main/docker/dynamodb/data/data_1.json`](src/main/docker/dynamodb/data/data_1.json) for the keys inserted to DynamoDB.
