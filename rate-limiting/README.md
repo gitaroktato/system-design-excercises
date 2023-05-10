@@ -90,10 +90,17 @@ Run service & workers for performance testing
 docker compose --profile perf up -d 
 ```
 
-Force start just the workers
+Force start just the workers - sometimes has to be done if queues are not yet created.
 ```shell
 for i in {1..5}; do bash -c "wsl docker compose --profile perf up -d --force-recreate worker-${i}"; done
 ```
+
+Pause a number of workers
+```shell
+for i in {1..4}; do bash -c "wsl docker compose --profile perf pause worker-${i}"; done
+```
+
+
 
 Run the performance tests. See `package.json` for all the options.
 ```shell
@@ -157,3 +164,6 @@ https://www.rabbitmq.com/tutorials/tutorial-six-java.html
 
 https://github.com/rabbitmq/rabbitmq-tutorials/blob/main/kotlin/src/main/kotlin/RPCServer.kt
 
+# Fixing WSL2 related issues
+https://unix.stackexchange.com/questions/589683/wsl-dns-not-working-when-connected-to-vpn
+https://learn.microsoft.com/en-us/windows/wsl/troubleshooting
