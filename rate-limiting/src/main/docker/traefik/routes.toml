@@ -1,0 +1,12 @@
+[http.services]
+  [http.services.service.loadBalancer]
+    [[http.services.service.loadBalancer.servers]]
+      url = "http://localhost:8070/"
+    [[http.services.service.loadBalancer.servers]]
+      url = "http://localhost:8071/"
+      
+[http.routers]
+  [http.routers.service]
+    entryPoints = ["http"]
+    rule = "PathPrefix(`/`)"
+    service = "service"

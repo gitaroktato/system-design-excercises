@@ -41,6 +41,8 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("aws.sdk.kotlin:dynamodb:0.18.0-beta")
     implementation("com.rabbitmq:amqp-client:$rabbitmq_version")
+    implementation("io.github.resilience4j:resilience4j-kotlin:2.0.2")
+    implementation("io.github.resilience4j:resilience4j-ratelimiter:2.0.2")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }

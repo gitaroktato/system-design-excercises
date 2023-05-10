@@ -100,12 +100,15 @@ Pause a number of workers
 for i in {1..4}; do bash -c "wsl docker compose --profile perf pause worker-${i}"; done
 ```
 
-
-
 Run the performance tests. See `package.json` for all the options.
 ```shell
 cd src/main/docker/k6
 npm run direct-duration-api-one
+```
+
+Kill all Gradle daemons
+```shell
+pkill -f '.*GradleDaemon.*'
 ```
 
 ## HTTP Requests
