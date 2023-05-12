@@ -100,12 +100,15 @@ Pause a number of workers
 for i in {1..4}; do bash -c "wsl docker compose --profile perf pause worker-${i}"; done
 ```
 
-
-
 Run the performance tests. See `package.json` for all the options.
 ```shell
 cd src/main/docker/k6
 npm run direct-duration-api-one
+```
+
+Kill all Gradle daemons
+```shell
+pkill -f '.*GradleDaemon.*'
 ```
 
 ## HTTP Requests
@@ -113,12 +116,12 @@ You can use the following examples to get values directly and asynchronously thr
 See [`src/main/docker/dynamodb/data/data_1.json`](src/main/docker/dynamodb/data/data_1.json) for the keys inserted to DynamoDB.
 
 ### Getting values through messaging
-- http://localhost:8080/async/key?id=key1&apiKey=api_one
-- http://localhost:8080/async/key?id=key2&apiKey=api_two
+- http://localhost/async/key?id=key1&apiKey=api_one
+- http://localhost/async/key?id=key2&apiKey=api_two
 
 ### Getting values directly
-- http://localhost:8080/direct/key?id=key1&apiKey=api_one
-- http://localhost:8080/direct/key?id=key2&apiKey=api_two
+- http://localhost/direct/key?id=key1&apiKey=api_one
+- http://localhost/direct/key?id=key2&apiKey=api_two
 
 ## Reviewing Metrics
 Go to http://localhost:3000/d/kk8cQRJVz/rate-limiting-service
@@ -127,6 +130,9 @@ Username and password is `admin/admin`
 ## RabbitMQ Endpoint
 Go to http://localhost:15672/
 Username and password is `guest/guest`
+
+## Traefik Endpoint
+Go to http://localhost:8080/
 
 # References
 

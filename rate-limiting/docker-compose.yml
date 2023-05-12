@@ -35,11 +35,30 @@ services:
     ports:
       - 3000:3000
 
-  service:
+  traefik:
+    # The official v2 Traefik docker image
+    image: traefik:v2.6.1
+    network_mode: host
+    profiles: ["perf"]
+    volumes:
+      - ./src/main/docker/traefik/traefik.toml:/etc/traefik/traefik.toml:ro
+      - ./src/main/docker/traefik/routes.toml:/etc/traefik/routes.toml:ro
+
+  service-1:
     image: rate-limiting-service
     network_mode: host
-    ports:
-      - 8080:8080
+    environment:
+      - PORT=8070
+    profiles: ["perf"]
+    depends_on:
+      - rabbitmq
+      - dynamodb
+
+  service-2:
+    image: rate-limiting-service
+    network_mode: host
+    environment:
+      - PORT=8071
     profiles: ["perf"]
     depends_on:
       - rabbitmq
@@ -49,9 +68,7 @@ services:
     image: rate-limiting-worker
     network_mode: host
     environment:
-      - PORT=8081
-    ports:
-      - 8081:8081
+      - PORT=8091
     profiles: ["perf"]
     depends_on:
       - rabbitmq
@@ -61,9 +78,7 @@ services:
     image: rate-limiting-worker
     network_mode: host
     environment:
-      - PORT=8082
-    ports:
-      - 8082:8081
+      - PORT=8092
     profiles: ["perf"]
     depends_on:
       - rabbitmq
@@ -73,9 +88,7 @@ services:
     image: rate-limiting-worker
     network_mode: host
     environment:
-      - PORT=8083
-    ports:
-      - 8083:8081
+      - PORT=8093
     profiles: ["perf"]
     depends_on:
       - rabbitmq
@@ -85,9 +98,7 @@ services:
     image: rate-limiting-worker
     network_mode: host
     environment:
-      - PORT=8084
-    ports:
-      - 8084:8081
+      - PORT=8094
     profiles: ["perf"]
     depends_on:
       - rabbitmq
@@ -97,9 +108,7 @@ services:
     image: rate-limiting-worker
     network_mode: host
     environment:
-      - PORT=8085
-    ports:
-      - 8085:8081
+      - PORT=8095
     profiles: ["perf"]
     depends_on:
       - rabbitmq

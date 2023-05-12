@@ -91,7 +91,7 @@
         "x": 0,
         "y": 0
       },
-      "id": 1,
+      "id": 11,
       "options": {
         "legend": {
           "calcs": [],
@@ -111,16 +111,13 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "rate(ktor_http_server_requests_seconds_count{route!=\"/metrics\", status=\"200\", address=\"localhost:8080\"}[10s])",
-          "hide": false,
-          "instant": true,
-          "key": "Q-e6640d7e-d402-4cb3-8f03-e9de326d17d6-0",
-          "legendFormat": "{{route}} - {{api_key}}",
+          "expr": "sum(rate(traefik_entrypoint_requests_total{code!~\"5..\", entrypoint=\"http\"}[1m])) by (method, code)",
+          "legendFormat": "__auto",
           "range": true,
-          "refId": "C"
+          "refId": "A"
         }
       ],
-      "title": "Request Rate",
+      "title": "Request Rate Total",
       "type": "timeseries"
     },
     {
@@ -207,7 +204,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "rate(ktor_http_server_requests_seconds_sum{instance=\"localhost:8080\", route!=\"/metrics\"}[5m]) / rate(ktor_http_server_requests_seconds_count{address=\"localhost:8080\", route!=\"/metrics\"}[5m]) * 1000",
+          "expr": "rate(ktor_http_server_requests_seconds_sum{route!~\"/metrics|/ping\"}[5m]) / rate(ktor_http_server_requests_seconds_count{route!=\"/metrics\"}[5m]) * 1000",
           "hide": false,
           "legendFormat": "{{route}} - {{api_key}}",
           "range": true,
@@ -225,40 +222,53 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "continuous-GrYlRd"
+            "mode": "palette-classic"
           },
           "custom": {
-            "fillOpacity": 80,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
-            "lineWidth": 1
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "mappings": [],
           "thresholds": {
-            "mode": "percentage",
+            "mode": "absolute",
             "steps": [
               {
                 "color": "green",
                 "value": null
               },
               {
-                "color": "#EAB839",
-                "value": 50
-              },
-              {
-                "color": "semi-dark-orange",
+                "color": "red",
                 "value": 80
-              },
-              {
-                "color": "semi-dark-red",
-                "value": 90
               }
             ]
-          }
+          },
+          "unit": "ops"
         },
         "overrides": []
       },
@@ -268,18 +278,19 @@
         "x": 0,
         "y": 8
       },
-      "id": 7,
+      "id": 1,
       "options": {
-        "bucketOffset": 0,
-        "combine": false,
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
         }
       },
-      "pluginVersion": "9.3.6",
       "targets": [
         {
           "datasource": {
@@ -287,20 +298,17 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "exemplar": false,
-          "expr": "sum(rate(ktor_http_server_requests_seconds_bucket{route!=\"/metrics\", route=\"$route\", api_key=\"$api_key\"}[5m])) by(le)",
-          "format": "heatmap",
+          "expr": "rate(ktor_http_server_requests_seconds_count{route!~\"/metrics|/ping\", status=\"200\", job=\"rate-limiting-services\"}[10s])",
           "hide": false,
-          "instant": false,
-          "interval": "",
-          "legendFormat": "__auto",
+          "instant": true,
+          "key": "Q-e6640d7e-d402-4cb3-8f03-e9de326d17d6-0",
+          "legendFormat": "{{instance}} - {{route}} - {{api_key}}",
           "range": true,
-          "refId": "A"
+          "refId": "C"
         }
       ],
-      "title": "Response Time Distribution",
-      "transformations": [],
-      "type": "histogram"
+      "title": "Request Rate by Instance",
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -419,6 +427,91 @@
       ],
       "title": "Worker Execution Time",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 50
+              },
+              {
+                "color": "semi-dark-orange",
+                "value": 80
+              },
+              {
+                "color": "semi-dark-red",
+                "value": 90
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 16
+      },
+      "id": 7,
+      "options": {
+        "bucketOffset": 0,
+        "combine": false,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        }
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(rate(ktor_http_server_requests_seconds_bucket{route!=\"/metrics\", route=\"$route\", api_key=\"$api_key\"}[5m])) by(le)",
+          "format": "heatmap",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Response Time Distribution",
+      "transformations": [],
+      "type": "histogram"
     }
   ],
   "refresh": false,
@@ -429,9 +522,9 @@
     "list": [
       {
         "current": {
-          "selected": true,
-          "text": "/async/{key?}",
-          "value": "/async/{key?}"
+          "selected": false,
+          "text": "/direct/{key?}",
+          "value": "/direct/{key?}"
         },
         "hide": 0,
         "includeAll": false,
@@ -440,12 +533,12 @@
         "name": "route",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "/direct/{key?}",
             "value": "/direct/{key?}"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "/async/{key?}",
             "value": "/async/{key?}"
           }
@@ -457,7 +550,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "api_one",
           "value": "api_one"
         },
@@ -490,13 +583,13 @@
     ]
   },
   "time": {
-    "from": "2023-02-27T13:29:42.755Z",
-    "to": "2023-02-27T13:30:45.945Z"
+    "from": "2023-05-10T14:59:23.655Z",
+    "to": "2023-05-10T15:04:51.655Z"
   },
   "timepicker": {},
   "timezone": "",
   "title": "rate-limiting-service",
   "uid": "kk8cQRJVz",
-  "version": 12,
+  "version": 1,
   "weekStart": ""
 }

@@ -5,10 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "direct-duration-api-one": "wsl docker run --network=host --rm -i grafana/k6 run -e API_KEY=api_one -e PATH=direct --vus 10 --duration 2m - <request.test.js",
-    "direct-duration-api-two": "wsl docker run --network=host --rm -i grafana/k6 run -e API_KEY=api_two -e PATH=direct -e SLEEP=0.01 --vus 10 --duration 2m - <request.test.js",
-    "async-duration-api-one": "wsl docker run --network=host --rm -i grafana/k6 run -e API_KEY=api_one -e PATH=async --vus 10 --duration 2m - <request.test.js",
-    "async-duration-api-two": "wsl docker run --network=host --rm -i grafana/k6 run -e API_KEY=api_two -e PATH=async -e SLEEP=0.01 --vus 10 --duration 2m - <request.test.js",
+    "direct-duration-api-one": "wsl docker run --network=host --rm -i grafana/k6 run -e API_KEY=api_one -e PATH=direct --vus 10 --duration 5m - <request.test.js",
+    "direct-duration-api-two": "wsl docker run --network=host --rm -i grafana/k6 run -e API_KEY=api_two -e PATH=direct -e SLEEP=0.01 --vus 10 --duration 5m - <request.test.js",
+    "limited-duration-api-one": "wsl docker run --network=host --rm -i grafana/k6 run -e API_KEY=api_one -e PATH=limited --vus 10 --duration 5m - <request.test.js",
+    "limited-duration-api-two": "wsl docker run --network=host --rm -i grafana/k6 run -e API_KEY=api_two -e PATH=limited -e SLEEP=0.01 --vus 10 --duration 5m - <request.test.js",
+    "async-duration-api-one": "wsl docker run --network=host --rm -i grafana/k6 run -e API_KEY=api_one -e PATH=async --vus 10 --duration 5m - <request.test.js",
+    "async-duration-api-two": "wsl docker run --network=host --rm -i grafana/k6 run -e API_KEY=api_two -e PATH=async -e SLEEP=0.01 --vus 10 --duration 5m - <request.test.js",
     "direct-api-one": "wsl docker run --network=host --rm -i grafana/k6 run -e API_KEY=api_one -e PATH=direct --vus 5 --iterations 1875 - <request.test.js",
     "async-api-one": "wsl docker run --network=host --rm -i grafana/k6 run -e API_KEY=api_one -e PATH=async --vus 5 --iterations 1875 - <request.test.js"
   },
