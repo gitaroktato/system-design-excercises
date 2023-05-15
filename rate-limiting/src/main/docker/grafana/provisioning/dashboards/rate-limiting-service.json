@@ -111,7 +111,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "sum(rate(traefik_entrypoint_requests_total{code!~\"5..\", entrypoint=\"http\"}[1m])) by (method, code)",
+          "expr": "sum(rate(traefik_entrypoint_requests_total{code!~\"5..\", entrypoint=\"http\"}[10s])) by (method, code)",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -514,7 +514,7 @@
       "type": "histogram"
     }
   ],
-  "refresh": false,
+  "refresh": "5s",
   "schemaVersion": 37,
   "style": "dark",
   "tags": [],
@@ -583,8 +583,8 @@
     ]
   },
   "time": {
-    "from": "2023-05-10T14:59:23.655Z",
-    "to": "2023-05-10T15:04:51.655Z"
+    "from": "now-5m",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "",
