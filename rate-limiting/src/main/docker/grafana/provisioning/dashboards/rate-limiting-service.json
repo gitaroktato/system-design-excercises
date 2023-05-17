@@ -111,7 +111,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "sum(rate(traefik_entrypoint_requests_total{code!~\"5..\", entrypoint=\"http\"}[10s])) by (method, code)",
+          "expr": "sum(rate(traefik_entrypoint_requests_total{entrypoint=\"http\"}[10s])) by (method, code)",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -515,7 +515,7 @@
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 37,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [],
   "templating": {
