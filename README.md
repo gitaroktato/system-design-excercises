@@ -9,6 +9,7 @@ Aditionally, I included a README file that contains the key functional/non-funct
 ## [TinyURL](tinyurl)
 ## [Pastebin](pastebin)
 ## [Rate Limiting](rate-limiting)
+## [Typeahead](typeahead)
 
 # Technologies Covered (so far)
 
