@@ -1,0 +1,168 @@
+pipeline {
+    agent any
+    environment {
+        GRADLE_OPTS = '-Dorg.gradle.daemon=false'
+        BASEDIR = 'cicd'
+    }
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '1'))
+        disableConcurrentBuilds()
+    }
+    stages {
+        stage('checkout') {
+            steps {
+                sh 'git config --global http.sslVerify false'
+                git branch: env.BRANCH_NAME, url: 'https://github.com/gitaroktato/system-design-excercises'
+
+            }
+        }
+        stage('prepare') {
+            steps {
+               dir(BASEDIR) {
+                    echo 'Configuring gradle'
+                    sh "chmod u+x ./gradlew"
+                    echo 'Configuring docker-compose'
+                    script {
+                        def exists = fileExists '$HOME/docker-compose'
+                        if (exists) {
+                            echo 'Skipping docker-compose installation'
+                        } else {
+                            sh "curl -L --fail https://github.com/docker/compose/releases/download/v2.24.5/docker-compose-linux-x86_64 -o $HOME/docker-compose"
+                            sh "chmod u+x $HOME/docker-compose"
+                        }
+                    }
+               }
+            }
+        }
+        stage('test') {
+            agent {
+                docker {
+                    image 'openjdk:11-jdk-slim'
+                    args '--network=host -v $HOME/.gradle:/root/.gradle'
+                    reuseNode true
+                }
+            }
+            steps {
+               dir(BASEDIR) {
+                    sh "./gradlew clean test"
+               }
+            }
+        }
+        stage('verify') {
+            agent {
+                docker {
+                    image 'openjdk:11-jdk-slim'
+                    args '--network=host -v $HOME/.gradle:/root/.gradle'
+                    reuseNode true
+                }
+            }
+            steps {
+               dir(BASEDIR) {
+                    sh "./gradlew check"
+               }
+            }
+        }
+        stage('package') {
+            agent {
+                docker {
+                    image 'openjdk:11-jdk-slim'
+                    args '--network=host -v $HOME/.gradle:/root/.gradle'
+                    reuseNode true
+                }
+            }
+            steps {
+               dir(BASEDIR) {
+                    sh "./gradlew build"
+               }
+            }
+        }
+        stage('deploy to lab') {
+            failFast true
+            parallel {
+                stage('us-west-2') {
+                    input {
+                        message "Deploy to us-west-2?"
+                        ok "Deploy"
+                    }
+                    steps {
+                        echo "Deploying to us-west-2"
+                    }
+                }
+                stage('us-east-1') {
+                    input {
+                        message "Deploy to us-east-1?"
+                        ok "Deploy"
+                    }
+                    steps {
+                        dir(BASEDIR) {
+                            sh "$HOME/docker-compose up -d mysql"
+                            sh "$HOME/wait-for-it.sh -t 30 docker:3306"
+                            sh "$HOME/docker-compose up -d --build agile-springboot"
+                        }
+                    }
+                }
+            }
+        }
+        stage('end-to-end test') {
+            agent {
+                docker {
+                    image 'bzt'
+                    args '-u 0 --network=host -v $HOME/wait-for-it.sh:/wait-for-it.sh:ro'
+                    reuseNode true
+                }
+            }
+            steps {
+                dir(BASEDIR) {
+                    echo "Waiting for serivce to be up-and-running"
+                    sh "/wait-for-it.sh -t 30 localhost:8081"
+                    echo "Running end-to-end tests"
+                    sh 'bzt -o settings.artifacts-dir=/tmp src/e2e/taurus/end-to-end.yml'
+                }
+            }
+        }
+        stage('deploy to prod') {
+            failFast true
+            parallel {
+                stage('us-west-2') {
+                    input {
+                        message "Deploy to us-west-2?"
+                        ok "Deploy"
+                    }
+                    steps {
+                        echo "Deploying to us-west-2"
+                    }
+                }
+                stage('us-east-1') {
+                    input {
+                        message "Deploy to us-east-1?"
+                        ok "Deploy"
+                    }
+                    steps {
+                        echo "Deploying to us-east-1"
+                    }
+                }
+            }
+        }
+    }
+    post {
+        always {
+            dir(BASEDIR) {
+                junit 'build/test-results/**/*.xml'
+                publishHTML([
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: false,
+                    keepAll: false,
+                    reportDir: 'build/reports/spotbugs',
+                    reportFiles: 'main.html',
+                    reportName: 'SpotBugs report', reportTitles: 'SpotBugs report'
+                ])
+            }
+        }
+        cleanup {
+            dir(BASEDIR) {
+                sh "$HOME/docker-compose down"
+                sh 'git clean -df'
+            }
+        }
+    }
+}

@@ -10,6 +10,7 @@ Aditionally, I included a README file that contains the key functional/non-funct
 ## [Pastebin](pastebin)
 ## [Rate Limiting](rate-limiting)
 ## [Typeahead](typeahead)
+## [CI/CD](cicd)
 
 # Technologies Covered (so far)
 
@@ -41,3 +42,7 @@ Aditionally, I included a README file that contains the key functional/non-funct
 ### Metrics and Tracing
 - Grafana
 - Prometheus
+
+### CI/CD
+- Jenkins
+- Gradle (Kotlin)
