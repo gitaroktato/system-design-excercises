@@ -8,7 +8,8 @@ function Search() {
         freeSolo
         id = "search-field"
         disableClearable
-        options = { [] }
+        options = {[]}
+        filterOptions={(x) => x}
         renderInput = {(params) => (
           <TextField
             {...params}
