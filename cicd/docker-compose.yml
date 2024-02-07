@@ -10,7 +10,7 @@ services:
       - jenkins-docker-certs:/certs/client
       - jenkins-data:/var/jenkins_home
   jenkins-blueocean:
-    image: jenkinsci/blueocean
+    image: jenkins/jenkins:lts
     environment:
       DOCKER_HOST: tcp://docker:2376
       DOCKER_CERT_PATH: /certs/client
