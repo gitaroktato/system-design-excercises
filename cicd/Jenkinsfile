@@ -38,13 +38,13 @@ pipeline {
             agent {
                 docker {
                     image 'openjdk:21-jdk-slim'
-                    args '--network=host -u root -v $HOME:/root:rw'
+                    args '--network=host -v $HOME:/var/jenkins_home:rw'
                     reuseNode true
                 }
             }
             steps {
                dir(BASEDIR) {
-                    sh "./gradlew clean test"
+                    sh "GRADLE_USER_HOME=/var/jenkins_home/.gradle ./gradlew clean test"
                }
             }
         }
@@ -52,13 +52,13 @@ pipeline {
             agent {
                 docker {
                     image 'openjdk:21-jdk-slim'
-                    args '--network=host -u root -v $HOME:/root:rw'
+                    args '--network=host -v $HOME:/var/jenkins_home:rw'
                     reuseNode true
                 }
             }
             steps {
                dir(BASEDIR) {
-                    sh "./gradlew check"
+                    sh "GRADLE_USER_HOME=/var/jenkins_home/.gradle ./gradlew check"
                }
             }
         }
@@ -66,44 +66,24 @@ pipeline {
             agent {
                 docker {
                     image 'openjdk:21-jdk-slim'
-                    args '--network=host -u root -v $HOME:/root:rw'
+                    args '--network=host -v $HOME:/var/jenkins_home:rw'
                     reuseNode true
                 }
             }
             steps {
                dir(BASEDIR) {
-                    sh "./gradlew build"
+                    sh "GRADLE_USER_HOME=/var/jenkins_home/.gradle ./gradlew build"
                }
             }
         }
-        stage('deploy to lab') {
-            failFast true
-            parallel {
-                stage('us-west-2') {
-                    input {
-                        message "Deploy to us-west-2?"
-                        ok "Deploy"
-                    }
-                    steps {
-                        echo "Deploying to us-west-2"
-                    }
-                }
-                stage('us-east-1') {
-                    input {
-                        message "Deploy to us-east-1?"
-                        ok "Deploy"
-                    }
-                    steps {
-                        dir(BASEDIR) {
-                            sh "$HOME/docker-compose up -d mysql"
-                            sh "$HOME/wait-for-it.sh -t 30 docker:3306"
-                            sh "$HOME/docker-compose up -d --build agile-springboot"
-                        }
-                    }
-                }
+        stage('dockerize') {
+            steps {
+               dir(BASEDIR) {
+                    sh "./gradlew -Djib.from.image=openjdk:21-jdk-slim jibDockerBuild --image=myorg/myapp"
+               }
             }
         }
-        stage('deploy to prod') {
+        stage('deploy') {
             failFast true
             parallel {
                 stage('us-west-2') {
