@@ -3,6 +3,7 @@ pipeline {
     environment {
         GRADLE_OPTS = '-Dorg.gradle.daemon=false'
         BASEDIR = 'cicd'
+        IMAGE_NAME = 'myorg/myapp'
     }
     options {
         buildDiscarder(logRotator(numToKeepStr: '1'))
@@ -79,7 +80,7 @@ pipeline {
         stage('dockerize') {
             steps {
                dir(BASEDIR) {
-                    sh "./gradlew -Djib.from.image=openjdk:21-jdk-slim jibDockerBuild --image=myorg/myapp"
+                    sh "./gradlew -Djib.from.image=openjdk:21-jdk-slim jibDockerBuild --image=$IMAGE_NAME"
                }
             }
         }
@@ -111,14 +112,6 @@ pipeline {
         always {
             dir(BASEDIR) {
                 junit 'build/test-results/**/*.xml'
-                publishHTML([
-                    allowMissing: false,
-                    alwaysLinkToLastBuild: false,
-                    keepAll: false,
-                    reportDir: 'build/reports/spotbugs',
-                    reportFiles: 'main.html',
-                    reportName: 'SpotBugs report', reportTitles: 'SpotBugs report'
-                ])
             }
         }
         cleanup {
