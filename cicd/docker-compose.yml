@@ -9,8 +9,9 @@ services:
     volumes:
       - jenkins-docker-certs:/certs/client
       - jenkins-data:/var/jenkins_home
-  jenkins-blueocean:
-    image: jenkins/jenkins:lts
+  jenkins:
+    build:
+      context: ./jenkins
     environment:
       DOCKER_HOST: tcp://docker:2376
       DOCKER_CERT_PATH: /certs/client
