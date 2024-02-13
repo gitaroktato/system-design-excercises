@@ -3,7 +3,10 @@ pipeline {
     environment {
         GRADLE_OPTS = '-Dorg.gradle.daemon=false'
         BASEDIR = 'cicd'
-        IMAGE_NAME = 'myorg/myapp'
+        ECR_REPO_URL = sh (
+            script: "aws --profile dev cloudformation describe-stacks --stack-name ECR --query Stacks[0].Outputs[0].OutputValue | tr -d '\"'",
+            returnStdout: true
+        )
     }
     options {
         buildDiscarder(logRotator(numToKeepStr: '1'))
@@ -19,6 +22,10 @@ pipeline {
         }
         stage('prepare') {
             steps {
+               script {
+                    env.ECR_REPO_URI = env.ECR_REPO_URL.split("/")[0]
+                    env.ECR_IMAGE_NAME = env.ECR_REPO_URL.split("/")[1]
+               }
                dir(BASEDIR) {
                     echo 'Configuring gradle'
                     sh "chmod u+x ./gradlew"
@@ -80,14 +87,22 @@ pipeline {
         stage('dockerize') {
             steps {
                dir(BASEDIR) {
-                    sh "./gradlew -Djib.from.image=openjdk:21-jdk-slim jibDockerBuild --image=$IMAGE_NAME"
+                    sh "./gradlew -Djib.from.image=openjdk:21-jdk-slim jibDockerBuild --image=$ECR_REPO_URI/$ECR_IMAGE_NAME"
+               }
+            }
+        }
+        stage('publish') {
+            steps {
+               dir(BASEDIR) {
+                    sh "aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin $ECR_REPO_URI"
+                    sh "docker push $ECR_REPO_URI/$ECR_IMAGE_NAME"
                }
             }
         }
         stage('deploy') {
             failFast true
             parallel {
-                stage('us-west-2') {
+                stage('eu-west-1') {
                     input {
                         message "Deploy to us-west-2?"
                         ok "Deploy"

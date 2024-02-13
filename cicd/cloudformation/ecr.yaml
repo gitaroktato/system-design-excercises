@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: ECR Repository using Cloudformation
+
+Parameters:
+  UserArns:
+    Type: List<String>
+    Description: User ARNs who should have access.
+
+Resources:
+  ECRRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: "myapp"
+      RepositoryPolicyText:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Sid: AllowPushPull
+            Effect: Allow
+            Principal:
+              AWS:
+                Ref: UserArns
+            Action:
+              - "ecr:GetDownloadUrlForLayer"
+              - "ecr:BatchGetImage"
+              - "ecr:GetAuthorizationToken"
+              - "ecr:BatchCheckLayerAvailability"
+              - "ecr:PutImage"
+              - "ecr:InitiateLayerUpload"
+              - "ecr:UploadLayerPart"
+              - "ecr:CompleteLayerUpload"
+  
+Outputs:
+  RepositoryUrl:
+    Description: "ECR Repository URL"
+    Value: !GetAtt ECRRepository.RepositoryUri
+

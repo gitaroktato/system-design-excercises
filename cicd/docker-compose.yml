@@ -23,6 +23,7 @@ services:
       - 50000:50000
     volumes:
       - jenkins-data:/var/jenkins_home
+      - ~/.aws:/var/jenkins_home/.aws:ro
       - jenkins-docker-certs:/certs/client:ro
 volumes:
   jenkins-docker-certs:
