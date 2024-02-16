@@ -1,0 +1,91 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: ECS with Fargate using Cloudformation
+
+Parameters:
+
+  ImageName:
+    Type: String
+    Description: Image name to deploy
+    Default: 486248405237.dkr.ecr.eu-west-1.amazonaws.com/myapp
+  
+  ECSClusterName:
+    Type: String
+    Description: The cluster name
+    Default: ECSCluster
+
+  ECSServiceName:
+    Type: String
+    Description: The cluster name
+    Default: ECSService
+
+  Subnets:
+    Description: Choose which subnets this ECS cluster should be deployed to
+    Type: List<AWS::EC2::Subnet::Id>
+
+  SecurityGroup:
+    Description: Select the Security Group to use for the ECS cluster hosts
+    Type: AWS::EC2::SecurityGroup::Id
+
+Resources:
+
+  ECSTaskExecutionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      Path: "/"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+           Action: "sts:AssumeRole"
+           Effect: "Allow"
+           Principal:
+              Service: "ecs-tasks.amazonaws.com"
+      RoleName: "ECSManagementRole"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+  ECSCluster:
+    Type: 'AWS::ECS::Cluster'
+    Properties:
+      ClusterName: !Ref ECSClusterName
+  ECSTaskDefinition:
+    Type: 'AWS::ECS::TaskDefinition'
+    Properties:
+      ContainerDefinitions:
+        - Essential: true
+          Image: !Ref ImageName
+          Name: sample-fargate-app
+          PortMappings:
+            - ContainerPort: 8080
+              HostPort: 8080
+              Protocol: tcp
+      Cpu: 256
+      ExecutionRoleArn: !GetAtt ECSTaskExecutionRole.Arn
+      Family: task-definition-cfn
+      Memory: 512
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      RuntimePlatform:
+        OperatingSystemFamily: LINUX
+  ECSService:
+    Type: 'AWS::ECS::Service'
+    Properties:
+      ServiceName: !Ref ECSServiceName
+      Cluster: !Ref ECSCluster
+      DesiredCount: 1
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+            - !Ref SecurityGroup
+          Subnets: !Ref Subnets
+      TaskDefinition: !Ref ECSTaskDefinition
+
+Outputs:
+  ClusterName:
+    Description: The ECS cluster into which to launch resources
+    Value: !Ref ECSCluster
+
+  ServiceName:
+    Description: The ECS service name into which to launch resources
+    Value: !Ref ECSService

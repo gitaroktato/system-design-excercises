@@ -1,0 +1,34 @@
+Description: >
+  This template contains the security groups required by our entire stack.
+  We create them in a seperate nested template, so they can be referenced
+  by all of the other nested templates.
+
+Parameters:
+
+  VPC:
+    Type: AWS::EC2::VPC::Id
+    Description: Choose which VPC the security groups should be deployed to
+  
+  AllowAccessCIDR:
+    Description: Please enter the IP range (CIDR notation) to allow access from
+    Type: String
+
+
+Resources:
+
+  # This security group defines who/where is allowed to access the Application.
+  # It's restricted by the parameter AllowAccessCIDR
+  ECSHostSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      VpcId: !Ref VPC
+      GroupDescription: Access to the ECS services
+      SecurityGroupIngress:
+        # Allow access from anywhere to our ECS services
+        - CidrIp: !Ref AllowAccessCIDR
+          IpProtocol: -1
+
+Outputs:
+  ECSHostSecurityGroup:
+    Description: A reference to the security group for ECS hosts
+    Value: !Ref ECSHostSecurityGroup

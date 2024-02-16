@@ -1,0 +1,30 @@
+version: "3.7"
+services:
+  docker:
+    image: docker:dind
+    privileged: true
+    environment:
+      DOCKER_TLS_CERTDIR: /certs
+#    dns: 8.8.8.8
+    volumes:
+      - jenkins-docker-certs:/certs/client
+      - jenkins-data:/var/jenkins_home
+  jenkins:
+    build:
+      context: ./jenkins
+    environment:
+      DOCKER_HOST: tcp://docker:2376
+      DOCKER_CERT_PATH: /certs/client
+      DOCKER_TLS_VERIFY: 1
+      COMPOSE_OPTIONS: "--network=host -v/certs/client:/certs/client"
+#    dns: 8.8.8.8
+    ports:
+      - 8080:8080
+      - 50000:50000
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - ~/.aws:/var/jenkins_home/.aws:ro
+      - jenkins-docker-certs:/certs/client:ro
+volumes:
+  jenkins-docker-certs:
+  jenkins-data:
