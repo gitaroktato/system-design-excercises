@@ -16,3 +16,12 @@
 - [ ] Add metrics for the IDE as well.
   https://stackoverflow.com/a/66504604/8321787
   https://learn.microsoft.com/en-us/windows/wsl/wsl-config
+
+# STEPS
+`wsl ping google.com`
+`ifconfig`
+`docker login`
+`docker compose up -d`
+`src/main/docker/dynamodb/init.sh`
+`docker compose --profile perf up -d`
+`docker compose logs -f worker-1`
