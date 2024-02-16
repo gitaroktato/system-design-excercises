@@ -46,3 +46,9 @@ Aditionally, I included a README file that contains the key functional/non-funct
 ### CI/CD
 - Jenkins
 - Gradle (Kotlin)
+- Docker
+  
+### AWS
+- ECR
+- ECS
+- CloudFormation
