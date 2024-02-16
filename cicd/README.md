@@ -9,7 +9,17 @@ Get the initial admin password by running
 docker compose exec jenkins sh -c 'cat /var/jenkins_home/secrets/initialAdminPassword'
 ```
 
-Go to `http://<DOCKER_HOST>:8080/blue` and enter the password from previous step
+Go to `http://<DOCKER_HOST>:8080/blue` and enter the password from the previous step
+
+# Deploying ECR
+```shell
+aws --profile dev cloudformation deploy --template-file ./cloudformation/ecr.yaml --stack-name ECR --parameter-overrides UserArns="<USER_ARN>"
+```
+
+# Deploying ECS
+```shell
+aws --profile dev cloudformation deploy --template-file ./cloudformation/ecs.yaml --stack-name ECS --parameter-overrides ImageName="<DEPLOYABLE_IMAGE_FROM_ECR>"
+```
 
 # References
 Installing compose standalone 
@@ -31,6 +41,9 @@ Installing Jenkins with Docker
 - https://docs.aws.amazon.com/AmazonECS/latest/developerguide/example_task_definitions.html#example_task_definition-iam
 - https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Fargate.html
 - https://github.com/aws-samples/ecs-refarch-cloudformation
+
+## ECS IAM
+- https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html
 
 # AWS Configs
 - https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-pagination.html#cli-usage-pagination-nopaginate

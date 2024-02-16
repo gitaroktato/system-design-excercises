@@ -4,7 +4,11 @@ pipeline {
         GRADLE_OPTS = '-Dorg.gradle.daemon=false'
         BASEDIR = 'cicd'
         ECR_REPO_URL = sh (
-            script: "aws --profile dev cloudformation describe-stacks --stack-name ECR --query Stacks[0].Outputs[0].OutputValue | tr -d '\"'",
+            script: "aws --profile dev cloudformation describe-stacks --stack-name ECR --query Stacks[0].Outputs[0].OutputValue --output text",
+            returnStdout: true
+        )
+        ECS_SERVICE_ARN = sh (
+            script: "aws --profile dev cloudformation describe-stacks --stack-name ECS --query Stacks[0].Outputs[0].OutputValue --output text",
             returnStdout: true
         )
     }
@@ -25,6 +29,8 @@ pipeline {
                script {
                     env.ECR_REPO_URI = env.ECR_REPO_URL.split("/")[0]
                     env.ECR_IMAGE_NAME = env.ECR_REPO_URL.split("/")[1]
+                    env.ECS_CLUSTER_NAME = env.ECS_SERVICE_ARN.split("/")[1]
+                    env.ECS_SERVICE_NAME = env.ECS_SERVICE_ARN.split("/")[2]
                }
                dir(BASEDIR) {
                     echo 'Configuring gradle'
@@ -94,32 +100,20 @@ pipeline {
         stage('publish') {
             steps {
                dir(BASEDIR) {
-                    sh "aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin $ECR_REPO_URI"
+                    sh "aws --profile dev ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin $ECR_REPO_URI"
                     sh "docker push $ECR_REPO_URI/$ECR_IMAGE_NAME"
                }
             }
         }
         stage('deploy') {
             failFast true
-            parallel {
-                stage('eu-west-1') {
-                    input {
-                        message "Deploy to us-west-2?"
-                        ok "Deploy"
-                    }
-                    steps {
-                        echo "Deploying to us-west-2"
-                    }
-                }
-                stage('us-east-1') {
-                    input {
-                        message "Deploy to us-east-1?"
-                        ok "Deploy"
-                    }
-                    steps {
-                        echo "Deploying to us-east-1"
-                    }
-                }
+            input {
+                message "Deploy to eu-west-1?"
+                ok "Deploy"
+            }
+            steps {
+                echo "Deploying to eu-west-1"
+                sh "aws --profile dev ecs update-service --cluster $ECS_CLUSTER_NAME --service $ECS_SERVICE_NAME --force-new-deployment"
             }
         }
     }
