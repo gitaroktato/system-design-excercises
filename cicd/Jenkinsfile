@@ -8,7 +8,7 @@ pipeline {
             returnStdout: true
         )
         ECS_SERVICE_ARN = sh (
-            script: "aws --profile dev cloudformation describe-stacks --stack-name ECS --query Stacks[0].Outputs[0].OutputValue --output text",
+            script: "aws --profile dev cloudformation describe-stacks --stack-name ECS --query 'Stacks[0].Outputs[?OutputKey==`ServiceName`].OutputValue' --output text",
             returnStdout: true
         )
     }
@@ -30,7 +30,7 @@ pipeline {
                     env.ECR_REPO_URI = env.ECR_REPO_URL.split("/")[0]
                     env.ECR_IMAGE_NAME = env.ECR_REPO_URL.split("/")[1]
                     env.ECS_CLUSTER_NAME = env.ECS_SERVICE_ARN.split("/")[1]
-                    env.ECS_SERVICE_NAME = env.ECS_SERVICE_ARN.split("/")[2]
+                    env.ECS_SERVICE_NAME = env.ECS_SERVICE_ARN.split("/")[2].trim()
                }
                dir(BASEDIR) {
                     echo 'Configuring gradle'
@@ -45,6 +45,10 @@ pipeline {
                             sh "chmod u+x $HOME/docker-compose"
                         }
                     }
+               }
+               script {
+                    echo 'Environment variables'
+                    sh 'env'
                }
             }
         }
