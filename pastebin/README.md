@@ -10,7 +10,7 @@
 
 _Consistency_
 * Each paste should have a unique ID assigned.
-* We don't have a limitation on the ID's length. It can be shortened if required (the solution is identical to the solution in [tinyurl][../tinyurl]).
+* We don't have a limitation on the ID's length. It can be shortened if required (the solution is identical to the solution in [tinyurl](../tinyurl]).
 
 _Performance_
 * Reading and creating pastes (read/write) should be performing differently based on different read/write performance requirements.
@@ -129,4 +129,10 @@ https://swagger.io/docs/open-source-tools/swagger-codegen/
 https://docs.micronaut.io/latest/guide/index.html
 #### OpenAPI
 https://micronaut-projects.github.io/micronaut-openapi/latest/guide/index.html
+
+### MongoDB
+https://github.com/senssei/mongo-cluster-docker
+https://github.com/chefsplate/mongo-shard-docker-compose
+https://github.com/singram/mongo-docker-compose/blob/master/docker-compose.yml
+https://docs.mongodb.com/manual/core/sharded-cluster-components/
 
