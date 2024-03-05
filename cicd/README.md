@@ -1,3 +1,7 @@
+# CICD System Design
+## High-Level Overview
+![deployment](docs/deployment.drawio.png)
+
 # Startup
 Running CICD
 ```shell
@@ -45,5 +49,8 @@ Installing Jenkins with Docker
 ## ECS IAM
 - https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html
 
-# AWS Configs
+## AWS Configs
 - https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-pagination.html#cli-usage-pagination-nopaginate
+
+## Reference Architectures
+- https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/deploy-an-environment-for-containerized-blu-age-applications-by-using-terraform.html?did=pg_card&trk=pg_card
