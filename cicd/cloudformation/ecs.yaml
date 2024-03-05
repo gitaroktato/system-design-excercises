@@ -17,6 +17,19 @@ Parameters:
     Type: String
     Description: The cluster name
     Default: ECSService
+  
+  ListenerArn:
+    Description: The Application Load Balancer listener to register with
+    Type: String
+  
+  TargetGroupArn:
+    Description: The Application Load Balancer target group to register with
+    Type: String
+  
+  Path:
+    Description: The path to register with the Application Load Balancer
+    Type: String
+    Default: /
 
   Subnets:
     Description: Choose which subnets this ECS cluster should be deployed to
@@ -50,13 +63,13 @@ Resources:
     Type: 'AWS::ECS::TaskDefinition'
     Properties:
       ContainerDefinitions:
-        - Essential: true
+        - Name: sample-fargate-app
+          Essential: true
           Image: !Ref ImageName
-          Name: sample-fargate-app
           PortMappings:
             - ContainerPort: 8080
               HostPort: 8080
-              Protocol: tcp
+              Protocol: http
       Cpu: 256
       ExecutionRoleArn: !GetAtt ECSTaskExecutionRole.Arn
       Family: task-definition-cfn
@@ -66,8 +79,22 @@ Resources:
         - FARGATE
       RuntimePlatform:
         OperatingSystemFamily: LINUX
+  # TODO move to ELB???
+  ListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      ListenerArn: !Ref ListenerArn
+      Priority: 1
+      Conditions:
+        - Field: path-pattern
+          Values:
+            - !Ref Path
+      Actions:
+        - TargetGroupArn: !Ref TargetGroupArn
+          Type: forward
   ECSService:
     Type: 'AWS::ECS::Service'
+    DependsOn: ListenerRule
     Properties:
       ServiceName: !Ref ECSServiceName
       Cluster: !Ref ECSCluster
@@ -79,6 +106,10 @@ Resources:
           SecurityGroups:
             - !Ref SecurityGroup
           Subnets: !Ref Subnets
+      LoadBalancers:
+        - ContainerName: "sample-fargate-app"
+          ContainerPort: 8080
+          TargetGroupArn: !Ref TargetGroupArn
       TaskDefinition: !Ref ECSTaskDefinition
 
 Outputs:
